@@ -1,0 +1,55 @@
+# HomeCampus Python 3 Dependencies
+# Migration from Python 2.7 GAE with Tipfy to Python 3.9 GAE with Flask
+
+# Core Framework
+Flask==2.3.2
+Flask-WTF==1.1.1
+Flask-Login==0.6.3
+
+# Template Engine (upgraded from bundled Jinja2)
+Jinja2==3.1.2
+MarkupSafe==2.1.3
+
+# WSGI Utilities (upgraded from bundled Werkzeug)
+Werkzeug==2.3.6
+
+# Google Cloud Platform
+google-cloud-ndb==2.1.1
+google-cloud-storage==2.9.0
+
+# Forms (upgraded from bundled WTForms 0.6.3)
+WTForms==3.0.1
+
+# Internationalization (upgraded from bundled Babel)
+Babel==2.12.1
+
+# Signals (upgraded from bundled Blinker 1.1)
+blinker==1.6.2
+
+# Email Service (replacement for GAE Mail API)
+sendgrid==6.10.0
+
+# Date/Time handling (upgraded from bundled PyTZ 2010h)
+pytz==2023.3
+
+# JSON handling (can replace bundled simplejson)
+# Note: Python 3 built-in json module may be sufficient
+
+# Development dependencies
+pytest==7.4.0
+pytest-flask==1.2.0
+pytest-cov==4.1.0
+
+# Production WSGI server
+gunicorn==21.2.0
+
+# Security and utilities
+cryptography==41.0.3
+requests==2.31.0
+
+# For GAE Standard Environment
+google-auth==2.22.0
+google-auth-oauthlib==1.0.0
+
+# Payment processing (PayPal integration)
+paypalrestsdk==1.13.3

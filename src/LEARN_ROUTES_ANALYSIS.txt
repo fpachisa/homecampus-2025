@@ -1,0 +1,24 @@
+
+LEARN ROUTES ANALYSIS SUMMARY
+============================
+Total Learn Routes Found: 338
+
+Routes by Grade:
+- Other/General: 46 routes
+- Primary 5: 159 routes
+- Primary 6: 42 routes
+- Primary 4: 50 routes
+- Primary 3: 41 routes
+
+Sample Routes:
+1. /Learn/Primary_Grade_3_Mathematics → Learn.P3Notes
+2. /Learn/Primary_Grade_4_Mathematics → Learn.P4Notes
+3. /Learn/Primary_Grade_5_Mathematics → Learn.P5Notes
+4. /Learn/Primary_Grade_6_Mathematics → Learn.P6Notes
+5. /Learn/Primary5/WholeNumbers/Figures-to-Words → Learn.P5WNFiguresToWords
+6. /Learn/Primary5/WholeNumbers/Words-to-Figures → Learn.P5WNWordsToFigures
+7. /Learn/Primary5/WholeNumbers/Place-Values → Learn.P5WNPlaceValue
+8. /Learn/Primary5/WholeNumbers/Comparison-Ordering-Pattern → Learn.P5WNComparisonOrdering
+9. /Learn/Primary5/WholeNumbers/Approximation-Estimation-Part-1 → Learn.P5WNApproximationEstimation1
+10. /Learn/Primary5/WholeNumbers/Approximation-Estimation-Part-2 → Learn.P5WNApproximationEstimation2
+... and 328 more routes
