@@ -19,7 +19,7 @@ History:
 '''
 import random
 from random import randint
-import simplejson as json
+import json
 from Problems import PersonName
 
 class P3BGBarGraphs:
@@ -83,10 +83,10 @@ class P3BGBarGraphs:
             LastProblemID = 0
         
         if LastProblemID == 0:
-            return random.choice(random.choice(self.GenerateProblemType.values()))
+            return random.choice(random.choice(list(self.GenerateProblemType.values())))
         else:
             if LastProblemID in self.ProblemTypes:
-                CurrentProblemKey = [k for k, v in self.ProblemType.iteritems() if LastProblemID in v][0]
+                CurrentProblemKey = [k for k, v in self.ProblemType.items() if LastProblemID in v][0]
                 if CurrentProblemKey == max(self.ProblemType.keys()):
                     NextProblemKey = min(self.ProblemType.keys())
                 else:
@@ -136,7 +136,7 @@ class P3BGBarGraphs:
         self.name = random.choice(PersonName.GirlName)
         
         self.MaxNumber = 100
-        self.Interval = self.MaxNumber / 5
+        self.Interval = int(self.MaxNumber / 5)
         self.Bars = 5
         '''First number represents the height of the bar, second if 1=draw dotted line, 0=no dotted line'''
         self.BarHeights = []
@@ -212,7 +212,7 @@ class P3BGBarGraphs:
         self.name = random.choice(PersonName.GirlName)
         
         self.MaxNumber = 100
-        self.Interval = self.MaxNumber / 5
+        self.Interval = int(self.MaxNumber / 5)
         self.Bars = 5
         '''First number represents the height of the bar, second if 1=draw dotted line, 0=no dotted line'''
         self.BarHeights = []
@@ -293,7 +293,7 @@ class P3BGBarGraphs:
         self.name = random.choice(PersonName.GirlName)
         
         self.MaxNumber = 100
-        self.Interval = self.MaxNumber / 5
+        self.Interval = int(self.MaxNumber / 5)
         self.Bars = 5
         '''First number represents the height of the bar, second if 1=draw dotted line, 0=no dotted line'''
         self.BarHeights = []
@@ -373,7 +373,7 @@ class P3BGBarGraphs:
         self.name = random.choice(PersonName.GirlName)
         
         self.MaxNumber = 100
-        self.Interval = self.MaxNumber / 5
+        self.Interval = int(self.MaxNumber / 5)
         self.Bars = 5
         '''First number represents the height of the bar, second if 1=draw dotted line, 0=no dotted line'''
         self.BarHeights = []
@@ -452,7 +452,7 @@ class P3BGBarGraphs:
         self.name = random.choice(PersonName.GirlName)
         
         self.MaxNumber = 100
-        self.Interval = self.MaxNumber / 5
+        self.Interval = int(self.MaxNumber / 5)
         self.Bars = 5
         '''First number represents the height of the bar, second if 1=draw dotted line, 0=no dotted line'''
         self.BarHeights = []
@@ -545,7 +545,7 @@ class P3BGBarGraphs:
         self.name = random.choice(PersonName.GirlName)
         
         self.MaxNumber = 100
-        self.Interval = self.MaxNumber / 5
+        self.Interval = int(self.MaxNumber / 5)
         self.Bars = 5
         '''First number represents the height of the bar, second if 1=draw dotted line, 0=no dotted line'''
         self.BarHeights = []
@@ -637,7 +637,7 @@ class P3BGBarGraphs:
         self.name = random.choice(PersonName.GirlName)
         
         self.MaxNumber = 100
-        self.Interval = self.MaxNumber / 5
+        self.Interval = int(self.MaxNumber / 5)
         self.Bars = 5
         '''First number represents the height of the bar, second if 1=draw dotted line, 0=no dotted line'''
         self.BarHeights = []
@@ -663,7 +663,7 @@ class P3BGBarGraphs:
         self.YAxisLabel = ["Number of maths questions solved"]
         self.XAxisLabel = [""]
         self.DayIndex = randint(0,4)
-        self.CorrectQuestions = randint(self.heights[self.DayIndex]*0.5,self.heights[self.DayIndex]*0.9)
+        self.CorrectQuestions = randint(int(self.heights[self.DayIndex]*0.5),int(self.heights[self.DayIndex]*0.9))
         self.problem = self.name + " drew a bar graph to show the number of maths questions she solved from Monday to Friday last week. "
         self.problem = self.problem + "On %s she solved %d questions correctly. How many questions did she get wrong on %s?"%(self.days[self.DayIndex],
                                                                                                                               self.CorrectQuestions,self.days[self.DayIndex])
@@ -719,7 +719,7 @@ class P3BGBarGraphs:
         self.problem_type = 'ProblemTypeMCQ2a'
         self.CheckAnswerType = 1
         self.MaxNumber = 600
-        self.Interval = self.MaxNumber / 12
+        self.Interval = int(self.MaxNumber / 12)
         self.Bars = 5
         '''First number represents the height of the bar, second if 1=draw dotted line, 0=no dotted line'''
         self.BarHeights = []
@@ -795,7 +795,7 @@ class P3BGBarGraphs:
         self.problem_type = 'ProblemTypeMCQ2b'
         self.CheckAnswerType = 1
         self.MaxNumber = 600
-        self.Interval = self.MaxNumber / 12
+        self.Interval = int(self.MaxNumber / 12)
         self.Bars = 5
         '''First number represents the height of the bar, second if 1=draw dotted line, 0=no dotted line'''
         self.BarHeights = []
@@ -871,7 +871,7 @@ class P3BGBarGraphs:
         self.problem_type = 'ProblemTypeMCQ2c'
         self.CheckAnswerType = 1
         self.MaxNumber = 600
-        self.Interval = self.MaxNumber / 12
+        self.Interval = int(self.MaxNumber / 12)
         self.Bars = 5
         '''First number represents the height of the bar, second if 1=draw dotted line, 0=no dotted line'''
         self.BarHeights = []
@@ -961,7 +961,7 @@ class P3BGBarGraphs:
         self.problem_type = 'ProblemTypeMCQ2d'
         self.CheckAnswerType = 1
         self.MaxNumber = 600
-        self.Interval = self.MaxNumber / 12
+        self.Interval = int(self.MaxNumber / 12)
         self.Bars = 5
         '''First number represents the height of the bar, second if 1=draw dotted line, 0=no dotted line'''
         self.BarHeights = []
@@ -1051,7 +1051,7 @@ class P3BGBarGraphs:
         self.problem_type = 'ProblemTypeMCQ2e'
         self.CheckAnswerType = 1
         self.MaxNumber = 600
-        self.Interval = self.MaxNumber / 12
+        self.Interval = int(self.MaxNumber / 12)
         self.Bars = 5
         '''First number represents the height of the bar, second if 1=draw dotted line, 0=no dotted line'''
         self.BarHeights = []
@@ -1137,7 +1137,7 @@ class P3BGBarGraphs:
         self.problem_type = 'ProblemTypeMCQ3a'
         self.CheckAnswerType = 1
         self.MaxNumber = 400
-        self.Interval = self.MaxNumber / 8
+        self.Interval = int(self.MaxNumber / 8)
         self.Bars = 5
         '''First number represents the height of the bar, second if 1=draw dotted line, 0=no dotted line'''
         self.BarHeights = []
@@ -1212,7 +1212,7 @@ class P3BGBarGraphs:
         self.problem_type = 'ProblemTypeMCQ3b'
         self.CheckAnswerType = 1
         self.MaxNumber = 400
-        self.Interval = self.MaxNumber / 8
+        self.Interval = int(self.MaxNumber / 8)
         self.Bars = 5
         '''First number represents the height of the bar, second if 1=draw dotted line, 0=no dotted line'''
         self.BarHeights = []
@@ -1286,7 +1286,7 @@ class P3BGBarGraphs:
         self.problem_type = 'ProblemTypeMCQ3c'
         self.CheckAnswerType = 1
         self.MaxNumber = 400
-        self.Interval = self.MaxNumber / 8
+        self.Interval = int(self.MaxNumber / 8)
         self.Bars = 5
         '''First number represents the height of the bar, second if 1=draw dotted line, 0=no dotted line'''
         self.BarHeights = []
@@ -1363,7 +1363,7 @@ class P3BGBarGraphs:
         self.problem_type = 'ProblemTypeMCQ3d'
         self.CheckAnswerType = 1
         self.MaxNumber = 400
-        self.Interval = self.MaxNumber / 8
+        self.Interval = int(self.MaxNumber / 8)
         self.Bars = 5
         '''First number represents the height of the bar, second if 1=draw dotted line, 0=no dotted line'''
         self.BarHeights = []
@@ -1438,7 +1438,7 @@ class P3BGBarGraphs:
         self.problem_type = 'ProblemTypeMCQ3e'
         self.CheckAnswerType = 1
         self.MaxNumber = 400
-        self.Interval = self.MaxNumber / 8
+        self.Interval = int(self.MaxNumber / 8)
         self.Bars = 5
         '''First number represents the height of the bar, second if 1=draw dotted line, 0=no dotted line'''
         self.BarHeights = []
@@ -1526,7 +1526,7 @@ class P3BGBarGraphs:
         self.problem_type = 'ProblemTypeMCQ4a'
         self.CheckAnswerType = 1
         self.MaxNumber = 200
-        self.Interval = self.MaxNumber / 10
+        self.Interval = int(self.MaxNumber / 10)
         self.Bars = 5
         '''First number represents the height of the bar, second if 1=draw dotted line, 0=no dotted line'''
         self.BarHeights = []
@@ -1604,7 +1604,7 @@ class P3BGBarGraphs:
         self.problem_type = 'ProblemTypeMCQ4b'
         self.CheckAnswerType = 1
         self.MaxNumber = 200
-        self.Interval = self.MaxNumber / 10
+        self.Interval = int(self.MaxNumber / 10)
         self.Bars = 5
         '''First number represents the height of the bar, second if 1=draw dotted line, 0=no dotted line'''
         self.BarHeights = []
@@ -1695,7 +1695,7 @@ class P3BGBarGraphs:
         self.problem_type = 'ProblemTypeMCQ5a'
         self.CheckAnswerType = 1
         self.MaxNumber = 200
-        self.Interval = self.MaxNumber / 10
+        self.Interval = int(self.MaxNumber / 10)
         self.Bars = 5
         '''First number represents the height of the bar, second if 1=draw dotted line, 0=no dotted line'''
         self.BarHeights = []
@@ -1770,7 +1770,7 @@ class P3BGBarGraphs:
         self.problem_type = 'ProblemTypeMCQ5b'
         self.CheckAnswerType = 1
         self.MaxNumber = 200
-        self.Interval = self.MaxNumber / 10
+        self.Interval = int(self.MaxNumber / 10)
         self.Bars = 5
         '''First number represents the height of the bar, second if 1=draw dotted line, 0=no dotted line'''
         self.BarHeights = []
@@ -1846,7 +1846,7 @@ class P3BGBarGraphs:
         self.problem_type = 'ProblemTypeMCQ5c'
         self.CheckAnswerType = 1
         self.MaxNumber = 200
-        self.Interval = self.MaxNumber / 10
+        self.Interval = int(self.MaxNumber / 10)
         self.Bars = 5
         '''First number represents the height of the bar, second if 1=draw dotted line, 0=no dotted line'''
         self.BarHeights = []
@@ -1922,7 +1922,7 @@ class P3BGBarGraphs:
         self.problem_type = 'ProblemTypeMCQ5d'
         self.CheckAnswerType = 1
         self.MaxNumber = 200
-        self.Interval = self.MaxNumber / 10
+        self.Interval = int(self.MaxNumber / 10)
         self.Bars = 5
         '''First number represents the height of the bar, second if 1=draw dotted line, 0=no dotted line'''
         self.BarHeights = []
@@ -2010,7 +2010,7 @@ class P3BGBarGraphs:
         self.problem_type = 'ProblemTypeMCQ6a'
         self.CheckAnswerType = 1
         self.MaxNumber = 300
-        self.Interval = self.MaxNumber / 15
+        self.Interval = int(self.MaxNumber / 15)
         self.Bars = 5
         '''First number represents the height of the bar, second if 1=draw dotted line, 0=no dotted line'''
         self.BarHeights = []
@@ -2085,7 +2085,7 @@ class P3BGBarGraphs:
         self.problem_type = 'ProblemTypeMCQ6b'
         self.CheckAnswerType = 1
         self.MaxNumber = 300
-        self.Interval = self.MaxNumber / 15
+        self.Interval = int(self.MaxNumber / 15)
         self.Bars = 5
         '''First number represents the height of the bar, second if 1=draw dotted line, 0=no dotted line'''
         self.BarHeights = []
@@ -2159,7 +2159,7 @@ class P3BGBarGraphs:
         self.problem_type = 'ProblemTypeMCQ6c'
         self.CheckAnswerType = 1
         self.MaxNumber = 300
-        self.Interval = self.MaxNumber / 15
+        self.Interval = int(self.MaxNumber / 15)
         self.Bars = 5
         '''First number represents the height of the bar, second if 1=draw dotted line, 0=no dotted line'''
         self.BarHeights = []
@@ -2233,7 +2233,7 @@ class P3BGBarGraphs:
         self.problem_type = 'ProblemTypeMCQ6d'
         self.CheckAnswerType = 1
         self.MaxNumber = 300
-        self.Interval = self.MaxNumber / 15
+        self.Interval = int(self.MaxNumber / 15)
         self.Bars = 5
         '''First number represents the height of the bar, second if 1=draw dotted line, 0=no dotted line'''
         self.BarHeights = []
@@ -2324,7 +2324,7 @@ class P3BGBarGraphs:
         self.problem_type = 'ProblemTypeMCQ7a'
         self.CheckAnswerType = 1
         self.MaxNumber = 300
-        self.Interval = self.MaxNumber / 15
+        self.Interval = int(self.MaxNumber / 15)
         self.Bars = 5
         '''First number represents the height of the bar, second if 1=draw dotted line, 0=no dotted line'''
         self.BarHeights = []
@@ -2398,7 +2398,7 @@ class P3BGBarGraphs:
         self.problem_type = 'ProblemTypeMCQ7b'
         self.CheckAnswerType = 1
         self.MaxNumber = 300
-        self.Interval = self.MaxNumber / 15
+        self.Interval = int(self.MaxNumber / 15)
         self.Bars = 5
         '''First number represents the height of the bar, second if 1=draw dotted line, 0=no dotted line'''
         self.BarHeights = []
@@ -2472,7 +2472,7 @@ class P3BGBarGraphs:
         self.problem_type = 'ProblemTypeMCQ7c'
         self.CheckAnswerType = 1
         self.MaxNumber = 300
-        self.Interval = self.MaxNumber / 15
+        self.Interval = int(self.MaxNumber / 15)
         self.Bars = 5
         '''First number represents the height of the bar, second if 1=draw dotted line, 0=no dotted line'''
         self.BarHeights = []
@@ -2554,7 +2554,7 @@ class P3BGBarGraphs:
         self.problem_type = 'ProblemTypeMCQ7d'
         self.CheckAnswerType = 1
         self.MaxNumber = 300
-        self.Interval = self.MaxNumber / 15
+        self.Interval = int(self.MaxNumber / 15)
         self.Bars = 5
         '''First number represents the height of the bar, second if 1=draw dotted line, 0=no dotted line'''
         self.BarHeights = []
@@ -2630,7 +2630,7 @@ class P3BGBarGraphs:
         self.problem_type = 'ProblemTypeMCQ8a'
         self.CheckAnswerType = 1
         self.MaxNumber = 150
-        self.Interval = self.MaxNumber / 15
+        self.Interval = int(self.MaxNumber / 15)
         self.Bars = 5
         '''First number represents the height of the bar, second if 1=draw dotted line, 0=no dotted line'''
         self.BarHeights = []
@@ -2705,7 +2705,7 @@ class P3BGBarGraphs:
         self.problem_type = 'ProblemTypeMCQ8b'
         self.CheckAnswerType = 1
         self.MaxNumber = 150
-        self.Interval = self.MaxNumber / 15
+        self.Interval = int(self.MaxNumber / 15)
         self.Bars = 5
         '''First number represents the height of the bar, second if 1=draw dotted line, 0=no dotted line'''
         self.BarHeights = []
@@ -2780,7 +2780,7 @@ class P3BGBarGraphs:
         self.problem_type = 'ProblemTypeMCQ8c'
         self.CheckAnswerType = 1
         self.MaxNumber = 150
-        self.Interval = self.MaxNumber / 15
+        self.Interval = int(self.MaxNumber / 15)
         self.Bars = 5
         '''First number represents the height of the bar, second if 1=draw dotted line, 0=no dotted line'''
         self.BarHeights = []
@@ -2855,7 +2855,7 @@ class P3BGBarGraphs:
         self.problem_type = 'ProblemTypeMCQ8d'
         self.CheckAnswerType = 1
         self.MaxNumber = 150
-        self.Interval = self.MaxNumber / 15
+        self.Interval = int(self.MaxNumber / 15)
         self.Bars = 5
         '''First number represents the height of the bar, second if 1=draw dotted line, 0=no dotted line'''
         self.BarHeights = []
@@ -2950,7 +2950,7 @@ class P3BGBarGraphs:
         self.problem_type = 'ProblemTypeMCQ8e'
         self.CheckAnswerType = 1
         self.MaxNumber = 150
-        self.Interval = self.MaxNumber / 15
+        self.Interval = int(self.MaxNumber / 15)
         self.Bars = 5
         '''First number represents the height of the bar, second if 1=draw dotted line, 0=no dotted line'''
         self.BarHeights = []
@@ -3036,7 +3036,7 @@ class P3BGBarGraphs:
         self.problem_type = 'ProblemTypeMCQ9a'
         self.CheckAnswerType = 1
         self.MaxNumber = 600
-        self.Interval = self.MaxNumber / 15
+        self.Interval = int(self.MaxNumber / 15)
         self.Bars = 7
         '''First number represents the height of the bar, second if 1=draw dotted line, 0=no dotted line'''
         self.BarHeights = []
@@ -3114,7 +3114,7 @@ class P3BGBarGraphs:
         self.problem_type = 'ProblemTypeMCQ9b'
         self.CheckAnswerType = 1
         self.MaxNumber = 600
-        self.Interval = self.MaxNumber / 15
+        self.Interval = int(self.MaxNumber / 15)
         self.Bars = 7
         '''First number represents the height of the bar, second if 1=draw dotted line, 0=no dotted line'''
         self.BarHeights = []
@@ -3194,7 +3194,7 @@ class P3BGBarGraphs:
         self.problem_type = 'ProblemTypeMCQ9c'
         self.CheckAnswerType = 1
         self.MaxNumber = 600
-        self.Interval = self.MaxNumber / 15
+        self.Interval = int(self.MaxNumber / 15)
         self.Bars = 7
         '''First number represents the height of the bar, second if 1=draw dotted line, 0=no dotted line'''
         self.BarHeights = []
@@ -3285,7 +3285,7 @@ class P3BGBarGraphs:
         self.problem_type = 'ProblemTypeMCQ9d'
         self.CheckAnswerType = 1
         self.MaxNumber = 600
-        self.Interval = self.MaxNumber / 15
+        self.Interval = int(self.MaxNumber / 15)
         self.Bars = 7
         '''First number represents the height of the bar, second if 1=draw dotted line, 0=no dotted line'''
         self.BarHeights = []
@@ -3360,7 +3360,7 @@ class P3BGBarGraphs:
         self.problem_type = 'ProblemTypeMCQ9e'
         self.CheckAnswerType = 1
         self.MaxNumber = 600
-        self.Interval = self.MaxNumber / 15
+        self.Interval = int(self.MaxNumber / 15)
         self.Bars = 7
         '''First number represents the height of the bar, second if 1=draw dotted line, 0=no dotted line'''
         self.BarHeights = []
@@ -3442,7 +3442,7 @@ class P3BGBarGraphs:
         self.problem_type = 'ProblemTypeMCQ10a'
         self.CheckAnswerType = 1
         self.MaxNumber = 200
-        self.Interval = self.MaxNumber / 20
+        self.Interval = int(self.MaxNumber / 20)
         self.Bars = 6
         '''First number represents the height of the bar, second if 1=draw dotted line, 0=no dotted line'''
         self.BarHeights = []
@@ -3521,7 +3521,7 @@ class P3BGBarGraphs:
         self.problem_type = 'ProblemTypeMCQ10b'
         self.CheckAnswerType = 1
         self.MaxNumber = 200
-        self.Interval = self.MaxNumber / 20
+        self.Interval = int(self.MaxNumber / 20)
         self.Bars = 6
         '''First number represents the height of the bar, second if 1=draw dotted line, 0=no dotted line'''
         self.BarHeights = []
@@ -3619,7 +3619,7 @@ class P3BGBarGraphs:
         self.problem_type = 'ProblemTypeMCQ10c'
         self.CheckAnswerType = 1
         self.MaxNumber = 200
-        self.Interval = self.MaxNumber / 20
+        self.Interval = int(self.MaxNumber / 20)
         self.Bars = 6
         '''First number represents the height of the bar, second if 1=draw dotted line, 0=no dotted line'''
         self.BarHeights = []
@@ -3698,7 +3698,7 @@ class P3BGBarGraphs:
         self.problem_type = 'ProblemTypeMCQ10d'
         self.CheckAnswerType = 1
         self.MaxNumber = 200
-        self.Interval = self.MaxNumber / 20
+        self.Interval = int(self.MaxNumber / 20)
         self.Bars = 6
         '''First number represents the height of the bar, second if 1=draw dotted line, 0=no dotted line'''
         self.BarHeights = []
@@ -3778,7 +3778,7 @@ class P3BGBarGraphs:
         self.problem_type = 'ProblemTypeMCQ10e'
         self.CheckAnswerType = 1
         self.MaxNumber = 200
-        self.Interval = self.MaxNumber / 20
+        self.Interval = int(self.MaxNumber / 20)
         self.Bars = 6
         '''First number represents the height of the bar, second if 1=draw dotted line, 0=no dotted line'''
         self.BarHeights = []
@@ -3866,7 +3866,7 @@ class P3BGBarGraphs:
         self.problem_type = 'ProblemTypeMCQ11a'
         self.CheckAnswerType = 1
         self.MaxNumber = 100
-        self.Interval = self.MaxNumber / 10
+        self.Interval = int(self.MaxNumber / 10)
         self.Bars = 6
         self.name = random.choice(PersonName.BoyName)
         '''First number represents the height of the bar, second if 1=draw dotted line, 0=no dotted line'''
@@ -3947,7 +3947,7 @@ class P3BGBarGraphs:
         self.problem_type = 'ProblemTypeMCQ11b'
         self.CheckAnswerType = 1
         self.MaxNumber = 100
-        self.Interval = self.MaxNumber / 10
+        self.Interval = int(self.MaxNumber / 10)
         self.Bars = 6
         self.name = random.choice(PersonName.BoyName)
         '''First number represents the height of the bar, second if 1=draw dotted line, 0=no dotted line'''
@@ -4027,7 +4027,7 @@ class P3BGBarGraphs:
         self.problem_type = 'ProblemTypeMCQ11c'
         self.CheckAnswerType = 1
         self.MaxNumber = 100
-        self.Interval = self.MaxNumber / 10
+        self.Interval = int(self.MaxNumber / 10)
         self.Bars = 6
         self.name = random.choice(PersonName.BoyName)
         '''First number represents the height of the bar, second if 1=draw dotted line, 0=no dotted line'''
@@ -4107,7 +4107,7 @@ class P3BGBarGraphs:
         self.problem_type = 'ProblemTypeMCQ11d'
         self.CheckAnswerType = 1
         self.MaxNumber = 100
-        self.Interval = self.MaxNumber / 10
+        self.Interval = int(self.MaxNumber / 10)
         self.Bars = 6
         self.name = random.choice(PersonName.BoyName)
         '''First number represents the height of the bar, second if 1=draw dotted line, 0=no dotted line'''
@@ -4187,7 +4187,7 @@ class P3BGBarGraphs:
         self.problem_type = 'ProblemTypeMCQ11e'
         self.CheckAnswerType = 1
         self.MaxNumber = 100
-        self.Interval = self.MaxNumber / 10
+        self.Interval = int(self.MaxNumber / 10)
         self.Bars = 6
         self.name = random.choice(PersonName.BoyName)
         '''First number represents the height of the bar, second if 1=draw dotted line, 0=no dotted line'''
@@ -4277,7 +4277,7 @@ class P3BGBarGraphs:
         self.problem_type = 'ProblemTypeMCQ12a'
         self.CheckAnswerType = 1
         self.MaxNumber = 200
-        self.Interval = self.MaxNumber / 10
+        self.Interval = int(self.MaxNumber / 10)
         self.Bars = 5
         self.name = random.choice(PersonName.BoyName)
         '''First number represents the height of the bar, second if 1=draw dotted line, 0=no dotted line'''
@@ -4359,7 +4359,7 @@ class P3BGBarGraphs:
         self.problem_type = 'ProblemTypeMCQ12b'
         self.CheckAnswerType = 1
         self.MaxNumber = 200
-        self.Interval = self.MaxNumber / 10
+        self.Interval = int(self.MaxNumber / 10)
         self.Bars = 5
         self.name = random.choice(PersonName.BoyName)
         '''First number represents the height of the bar, second if 1=draw dotted line, 0=no dotted line'''
@@ -4454,7 +4454,7 @@ class P3BGBarGraphs:
         self.problem_type = 'ProblemTypeMCQ12c'
         self.CheckAnswerType = 1
         self.MaxNumber = 200
-        self.Interval = self.MaxNumber / 10
+        self.Interval = int(self.MaxNumber / 10)
         self.Bars = 5
         self.name = random.choice(PersonName.BoyName)
         '''First number represents the height of the bar, second if 1=draw dotted line, 0=no dotted line'''
@@ -4541,7 +4541,7 @@ class P3BGBarGraphs:
         self.problem_type = 'ProblemTypeMCQ13a'
         self.CheckAnswerType = 1
         self.MaxNumber = 300
-        self.Interval = self.MaxNumber / 10
+        self.Interval = int(self.MaxNumber / 10)
         self.Bars = 5
         self.name = random.choice(PersonName.UncleName)
         '''First number represents the height of the bar, second if 1=draw dotted line, 0=no dotted line'''
@@ -4621,7 +4621,7 @@ class P3BGBarGraphs:
         self.problem_type = 'ProblemTypeMCQ13b'
         self.CheckAnswerType = 1
         self.MaxNumber = 300
-        self.Interval = self.MaxNumber / 10
+        self.Interval = int(self.MaxNumber / 10)
         self.Bars = 5
         self.name = random.choice(PersonName.UncleName)
         '''First number represents the height of the bar, second if 1=draw dotted line, 0=no dotted line'''
@@ -4700,7 +4700,7 @@ class P3BGBarGraphs:
         self.problem_type = 'ProblemTypeMCQ13c'
         self.CheckAnswerType = 1
         self.MaxNumber = 300
-        self.Interval = self.MaxNumber / 10
+        self.Interval = int(self.MaxNumber / 10)
         self.Bars = 5
         self.name = random.choice(PersonName.UncleName)
         '''First number represents the height of the bar, second if 1=draw dotted line, 0=no dotted line'''
@@ -4779,7 +4779,7 @@ class P3BGBarGraphs:
         self.problem_type = 'ProblemTypeMCQ13d'
         self.CheckAnswerType = 1
         self.MaxNumber = 300
-        self.Interval = self.MaxNumber / 10
+        self.Interval = int(self.MaxNumber / 10)
         self.Bars = 5
         self.name = random.choice(PersonName.UncleName)
         '''First number represents the height of the bar, second if 1=draw dotted line, 0=no dotted line'''
@@ -4864,7 +4864,7 @@ class P3BGBarGraphs:
         self.problem_type = 'ProblemTypeMCQ13e'
         self.CheckAnswerType = 1
         self.MaxNumber = 300
-        self.Interval = self.MaxNumber / 10
+        self.Interval = int(self.MaxNumber / 10)
         self.Bars = 5
         self.name = random.choice(PersonName.UncleName)
         '''First number represents the height of the bar, second if 1=draw dotted line, 0=no dotted line'''
@@ -4957,7 +4957,7 @@ class P3BGBarGraphs:
         self.problem_type = 'ProblemTypeMCQ14a'
         self.CheckAnswerType = 1
         self.MaxNumber = 150
-        self.Interval = self.MaxNumber / 10
+        self.Interval = int(self.MaxNumber / 10)
         self.Bars = 5
         self.name = random.choice(PersonName.UncleName)
         '''First number represents the height of the bar, second if 1=draw dotted line, 0=no dotted line'''
@@ -5035,7 +5035,7 @@ class P3BGBarGraphs:
         self.problem_type = 'ProblemTypeMCQ14b'
         self.CheckAnswerType = 1
         self.MaxNumber = 150
-        self.Interval = self.MaxNumber / 10
+        self.Interval = int(self.MaxNumber / 10)
         self.Bars = 5
         self.name = random.choice(PersonName.UncleName)
         '''First number represents the height of the bar, second if 1=draw dotted line, 0=no dotted line'''
@@ -5113,7 +5113,7 @@ class P3BGBarGraphs:
         self.problem_type = 'ProblemTypeMCQ14c'
         self.CheckAnswerType = 1
         self.MaxNumber = 150
-        self.Interval = self.MaxNumber / 10
+        self.Interval = int(self.MaxNumber / 10)
         self.Bars = 5
         self.name = random.choice(PersonName.UncleName)
         '''First number represents the height of the bar, second if 1=draw dotted line, 0=no dotted line'''
@@ -5204,7 +5204,7 @@ class P3BGBarGraphs:
         self.problem_type = 'ProblemTypeMCQ14d'
         self.CheckAnswerType = 1
         self.MaxNumber = 150
-        self.Interval = self.MaxNumber / 10
+        self.Interval = int(self.MaxNumber / 10)
         self.Bars = 5
         self.name = random.choice(PersonName.UncleName)
         '''First number represents the height of the bar, second if 1=draw dotted line, 0=no dotted line'''
@@ -5285,7 +5285,7 @@ class P3BGBarGraphs:
         self.problem_type = 'ProblemTypeMCQ14e'
         self.CheckAnswerType = 1
         self.MaxNumber = 150
-        self.Interval = self.MaxNumber / 10
+        self.Interval = int(self.MaxNumber / 10)
         self.Bars = 5
         self.name = random.choice(PersonName.UncleName)
         '''First number represents the height of the bar, second if 1=draw dotted line, 0=no dotted line'''
@@ -5363,6 +5363,9 @@ class P3BGBarGraphs:
         self.answer4=''
 
         try:
+            # Python 3 fix: convert set to list for random.sample()
+            if isinstance(wrongAnswers, set):
+                wrongAnswers = list(wrongAnswers)
             wrongAnswers = random.sample(wrongAnswers,3)
         except ValueError:
             pass

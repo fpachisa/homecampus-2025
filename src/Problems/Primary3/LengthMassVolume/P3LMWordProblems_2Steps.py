@@ -61,7 +61,7 @@ class P3LMWordProblems_2Steps:
             return random.choice(self.GenerateProblemType[1])
         else:
             if LastProblemID in self.ProblemTypes:
-                CurrentProblemKey = [k for k, v in self.ProblemType.iteritems() if LastProblemID in v][0]
+                CurrentProblemKey = [k for k, v in self.ProblemType.items() if LastProblemID in v][0]
                 if CurrentProblemKey == max(self.ProblemType.keys()):
                     NextProblemKey = min(self.ProblemType.keys())
                 else:
@@ -2286,7 +2286,7 @@ class P3LMWordProblems_2Steps:
                 return False
         elif CheckAnswer == 2:
             try:
-                answer1 = string.join(str(answer).split(),"")
+                answer1 = "".join(str(answer).split())
                 '''If user enter answer as 1l 007 ml that should also be correct'''
                 if len(answer1.partition("l")[2])==4:
                     answer2 = answer1.partition("l")[0]+"l0"+answer1.partition("l")[2]
@@ -2294,25 +2294,25 @@ class P3LMWordProblems_2Steps:
                     answer2 = answer1.partition("l")[0]+"l00"+answer1.partition("l")[2]
                 else:
                     answer2 = answer1
-                InputAnswer = string.join(str(InputAnswer).split(),"")
+                InputAnswer = "".join(str(InputAnswer).split())
                 return answer1.capitalize() == InputAnswer.capitalize() or answer2.capitalize() == InputAnswer.capitalize()
             except ValueError:
                 return False
         elif CheckAnswer == 3:
             try:
-                answer1 = string.join(str(answer).split(),"")
+                answer1 = "".join(str(answer).split())
                 '''If user enter answer as 1m 04 cm that should also be correct'''
                 if len(answer1.partition("m")[2])==3:
                     answer2 = answer1.partition("m")[0]+"m0"+answer1.partition("m")[2]
                 else:
                     answer2 = answer1
-                InputAnswer = string.join(str(InputAnswer).split(),"")
+                InputAnswer = "".join(str(InputAnswer).split())
                 return answer1.capitalize() == InputAnswer.capitalize() or answer2.capitalize() == InputAnswer.capitalize()
             except ValueError:
                 return False
         elif CheckAnswer == 4:
             try:
-                answer1 = string.join(str(answer).split(),"")
+                answer1 = "".join(str(answer).split())
                 '''If user enter answer as 1kg 007 g that should also be correct'''
                 if len(answer1.partition("kg")[2])==3:
                     answer2 = answer1.partition("kg")[0]+"kg0"+answer1.partition("kg")[2]
@@ -2320,13 +2320,13 @@ class P3LMWordProblems_2Steps:
                     answer2 = answer1.partition("kg")[0]+"kg00"+answer1.partition("kg")[2]
                 else:
                     answer2 = answer1
-                InputAnswer = string.join(str(InputAnswer).split(),"")
+                InputAnswer = "".join(str(InputAnswer).split())
                 return answer1.capitalize() == InputAnswer.capitalize() or answer2.capitalize() == InputAnswer.capitalize()
             except ValueError:
                 return False
         elif CheckAnswer == 5:
             try:
-                answer1 = string.join(str(answer).split(),"")
+                answer1 = "".join(str(answer).split())
                 '''If user enter answer as 1km 007 m that should also be correct'''
                 if len(answer1.partition("km")[2])==3:
                     answer2 = answer1.partition("km")[0]+"km0"+answer1.partition("km")[2]
@@ -2334,7 +2334,7 @@ class P3LMWordProblems_2Steps:
                     answer2 = answer1.partition("km")[0]+"km00"+answer1.partition("km")[2]
                 else:
                     answer2 = answer1
-                InputAnswer = string.join(str(InputAnswer).split(),"")
+                InputAnswer = "".join(str(InputAnswer).split())
                 return answer1.capitalize() == InputAnswer.capitalize() or answer2.capitalize() == InputAnswer.capitalize()
             except ValueError:
                 return False

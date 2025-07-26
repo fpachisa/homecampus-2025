@@ -55,7 +55,7 @@ class P3TIAddition:
             return random.choice(self.GenerateProblemType[1])
         else:
             if LastProblemID in self.ProblemTypes:
-                CurrentProblemKey = [k for k, v in self.ProblemType.iteritems() if LastProblemID in v][0]
+                CurrentProblemKey = [k for k, v in self.ProblemType.items() if LastProblemID in v][0]
                 if CurrentProblemKey == max(self.ProblemType.keys()):
                     NextProblemKey = min(self.ProblemType.keys())
                 else:
@@ -910,8 +910,8 @@ class P3TIAddition:
     def checkAnswer(self,template,answer,InputAnswer,CheckAnswer):
         if CheckAnswer == 1:
             try:
-                InputAnswer = string.join(str(InputAnswer).split(),"").lower()
-                answer = string.join(str(answer).split(),"")
+                InputAnswer = "".join(str(InputAnswer).split()).lower()
+                answer = "".join(str(answer).split())
                 hour = answer.partition("h")[0]
                 mins = answer.partition("h")[2].partition("min")[0]
                 answers = ["%shours%sminutes"%(hour,mins),"%shour%sminutes"%(hour,mins),"%shrs%sminutes"%(hour,mins),"%shr%sminutes"%(hour,mins),"%sh%sminutes"%(hour,mins),
@@ -922,8 +922,8 @@ class P3TIAddition:
                 return False
         elif CheckAnswer == 2:
             try:
-                InputAnswer = string.join(str(InputAnswer).split(),"").lower()
-                answer = string.join(str(answer).split(),"")
+                InputAnswer = "".join(str(InputAnswer).split()).lower()
+                answer = "".join(str(answer).split())
                 hour = answer.partition("h")[0]
                 mins = answer.partition("h")[2].partition("min")[0]
                 answers = ["%shours%sminutes"%(hour,mins),"%shour%sminutes"%(hour,mins),"%shrs%sminutes"%(hour,mins),"%shr%sminutes"%(hour,mins),"%sh%sminutes"%(hour,mins),

@@ -50,7 +50,7 @@ class P3WNNumberPatterns:
             return random.choice(self.GenerateProblemType[1])
         else:
             if LastProblemID in self.ProblemTypes:
-                CurrentProblemKey = [k for k, v in self.ProblemType.iteritems() if LastProblemID in v][0]
+                CurrentProblemKey = [k for k, v in self.ProblemType.items() if LastProblemID in v][0]
                 if CurrentProblemKey == max(self.ProblemType.keys()):
                     NextProblemKey = min(self.ProblemType.keys())
                 else:
@@ -217,6 +217,9 @@ class P3WNNumberPatterns:
                 
         self.wrongAnswers = [str(int(self.answer)+100),str(int(self.answer)-100),str(int(self.answer)+200),str(int(self.answer)-200),str(int(self.answer)+10),str(int(self.answer)-10)]
         
+        # Python 3 fix: ensure wrongAnswers is a list for random.sample()
+        if isinstance(self.wrongAnswers, set):
+            self.wrongAnswers = list(self.wrongAnswers)
         self.wrongAnswers = random.sample(self.wrongAnswers,3)
         self.wrongAnswers.append(self.answer)
         
@@ -279,6 +282,9 @@ class P3WNNumberPatterns:
                 
         self.wrongAnswers = [str(int(self.answer)+100),str(int(self.answer)-100),str(int(self.answer)+200),str(int(self.answer)-200),str(int(self.answer)+10),str(int(self.answer)-10)]
         
+        # Python 3 fix: ensure wrongAnswers is a list for random.sample()
+        if isinstance(self.wrongAnswers, set):
+            self.wrongAnswers = list(self.wrongAnswers)
         self.wrongAnswers = random.sample(self.wrongAnswers,3)
         self.wrongAnswers.append(self.answer)
         

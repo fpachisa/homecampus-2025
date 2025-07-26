@@ -61,7 +61,7 @@ class P3MOWordProblems:
             return random.choice(self.GenerateProblemType[1])
         else:
             if LastProblemID in self.ProblemTypes:
-                CurrentProblemKey = [k for k, v in self.ProblemType.iteritems() if LastProblemID in v][0]
+                CurrentProblemKey = [k for k, v in self.ProblemType.items() if LastProblemID in v][0]
                 if CurrentProblemKey == max(self.ProblemType.keys()):
                     NextProblemKey = min(self.ProblemType.keys())
                 else:
@@ -266,7 +266,7 @@ class P3MOWordProblems:
         
         self.number1 = self.item[3]
         self.number2 = self.item[4]
-        self.amount1 = Decimal(self.number1*100+self.cents1)/100
+        self.amount1 = Decimal(self.number1*100+self.cents1)/Decimal('100')
         self.amount2 = Decimal(self.number2*100+self.cents2)/100
                 
         self.answer = 2 * (self.amount1 - self.amount2)
@@ -552,7 +552,7 @@ class P3MOWordProblems:
         self.number1 = int(float(randint(2,4))*self.number3/10)
         self.number2 = int(float(randint(2,4))*self.number3/10)
         
-        self.amount1 = Decimal(self.number1*100+self.cents1)/100
+        self.amount1 = Decimal(self.number1*100+self.cents1)/Decimal('100')
         self.amount2 = Decimal(self.number2*100+self.cents2)/100
         self.amount3 = Decimal(self.number3*100+self.cents3)/100
                 
@@ -706,8 +706,8 @@ class P3MOWordProblems:
         self.number1 = self.item[2]
         self.number2 = self.number1/self.item[3] + 1
         
-        self.amount1 = Decimal(self.number1*100+self.cents1)/100
-        self.amount2 = self.number2 * self.item[3]
+        self.amount1 = Decimal(self.number1*100+self.cents1)/Decimal('100')
+        self.amount2 = Decimal(self.number2 * self.item[3])
                 
         self.answer = self.amount2 - self.amount1
         
@@ -790,7 +790,7 @@ class P3MOWordProblems:
         self.number1 = self.item[5]
         self.number2 = self.item[6]
         
-        self.amount1 = Decimal(self.number1*100+self.cents1)/100
+        self.amount1 = Decimal(self.number1*100+self.cents1)/Decimal('100')
         self.amount2 = Decimal(self.number2*100+self.cents2)/100
                 
         self.answer = self.amount1 + self.amount1 - self.amount2
@@ -885,7 +885,7 @@ class P3MOWordProblems:
         self.number1 = self.item[3]
         self.number2 = self.item[4]
         
-        self.amount1 = Decimal(self.number1*100+self.cents1)/100
+        self.amount1 = Decimal(self.number1*100+self.cents1)/Decimal('100')
         self.amount2 = Decimal(self.number2*100+self.cents2)/100
                 
         self.answer = self.amount1 + self.amount1 + self.amount2
@@ -984,7 +984,7 @@ class P3MOWordProblems:
         self.number1 = self.item[3]
         self.number2 = self.item[4]
         
-        self.amount1 = Decimal(self.number1*100+self.cents1)/100
+        self.amount1 = Decimal(self.number1*100+self.cents1)/Decimal('100')
         self.amount2 = Decimal(self.number2*100+self.cents2)/100
                 
         self.total = self.amount1 + self.amount2
@@ -1090,7 +1090,7 @@ class P3MOWordProblems:
         self.number1 = self.item[7]
         self.number2 = self.item[8]
         
-        self.amount1 = Decimal(self.number1*100+self.cents1)/100
+        self.amount1 = Decimal(self.number1*100+self.cents1)/Decimal('100')
         self.amount2 = Decimal(self.number2*100+self.cents2)/100
         
         self.answer = self.amount1 + self.amount1 + self.amount2
@@ -1322,7 +1322,7 @@ class P3MOWordProblems:
         self.number2 = int(float(randint(2,5))/10 * self.number1)
         self.number3 = self.item[5]
 
-        self.amount1 = Decimal(self.number1*100+self.cents1)/100
+        self.amount1 = Decimal(self.number1*100+self.cents1)/Decimal('100')
         self.amount2 = Decimal(self.number2*100+self.cents2)/100        
         self.amount3 = Decimal(self.number3*100+self.cents3)/100
         
@@ -1525,7 +1525,7 @@ class P3MOWordProblems:
         if self.number2 == self.number3:
             self.number2 = self.number2 + 1
 
-        self.amount1 = Decimal(self.number1*100+self.cents1)/100
+        self.amount1 = Decimal(self.number1*100+self.cents1)/Decimal('100')
         self.amount2 = Decimal(self.number2*100+self.cents2)/100        
         self.amount3 = Decimal(self.number3*100+self.cents3)/100
         
@@ -1634,7 +1634,7 @@ class P3MOWordProblems:
         self.number2 = self.item[1]
         self.number3 = randint(25,40) + self.number2
 
-        self.amount1 = Decimal(self.number1*100+self.cents1)/100
+        self.amount1 = Decimal(self.number1*100+self.cents1)/Decimal('100')
         self.amount2 = Decimal(self.number2*100+self.cents2)/100        
         self.amount3 = Decimal(self.number3*100+self.cents3)/100
         self.amount4 = self.amount1 - (self.amount3 - self.amount2)
@@ -1838,7 +1838,7 @@ class P3MOWordProblems:
         self.number1 = self.item[2]
         self.number2 = self.item[3]
 
-        self.amount1 = Decimal(self.number1*100+self.cents1)/100
+        self.amount1 = Decimal(self.number1*100+self.cents1)/Decimal('100')
         self.amount2 = Decimal(self.number2*100+self.cents2)/100        
         
         self.answer = self.amount1 + self.amount1 - self.amount2
@@ -1939,7 +1939,7 @@ class P3MOWordProblems:
         self.number1 = self.item[3]
         self.number2 = int(float(randint(5,7))/10*self.number1)
 
-        self.amount1 = Decimal(self.number1*100+self.cents1)/100
+        self.amount1 = Decimal(self.number1*100+self.cents1)/Decimal('100')
         self.amount2 = Decimal(self.number2*100+self.cents2)/100        
         
         self.answer = 2 * (self.amount1 - self.amount2)
@@ -2041,7 +2041,7 @@ class P3MOWordProblems:
         self.number1 = randint(20,30)
         self.number2 = int(float(randint(5,7))/10*self.number1)
 
-        self.amount1 = Decimal(self.number1*100+self.cents1)/100
+        self.amount1 = Decimal(self.number1*100+self.cents1)/Decimal('100')
         self.amount2 = Decimal(self.number2*100+self.cents2)/100        
         
         self.answer = self.amount1 + self.amount1 - self.amount2
@@ -2133,7 +2133,7 @@ class P3MOWordProblems:
         self.number1 = self.item[2]
         self.number2 = int(float(randint(2,4))/10*self.number1)
 
-        self.amount1 = Decimal(self.number1*100+self.cents1)/100
+        self.amount1 = Decimal(self.number1*100+self.cents1)/Decimal('100')
         self.amount2 = Decimal(self.number2*100+self.cents2)/100        
         
         self.answer = self.amount1 + self.amount1 - self.amount2
@@ -2233,7 +2233,7 @@ class P3MOWordProblems:
         self.number1 = self.item[2]
         self.number2 = self.item[3]
 
-        self.amount1 = Decimal(self.number1*100+self.cents1)/100
+        self.amount1 = Decimal(self.number1*100+self.cents1)/Decimal('100')
         self.amount2 = Decimal(self.number2*100+self.cents2)/100
         
         self.amount3 = int(self.amount1 + self.amount2) + randint(2,15)       
@@ -2390,7 +2390,7 @@ class P3MOWordProblems:
         self.number2 = self.item[3]
         self.number1 = randint(int(1.1*self.number2),int(1.8*self.number2))
         
-        self.amount1 = Decimal(self.number1*100+self.cents1)/100
+        self.amount1 = Decimal(self.number1*100+self.cents1)/Decimal('100')
         self.amount2 = Decimal(self.number2*100+self.cents2)/100     
         
         self.answer = 2*self.amount2 - self.amount1
@@ -2476,7 +2476,7 @@ class P3MOWordProblems:
         self.number1 = int(float(randint(25,40))/100*self.number)
         self.number2 = int(float(randint(25,40))/100*self.number)
         
-        self.amount1 = Decimal(self.number1*100+self.cents1)/100
+        self.amount1 = Decimal(self.number1*100+self.cents1)/Decimal('100')
         self.amount2 = Decimal(self.number2*100+self.cents2)/100     
 
         self.answer = self.number - (self.amount1+self.amount2)
@@ -2629,7 +2629,7 @@ class P3MOWordProblems:
         self.number3 = self.item[6]
         self.cents2 = self.number2*self.number3
         
-        self.amount1 = Decimal(self.number1*100+self.cents1)/100
+        self.amount1 = Decimal(self.number1*100+self.cents1)/Decimal('100')
         self.amount2 = Decimal(self.cents2)/100     
 
         self.answer = self.amount1 + self.amount2

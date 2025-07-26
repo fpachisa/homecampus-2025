@@ -57,7 +57,7 @@ class P3WNComparingOrdering:
             return random.choice(self.GenerateProblemType[1])
         else:
             if LastProblemID in self.ProblemTypes:
-                CurrentProblemKey = [k for k, v in self.ProblemType.iteritems() if LastProblemID in v][0]
+                CurrentProblemKey = [k for k, v in self.ProblemType.items() if LastProblemID in v][0]
                 if CurrentProblemKey == max(self.ProblemType.keys()):
                     NextProblemKey = min(self.ProblemType.keys())
                 else:
@@ -1454,8 +1454,8 @@ class P3WNComparingOrdering:
                 while  InputAnswer.partition(",")[1]!="":
                     InputAnswer = InputAnswer.partition(",")[0]+InputAnswer.partition(",")[2]
                     
-                InputAnswer = string.join(InputAnswer.split(),"")
-                answer = string.join(answer.split(),"")
+                InputAnswer = "".join(InputAnswer.split())
+                answer = "".join(answer.split())
                 return InputAnswer == answer
             except ValueError:
                 return False

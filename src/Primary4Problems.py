@@ -1235,10 +1235,12 @@ class P4FRWordProblems(BaseHandler):
                
         return self.render_template(template_name, **Config.template_values)
 
-app = Tipfy(rules=rules, config=config)
+# DISABLED: Tipfy routes - using Flask instead
+# app = Tipfy(rules=rules, config=config)
 
 def main():
-    app.run()
+    # app.run()
+    print("Primary4Problems.py: Tipfy routes disabled - using Flask instead")
 
 if __name__ == "__main__":
     main()

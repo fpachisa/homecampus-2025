@@ -69,7 +69,7 @@ class P3MOSubtraction:
             return random.choice(self.GenerateProblemType[1])
         else:
             if LastProblemID in self.ProblemTypes:
-                CurrentProblemKey = [k for k, v in self.ProblemType.iteritems() if LastProblemID in v][0]
+                CurrentProblemKey = [k for k, v in self.ProblemType.items() if LastProblemID in v][0]
                 if CurrentProblemKey == max(self.ProblemType.keys()):
                     NextProblemKey = min(self.ProblemType.keys())
                 else:
@@ -174,7 +174,7 @@ class P3MOSubtraction:
         self.number1 = randint(40,90)
         self.number2 = randint(20,self.number1-5)
         
-        self.amount1 = Decimal(self.number1*100+int(self.decimal1))/100
+        self.amount1 = Decimal(self.number1*100+int(self.decimal1))/Decimal('100')
         self.amount2 = Decimal(self.number2*100+int(self.decimal2))/100
                 
         self.answer = self.amount1 - self.amount2
@@ -235,7 +235,7 @@ class P3MOSubtraction:
         self.number1 = randint(6,20)
         self.number2 = randint(2,4)
         
-        self.amount1 = Decimal(self.number1*100+int(self.decimal1))/100
+        self.amount1 = Decimal(self.number1*100+int(self.decimal1))/Decimal('100')
         self.amount2 = Decimal(self.number2*100+int(self.decimal2))/100
                 
         self.answer = self.amount1 - self.amount2
@@ -307,7 +307,7 @@ class P3MOSubtraction:
         self.number1 = randint(60,88)
         self.number2 = self.number1 - randint(30,50)
         
-        self.amount1 = Decimal(self.number1*100+int(self.decimal1))/100
+        self.amount1 = Decimal(self.number1*100+int(self.decimal1))/Decimal('100')
         self.amount2 = Decimal(self.number2*100+int(self.decimal2))/100
                 
         self.answer = self.amount1 - self.amount2
@@ -371,7 +371,7 @@ class P3MOSubtraction:
         self.number1 = randint(50,88)
         self.number2 = randint(10,98-self.number1)
         
-        self.amount1 = Decimal(self.number1*100+int(self.decimal1))/100
+        self.amount1 = Decimal(self.number1*100+int(self.decimal1))/Decimal('100')
         self.amount2 = Decimal(self.number2*100+int(self.decimal2))/100
                 
         self.total = self.amount1 + self.amount2
@@ -440,7 +440,7 @@ class P3MOSubtraction:
         self.number1 = randint(11,20)
         self.number2 = randint(3,7)
         
-        self.amount1 = Decimal(self.number1*100+int(self.decimal1))/100
+        self.amount1 = Decimal(self.number1*100+int(self.decimal1))/Decimal('100')
         self.amount2 = Decimal(self.number2*100+int(self.decimal2))/100
                 
         self.answer = self.amount1 - self.amount2
@@ -505,7 +505,7 @@ class P3MOSubtraction:
         self.number1 = self.item[2]
         self.number2 = int(float(randint(6,8))*self.number1/10)
         
-        self.amount1 = Decimal(self.number1*100+int(self.decimal1))/100
+        self.amount1 = Decimal(self.number1*100+int(self.decimal1))/Decimal('100')
         self.amount2 = Decimal(self.number2*100+int(self.decimal2))/100
                 
         self.answer = self.amount1 - self.amount2
@@ -569,7 +569,7 @@ class P3MOSubtraction:
         self.number1 = randint(20,30)
         self.number2 = int(float(randint(5,7))*self.number1/10)
         
-        self.amount1 = Decimal(self.number1*100+int(self.decimal1))/100
+        self.amount1 = Decimal(self.number1*100+int(self.decimal1))/Decimal('100')
         self.amount2 = Decimal(self.number2*100+int(self.decimal2))/100
                 
         self.answer = self.amount1 - self.amount2
@@ -634,7 +634,7 @@ class P3MOSubtraction:
         self.number1 = self.item[2]
         self.number2 = int(float(randint(2,4))*self.number1/10)
         
-        self.amount1 = Decimal(self.number1*100+int(self.decimal1))/100
+        self.amount1 = Decimal(self.number1*100+int(self.decimal1))/Decimal('100')
         self.amount2 = Decimal(self.number2*100+int(self.decimal2))/100
                 
         self.answer = self.amount1 - self.amount2
@@ -695,8 +695,8 @@ class P3MOSubtraction:
         
         self.number1 = randint(20,50)
         
-        self.amount1 = Decimal(self.number1*100+int(self.decimal1))/100
-        self.amount2 = (self.number1/10+1)*10
+        self.amount1 = Decimal(self.number1*100+int(self.decimal1))/Decimal('100')
+        self.amount2 = Decimal((int(self.number1/10)+1)*10)
                 
         self.answer = self.amount2 - self.amount1
         
@@ -758,7 +758,7 @@ class P3MOSubtraction:
         self.number1 = randint(10,50)
         self.number2 = randint(70,98)
         
-        self.amount1 = Decimal(self.number1*100+int(self.decimal1))/100
+        self.amount1 = Decimal(self.number1*100+int(self.decimal1))/Decimal('100')
         self.amount2 = Decimal(self.number2*100+int(self.decimal2))/100
                 
         self.answer = self.amount2 - self.amount1
@@ -804,7 +804,8 @@ class P3MOSubtraction:
     def GenerateMCQ(self,wrongAnswers,problem,answer,template,explain,problem_type,complexity_level,HCScore,CheckAnswerType):
         
         '''Removing correct answers from the wrongAnswers list'''
-        wrongAnswers = filter(self.removeCorrectAnswer,wrongAnswers)
+        # Python 3 fix: convert filter object to list
+        wrongAnswers = list(filter(self.removeCorrectAnswer,wrongAnswers))
         
         self.answer1=''
         self.answer2=''
@@ -813,6 +814,9 @@ class P3MOSubtraction:
                              
         '''Randomly selecting 3 wrong answers and adding the correct answer as well'''
         try:
+            # Python 3 fix: convert set to list for random.sample()
+            if isinstance(wrongAnswers, set):
+                wrongAnswers = list(wrongAnswers)
             wrongAnswers = random.sample(wrongAnswers,3)
         except ValueError:
             pass
@@ -918,7 +922,7 @@ class P3MOSubtraction:
         self.number1 = randint(40,90)
         self.number2 = randint(20,self.number1-5)
         
-        self.amount1 = Decimal(self.number1*100+int(self.decimal1))/100
+        self.amount1 = Decimal(self.number1*100+int(self.decimal1))/Decimal('100')
         self.amount2 = Decimal(self.number2*100+int(self.decimal2))/100
                 
         self.answer = self.amount1 - self.amount2

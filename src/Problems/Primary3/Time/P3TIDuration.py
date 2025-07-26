@@ -62,7 +62,7 @@ class P3TIDuration:
             return random.choice(self.GenerateProblemType[1])
         else:
             if LastProblemID in self.ProblemTypes:
-                CurrentProblemKey = [k for k, v in self.ProblemType.iteritems() if LastProblemID in v][0]
+                CurrentProblemKey = [k for k, v in self.ProblemType.items() if LastProblemID in v][0]
                 if CurrentProblemKey == max(self.ProblemType.keys()):
                     NextProblemKey = min(self.ProblemType.keys())
                 else:
@@ -2090,8 +2090,8 @@ class P3TIDuration:
     def checkAnswer(self,template,answer,InputAnswer,CheckAnswer):
         if CheckAnswer == 1:
             try:
-                InputAnswer = string.join(str(InputAnswer).split(),"").lower()
-                answer = string.join(str(answer).split(),"")
+                InputAnswer = "".join(str(InputAnswer).split()).lower()
+                answer = "".join(str(answer).split())
                 if "a" in InputAnswer:
                     InputAnswer1 = InputAnswer.partition("a")[0]
                     InputAnswer2 = InputAnswer.partition("a")[1]+InputAnswer.partition("a")[2]
@@ -2118,8 +2118,8 @@ class P3TIDuration:
                 return False
         elif CheckAnswer == 3:
             try:
-                InputAnswer = string.join(str(InputAnswer).split(),"").lower()
-                answer = string.join(str(answer).split(),"")                
+                InputAnswer = "".join(str(InputAnswer).split()).lower()
+                answer = "".join(str(answer).split())                
                 return answer==InputAnswer
             except ValueError:
                 return False

@@ -114,22 +114,22 @@ class BaseHandler(RequestHandler, Jinja2Mixin):
         if self.auth.session:
             auth_session = self.auth.session
         
-        concept_rank = memcache.Client().get(unicode(self.auth.user.username)+'_concept_rank')
+        concept_rank = memcache.Client().get(str(self.auth.user.username)+'_concept_rank')
         if not concept_rank:
             concept_rank = self.GetConceptRank()
-            memcache.Client().add(unicode(self.auth.user.username)+'_concept_rank',concept_rank,3600)
+            memcache.Client().add(str(self.auth.user.username)+'_concept_rank',concept_rank,3600)
         '''22-Aug-2011: if there is user inactivity of 10 minutes after loading the problem..the Config.template_values loses all data
         so storing in the session as well'''
         #self.session['template_values'] = Config.template_values
         '''05-Nov-2011 storing the template_values in memcache along with user id so its unique for each user. And not storing in session anymore'''
-        memcache.Client().delete(unicode(self.auth.user.username)+"_template_values")
-        memcache.Client().add(unicode(self.auth.user.username)+"_template_values",Config.template_values,3600)
+        memcache.Client().delete(str(self.auth.user.username)+"_template_values")
+        memcache.Client().add(str(self.auth.user.username)+"_template_values",Config.template_values,3600)
         
-        concept = memcache.Client().get(unicode(self.auth.user.username)+'_template_values')['concept']
+        concept = memcache.Client().get(str(self.auth.user.username)+'_template_values')['concept']
         
         '''12-Jun-2012 Skip-->Try Next can also get the problem type now'''
-        memcache.Client().delete(unicode(self.auth.user.username)+"_"+concept+"_problem_type")
-        memcache.Client().add(unicode(self.auth.user.username)+"_"+concept+"_problem_type",Config.template_values["problem_type"])        
+        memcache.Client().delete(str(self.auth.user.username)+"_"+concept+"_problem_type")
+        memcache.Client().add(str(self.auth.user.username)+"_"+concept+"_problem_type",Config.template_values["problem_type"])        
         
         try:
             concept_display = CodeTranslation.Concept_List[concept]
@@ -157,7 +157,7 @@ class BaseHandler(RequestHandler, Jinja2Mixin):
 
         #02-MAY-2013: In addition to storing the template values in memcache the problem is also saved in the database as memcache is not wprking correctly always
         if not self.auth.user.IsParent:
-            SaveProblem.SaveProblem().SaveProblem(unicode(self.auth.user.username),Config.template_values)
+            SaveProblem.SaveProblem().SaveProblem(str(self.auth.user.username),Config.template_values)
 
         #A user can keep getting new question if it keeps pressing F5...however these questions are saved with concept = dummy in the datastore ..
         #so preventing unauthorised users to get more than 10 dummy questions
@@ -219,7 +219,7 @@ class BaseHandler(RequestHandler, Jinja2Mixin):
         return super(BaseHandler, self).render_response(filename, **kwargs)
     
     def GetConceptRank(self):
-        Query = SubmitProblemsTable.ProblemsTable.gql("where student_id = '"+unicode(self.auth.user)+"'")
+        Query = SubmitProblemsTable.ProblemsTable.gql("where student_id = '"+str(self.auth.user)+"'")
         Data = Query.fetch(10000)
         concept_list = []
         ConceptRank = {}
@@ -295,7 +295,7 @@ class BaseHandler(RequestHandler, Jinja2Mixin):
         return NinjaStats
         
     def GetConceptGoal(self,concept):
-        Query = HCGoals.HCGoals.gql("where student_id = '"+unicode(self.auth.user)+"' and subTopic='"+concept+"'")
+        Query = HCGoals.HCGoals.gql("where student_id = '"+str(self.auth.user)+"' and subTopic='"+concept+"'")
         GoalsData = Query.fetch(1)
         if GoalsData != []:
             for g in GoalsData:
@@ -310,7 +310,7 @@ class BaseHandler(RequestHandler, Jinja2Mixin):
     def GetDummyQuestions(self):
         '''
         21-AUG-2016 - No Longer Required
-        Query = SubmitProblemsTable.ProblemsTable.gql("where student_id = '"+unicode(self.auth.user)+"' and concept = 'DUMMY'")
+        Query = SubmitProblemsTable.ProblemsTable.gql("where student_id = '"+str(self.auth.user)+"' and concept = 'DUMMY'")
         Data = Query.fetch(10)
         DummyQuestionCount = 0
         for _d in Data:
@@ -322,7 +322,7 @@ class BaseHandler(RequestHandler, Jinja2Mixin):
 class P3WholeNumbersPlaceValues(BaseHandler):
     @practice_login_required
     def get(self, **kwargs):     
-        problem_type = memcache.Client().get(unicode(self.auth.user.username)+"_P3WNPlaceValues"+'_problem_type')
+        problem_type = memcache.Client().get(str(self.auth.user.username)+"_P3WNPlaceValues"+'_problem_type')
         if not problem_type:
             LastProblemID = 0
         else:
@@ -340,7 +340,7 @@ class P3WholeNumbersPlaceValues(BaseHandler):
 
     @practice_login_required
     def post(self, **kwargs):     
-        problem_type = memcache.Client().get(unicode(self.auth.user.username)+"_P3WNPlaceValues"+'_problem_type')
+        problem_type = memcache.Client().get(str(self.auth.user.username)+"_P3WNPlaceValues"+'_problem_type')
         if not problem_type:
             LastProblemID = 0
         else:
@@ -355,7 +355,7 @@ class P3WholeNumbersPlaceValues(BaseHandler):
 class P3WNFiguresToWords(BaseHandler):
     @practice_login_required
     def get(self, **kwargs):     
-        problem_type = memcache.Client().get(unicode(self.auth.user.username)+"_P3WNFiguresToWords"+'_problem_type')
+        problem_type = memcache.Client().get(str(self.auth.user.username)+"_P3WNFiguresToWords"+'_problem_type')
         if not problem_type:
             LastProblemID = 0
         else:
@@ -371,7 +371,7 @@ class P3WNFiguresToWords(BaseHandler):
 
     @practice_login_required
     def post(self, **kwargs):     
-        problem_type = memcache.Client().get(unicode(self.auth.user.username)+"_P3WNFiguresToWords"+'_problem_type')
+        problem_type = memcache.Client().get(str(self.auth.user.username)+"_P3WNFiguresToWords"+'_problem_type')
         if not problem_type:
             LastProblemID = 0
         else:
@@ -386,7 +386,7 @@ class P3WNFiguresToWords(BaseHandler):
 class P3WNWordsToFigures(BaseHandler):
     @practice_login_required
     def get(self, **kwargs):     
-        problem_type = memcache.Client().get(unicode(self.auth.user.username)+"_P3WNWordsToFigures"+'_problem_type')
+        problem_type = memcache.Client().get(str(self.auth.user.username)+"_P3WNWordsToFigures"+'_problem_type')
         if not problem_type:
             LastProblemID = 0
         else:
@@ -402,7 +402,7 @@ class P3WNWordsToFigures(BaseHandler):
 
     @practice_login_required
     def post(self, **kwargs):     
-        problem_type = memcache.Client().get(unicode(self.auth.user.username)+"_P3WNWordsToFigures"+'_problem_type')
+        problem_type = memcache.Client().get(str(self.auth.user.username)+"_P3WNWordsToFigures"+'_problem_type')
         if not problem_type:
             LastProblemID = 0
         else:
@@ -417,7 +417,7 @@ class P3WNWordsToFigures(BaseHandler):
 class P3WNComparingOrdering(BaseHandler):
     @practice_login_required
     def get(self, **kwargs):     
-        problem_type = memcache.Client().get(unicode(self.auth.user.username)+"_P3WNComparingOrdering"+'_problem_type')
+        problem_type = memcache.Client().get(str(self.auth.user.username)+"_P3WNComparingOrdering"+'_problem_type')
         if not problem_type:
             LastProblemID = 0
         else:
@@ -433,7 +433,7 @@ class P3WNComparingOrdering(BaseHandler):
 
     @practice_login_required
     def post(self, **kwargs):     
-        problem_type = memcache.Client().get(unicode(self.auth.user.username)+"_P3WNComparingOrdering"+'_problem_type')
+        problem_type = memcache.Client().get(str(self.auth.user.username)+"_P3WNComparingOrdering"+'_problem_type')
         if not problem_type:
             LastProblemID = 0
         else:
@@ -448,7 +448,7 @@ class P3WNComparingOrdering(BaseHandler):
 class P3WNNumberPatterns(BaseHandler):
     @practice_login_required
     def get(self, **kwargs):     
-        problem_type = memcache.Client().get(unicode(self.auth.user.username)+"_P3WNNumberPatterns"+'_problem_type')
+        problem_type = memcache.Client().get(str(self.auth.user.username)+"_P3WNNumberPatterns"+'_problem_type')
         if not problem_type:
             LastProblemID = 0
         else:
@@ -464,7 +464,7 @@ class P3WNNumberPatterns(BaseHandler):
 
     @practice_login_required
     def post(self, **kwargs):     
-        problem_type = memcache.Client().get(unicode(self.auth.user.username)+"_P3WNNumberPatterns"+'_problem_type')
+        problem_type = memcache.Client().get(str(self.auth.user.username)+"_P3WNNumberPatterns"+'_problem_type')
         if not problem_type:
             LastProblemID = 0
         else:
@@ -479,7 +479,7 @@ class P3WNNumberPatterns(BaseHandler):
 class P3WNAddition(BaseHandler):
     @practice_login_required
     def get(self, **kwargs):     
-        problem_type = memcache.Client().get(unicode(self.auth.user.username)+"_P3WNAddition"+'_problem_type')
+        problem_type = memcache.Client().get(str(self.auth.user.username)+"_P3WNAddition"+'_problem_type')
         if not problem_type:
             LastProblemID = 0
         else:
@@ -495,7 +495,7 @@ class P3WNAddition(BaseHandler):
 
     @practice_login_required
     def post(self, **kwargs):     
-        problem_type = memcache.Client().get(unicode(self.auth.user.username)+"_P3WNAddition"+'_problem_type')
+        problem_type = memcache.Client().get(str(self.auth.user.username)+"_P3WNAddition"+'_problem_type')
         if not problem_type:
             LastProblemID = 0
         else:
@@ -510,7 +510,7 @@ class P3WNAddition(BaseHandler):
 class P3WNSubtraction(BaseHandler):
     @practice_login_required
     def get(self, **kwargs):     
-        problem_type = memcache.Client().get(unicode(self.auth.user.username)+"_P3WNSubtraction"+'_problem_type')
+        problem_type = memcache.Client().get(str(self.auth.user.username)+"_P3WNSubtraction"+'_problem_type')
         if not problem_type:
             LastProblemID = 0
         else:
@@ -526,7 +526,7 @@ class P3WNSubtraction(BaseHandler):
 
     @practice_login_required
     def post(self, **kwargs):     
-        problem_type = memcache.Client().get(unicode(self.auth.user.username)+"_P3WNSubtraction"+'_problem_type')
+        problem_type = memcache.Client().get(str(self.auth.user.username)+"_P3WNSubtraction"+'_problem_type')
         if not problem_type:
             LastProblemID = 0
         else:
@@ -541,7 +541,7 @@ class P3WNSubtraction(BaseHandler):
 class P3WNMultiplication(BaseHandler):
     @practice_login_required
     def get(self, **kwargs):     
-        problem_type = memcache.Client().get(unicode(self.auth.user.username)+"_P3WNMultiplication"+'_problem_type')
+        problem_type = memcache.Client().get(str(self.auth.user.username)+"_P3WNMultiplication"+'_problem_type')
         if not problem_type:
             LastProblemID = 0
         else:
@@ -557,7 +557,7 @@ class P3WNMultiplication(BaseHandler):
 
     @practice_login_required
     def post(self, **kwargs):     
-        problem_type = memcache.Client().get(unicode(self.auth.user.username)+"_P3WNMultiplication"+'_problem_type')
+        problem_type = memcache.Client().get(str(self.auth.user.username)+"_P3WNMultiplication"+'_problem_type')
         if not problem_type:
             LastProblemID = 0
         else:
@@ -572,7 +572,7 @@ class P3WNMultiplication(BaseHandler):
 class P3WNDivision(BaseHandler):
     @practice_login_required
     def get(self, **kwargs):     
-        problem_type = memcache.Client().get(unicode(self.auth.user.username)+"_P3WNDivision"+'_problem_type')
+        problem_type = memcache.Client().get(str(self.auth.user.username)+"_P3WNDivision"+'_problem_type')
         if not problem_type:
             LastProblemID = 0
         else:
@@ -588,7 +588,7 @@ class P3WNDivision(BaseHandler):
 
     @practice_login_required
     def post(self, **kwargs):     
-        problem_type = memcache.Client().get(unicode(self.auth.user.username)+"_P3WNDivision"+'_problem_type')
+        problem_type = memcache.Client().get(str(self.auth.user.username)+"_P3WNDivision"+'_problem_type')
         if not problem_type:
             LastProblemID = 0
         else:
@@ -603,7 +603,7 @@ class P3WNDivision(BaseHandler):
 class P3WNWordProblems(BaseHandler):
     @practice_login_required
     def get(self, **kwargs):     
-        problem_type = memcache.Client().get(unicode(self.auth.user.username)+"_P3WNWordProblems"+'_problem_type')
+        problem_type = memcache.Client().get(str(self.auth.user.username)+"_P3WNWordProblems"+'_problem_type')
         if not problem_type:
             LastProblemID = 0
         else:
@@ -619,7 +619,7 @@ class P3WNWordProblems(BaseHandler):
 
     @practice_login_required
     def post(self, **kwargs):     
-        problem_type = memcache.Client().get(unicode(self.auth.user.username)+"_P3WNWordProblems"+'_problem_type')
+        problem_type = memcache.Client().get(str(self.auth.user.username)+"_P3WNWordProblems"+'_problem_type')
         if not problem_type:
             LastProblemID = 0
         else:
@@ -634,7 +634,7 @@ class P3WNWordProblems(BaseHandler):
 class P3MOAddition(BaseHandler):
     @practice_login_required
     def get(self, **kwargs):     
-        problem_type = memcache.Client().get(unicode(self.auth.user.username)+"_P3MOAddition"+'_problem_type')
+        problem_type = memcache.Client().get(str(self.auth.user.username)+"_P3MOAddition"+'_problem_type')
         if not problem_type:
             LastProblemID = 0
         else:
@@ -650,7 +650,7 @@ class P3MOAddition(BaseHandler):
 
     @practice_login_required
     def post(self, **kwargs):     
-        problem_type = memcache.Client().get(unicode(self.auth.user.username)+"_P3MOAddition"+'_problem_type')
+        problem_type = memcache.Client().get(str(self.auth.user.username)+"_P3MOAddition"+'_problem_type')
         if not problem_type:
             LastProblemID = 0
         else:
@@ -665,7 +665,7 @@ class P3MOAddition(BaseHandler):
 class P3MOSubtraction(BaseHandler):
     @practice_login_required
     def get(self, **kwargs):     
-        problem_type = memcache.Client().get(unicode(self.auth.user.username)+"_P3MOSubtraction"+'_problem_type')
+        problem_type = memcache.Client().get(str(self.auth.user.username)+"_P3MOSubtraction"+'_problem_type')
         if not problem_type:
             LastProblemID = 0
         else:
@@ -681,7 +681,7 @@ class P3MOSubtraction(BaseHandler):
 
     @practice_login_required
     def post(self, **kwargs):     
-        problem_type = memcache.Client().get(unicode(self.auth.user.username)+"_P3MOSubtraction"+'_problem_type')
+        problem_type = memcache.Client().get(str(self.auth.user.username)+"_P3MOSubtraction"+'_problem_type')
         if not problem_type:
             LastProblemID = 0
         else:
@@ -696,7 +696,7 @@ class P3MOSubtraction(BaseHandler):
 class P3MOWordProblems(BaseHandler):
     @practice_login_required
     def get(self, **kwargs):     
-        problem_type = memcache.Client().get(unicode(self.auth.user.username)+"_P3MOWordProblems"+'_problem_type')
+        problem_type = memcache.Client().get(str(self.auth.user.username)+"_P3MOWordProblems"+'_problem_type')
         if not problem_type:
             LastProblemID = 0
         else:
@@ -712,7 +712,7 @@ class P3MOWordProblems(BaseHandler):
 
     @practice_login_required
     def post(self, **kwargs):     
-        problem_type = memcache.Client().get(unicode(self.auth.user.username)+"_P3MOWordProblems"+'_problem_type')
+        problem_type = memcache.Client().get(str(self.auth.user.username)+"_P3MOWordProblems"+'_problem_type')
         if not problem_type:
             LastProblemID = 0
         else:
@@ -727,7 +727,7 @@ class P3MOWordProblems(BaseHandler):
 class P3LMMetreCentiMetre(BaseHandler):
     @practice_login_required
     def get(self, **kwargs):     
-        problem_type = memcache.Client().get(unicode(self.auth.user.username)+"_P3LMMetreCentiMetre"+'_problem_type')
+        problem_type = memcache.Client().get(str(self.auth.user.username)+"_P3LMMetreCentiMetre"+'_problem_type')
         if not problem_type:
             LastProblemID = 0
         else:
@@ -743,7 +743,7 @@ class P3LMMetreCentiMetre(BaseHandler):
 
     @practice_login_required
     def post(self, **kwargs):     
-        problem_type = memcache.Client().get(unicode(self.auth.user.username)+"_P3LMMetreCentiMetre"+'_problem_type')
+        problem_type = memcache.Client().get(str(self.auth.user.username)+"_P3LMMetreCentiMetre"+'_problem_type')
         if not problem_type:
             LastProblemID = 0
         else:
@@ -758,7 +758,7 @@ class P3LMMetreCentiMetre(BaseHandler):
 class P3LMKiloMetre(BaseHandler):
     @practice_login_required
     def get(self, **kwargs):     
-        problem_type = memcache.Client().get(unicode(self.auth.user.username)+"_P3LMKiloMetre"+'_problem_type')
+        problem_type = memcache.Client().get(str(self.auth.user.username)+"_P3LMKiloMetre"+'_problem_type')
         if not problem_type:
             LastProblemID = 0
         else:
@@ -774,7 +774,7 @@ class P3LMKiloMetre(BaseHandler):
 
     @practice_login_required
     def post(self, **kwargs):     
-        problem_type = memcache.Client().get(unicode(self.auth.user.username)+"_P3LMKiloMetre"+'_problem_type')
+        problem_type = memcache.Client().get(str(self.auth.user.username)+"_P3LMKiloMetre"+'_problem_type')
         if not problem_type:
             LastProblemID = 0
         else:
@@ -789,7 +789,7 @@ class P3LMKiloMetre(BaseHandler):
 class P3LMKiloGram(BaseHandler):
     @practice_login_required
     def get(self, **kwargs):     
-        problem_type = memcache.Client().get(unicode(self.auth.user.username)+"_P3LMKiloGram"+'_problem_type')
+        problem_type = memcache.Client().get(str(self.auth.user.username)+"_P3LMKiloGram"+'_problem_type')
         if not problem_type:
             LastProblemID = 0
         else:
@@ -805,7 +805,7 @@ class P3LMKiloGram(BaseHandler):
 
     @practice_login_required
     def post(self, **kwargs):     
-        problem_type = memcache.Client().get(unicode(self.auth.user.username)+"_P3LMKiloGram"+'_problem_type')
+        problem_type = memcache.Client().get(str(self.auth.user.username)+"_P3LMKiloGram"+'_problem_type')
         if not problem_type:
             LastProblemID = 0
         else:
@@ -820,7 +820,7 @@ class P3LMKiloGram(BaseHandler):
 class P3LMLitresMilli(BaseHandler):
     @practice_login_required
     def get(self, **kwargs):     
-        problem_type = memcache.Client().get(unicode(self.auth.user.username)+"_P3LMLitresMilli"+'_problem_type')
+        problem_type = memcache.Client().get(str(self.auth.user.username)+"_P3LMLitresMilli"+'_problem_type')
         if not problem_type:
             LastProblemID = 0
         else:
@@ -836,7 +836,7 @@ class P3LMLitresMilli(BaseHandler):
 
     @practice_login_required
     def post(self, **kwargs):     
-        problem_type = memcache.Client().get(unicode(self.auth.user.username)+"_P3LMLitresMilli"+'_problem_type')
+        problem_type = memcache.Client().get(str(self.auth.user.username)+"_P3LMLitresMilli"+'_problem_type')
         if not problem_type:
             LastProblemID = 0
         else:
@@ -851,7 +851,7 @@ class P3LMLitresMilli(BaseHandler):
 class P3LMWordProblems(BaseHandler):
     @practice_login_required
     def get(self, **kwargs):     
-        problem_type = memcache.Client().get(unicode(self.auth.user.username)+"_P3LMWordProblems"+'_problem_type')
+        problem_type = memcache.Client().get(str(self.auth.user.username)+"_P3LMWordProblems"+'_problem_type')
         if not problem_type:
             LastProblemID = 0
         else:
@@ -867,7 +867,7 @@ class P3LMWordProblems(BaseHandler):
 
     @practice_login_required
     def post(self, **kwargs):     
-        problem_type = memcache.Client().get(unicode(self.auth.user.username)+"_P3LMWordProblems"+'_problem_type')
+        problem_type = memcache.Client().get(str(self.auth.user.username)+"_P3LMWordProblems"+'_problem_type')
         if not problem_type:
             LastProblemID = 0
         else:
@@ -882,7 +882,7 @@ class P3LMWordProblems(BaseHandler):
 class P3LMWordProblems_2Steps(BaseHandler):
     @practice_login_required
     def get(self, **kwargs):     
-        problem_type = memcache.Client().get(unicode(self.auth.user.username)+"_P3LMWordProblems_2Steps"+'_problem_type')
+        problem_type = memcache.Client().get(str(self.auth.user.username)+"_P3LMWordProblems_2Steps"+'_problem_type')
         if not problem_type:
             LastProblemID = 0
         else:
@@ -898,7 +898,7 @@ class P3LMWordProblems_2Steps(BaseHandler):
 
     @practice_login_required
     def post(self, **kwargs):     
-        problem_type = memcache.Client().get(unicode(self.auth.user.username)+"_P3LMWordProblems_2Steps"+'_problem_type')
+        problem_type = memcache.Client().get(str(self.auth.user.username)+"_P3LMWordProblems_2Steps"+'_problem_type')
         if not problem_type:
             LastProblemID = 0
         else:
@@ -913,7 +913,7 @@ class P3LMWordProblems_2Steps(BaseHandler):
 class P3TITellingTime(BaseHandler):
     @practice_login_required
     def get(self, **kwargs):     
-        problem_type = memcache.Client().get(unicode(self.auth.user.username)+"_P3TITellingTime"+'_problem_type')
+        problem_type = memcache.Client().get(str(self.auth.user.username)+"_P3TITellingTime"+'_problem_type')
         if not problem_type:
             LastProblemID = 0
         else:
@@ -929,7 +929,7 @@ class P3TITellingTime(BaseHandler):
 
     @practice_login_required
     def post(self, **kwargs):     
-        problem_type = memcache.Client().get(unicode(self.auth.user.username)+"_P3TITellingTime"+'_problem_type')
+        problem_type = memcache.Client().get(str(self.auth.user.username)+"_P3TITellingTime"+'_problem_type')
         if not problem_type:
             LastProblemID = 0
         else:
@@ -944,7 +944,7 @@ class P3TITellingTime(BaseHandler):
 class P3TIConversionTime(BaseHandler):
     @practice_login_required
     def get(self, **kwargs):     
-        problem_type = memcache.Client().get(unicode(self.auth.user.username)+"_P3TIConversionTime"+'_problem_type')
+        problem_type = memcache.Client().get(str(self.auth.user.username)+"_P3TIConversionTime"+'_problem_type')
         if not problem_type:
             LastProblemID = 0
         else:
@@ -960,7 +960,7 @@ class P3TIConversionTime(BaseHandler):
 
     @practice_login_required
     def post(self, **kwargs):     
-        problem_type = memcache.Client().get(unicode(self.auth.user.username)+"_P3TIConversionTime"+'_problem_type')
+        problem_type = memcache.Client().get(str(self.auth.user.username)+"_P3TIConversionTime"+'_problem_type')
         if not problem_type:
             LastProblemID = 0
         else:
@@ -975,7 +975,7 @@ class P3TIConversionTime(BaseHandler):
 class P3TIDuration(BaseHandler):
     @practice_login_required
     def get(self, **kwargs):     
-        problem_type = memcache.Client().get(unicode(self.auth.user.username)+"_P3TIDuration"+'_problem_type')
+        problem_type = memcache.Client().get(str(self.auth.user.username)+"_P3TIDuration"+'_problem_type')
         if not problem_type:
             LastProblemID = 0
         else:
@@ -991,7 +991,7 @@ class P3TIDuration(BaseHandler):
 
     @practice_login_required
     def post(self, **kwargs):     
-        problem_type = memcache.Client().get(unicode(self.auth.user.username)+"_P3TIDuration"+'_problem_type')
+        problem_type = memcache.Client().get(str(self.auth.user.username)+"_P3TIDuration"+'_problem_type')
         if not problem_type:
             LastProblemID = 0
         else:
@@ -1006,7 +1006,7 @@ class P3TIDuration(BaseHandler):
 class P3TIAddition(BaseHandler):
     @practice_login_required
     def get(self, **kwargs):     
-        problem_type = memcache.Client().get(unicode(self.auth.user.username)+"_P3TIAddition"+'_problem_type')
+        problem_type = memcache.Client().get(str(self.auth.user.username)+"_P3TIAddition"+'_problem_type')
         if not problem_type:
             LastProblemID = 0
         else:
@@ -1022,7 +1022,7 @@ class P3TIAddition(BaseHandler):
 
     @practice_login_required
     def post(self, **kwargs):     
-        problem_type = memcache.Client().get(unicode(self.auth.user.username)+"_P3TIAddition"+'_problem_type')
+        problem_type = memcache.Client().get(str(self.auth.user.username)+"_P3TIAddition"+'_problem_type')
         if not problem_type:
             LastProblemID = 0
         else:
@@ -1037,7 +1037,7 @@ class P3TIAddition(BaseHandler):
 class P3TISubtraction(BaseHandler):
     @practice_login_required
     def get(self, **kwargs):     
-        problem_type = memcache.Client().get(unicode(self.auth.user.username)+"_P3TISubtraction"+'_problem_type')
+        problem_type = memcache.Client().get(str(self.auth.user.username)+"_P3TISubtraction"+'_problem_type')
         if not problem_type:
             LastProblemID = 0
         else:
@@ -1053,7 +1053,7 @@ class P3TISubtraction(BaseHandler):
 
     @practice_login_required
     def post(self, **kwargs):     
-        problem_type = memcache.Client().get(unicode(self.auth.user.username)+"_P3TISubtraction"+'_problem_type')
+        problem_type = memcache.Client().get(str(self.auth.user.username)+"_P3TISubtraction"+'_problem_type')
         if not problem_type:
             LastProblemID = 0
         else:
@@ -1068,7 +1068,7 @@ class P3TISubtraction(BaseHandler):
 class P3TIWordProblems(BaseHandler):
     @practice_login_required
     def get(self, **kwargs):     
-        problem_type = memcache.Client().get(unicode(self.auth.user.username)+"_P3TIWordProblems"+'_problem_type')
+        problem_type = memcache.Client().get(str(self.auth.user.username)+"_P3TIWordProblems"+'_problem_type')
         if not problem_type:
             LastProblemID = 0
         else:
@@ -1084,7 +1084,7 @@ class P3TIWordProblems(BaseHandler):
 
     @practice_login_required
     def post(self, **kwargs):     
-        problem_type = memcache.Client().get(unicode(self.auth.user.username)+"_P3TIWordProblems"+'_problem_type')
+        problem_type = memcache.Client().get(str(self.auth.user.username)+"_P3TIWordProblems"+'_problem_type')
         if not problem_type:
             LastProblemID = 0
         else:
@@ -1099,7 +1099,7 @@ class P3TIWordProblems(BaseHandler):
 class P3ANIdentifying(BaseHandler):
     @practice_login_required
     def get(self, **kwargs):     
-        problem_type = memcache.Client().get(unicode(self.auth.user.username)+"_P3ANIdentifying"+'_problem_type')
+        problem_type = memcache.Client().get(str(self.auth.user.username)+"_P3ANIdentifying"+'_problem_type')
         if not problem_type:
             LastProblemID = 0
         else:
@@ -1115,7 +1115,7 @@ class P3ANIdentifying(BaseHandler):
 
     @practice_login_required
     def post(self, **kwargs):     
-        problem_type = memcache.Client().get(unicode(self.auth.user.username)+"_P3ANIdentifying"+'_problem_type')
+        problem_type = memcache.Client().get(str(self.auth.user.username)+"_P3ANIdentifying"+'_problem_type')
         if not problem_type:
             LastProblemID = 0
         else:
@@ -1130,7 +1130,7 @@ class P3ANIdentifying(BaseHandler):
 class P3ANRightAngle(BaseHandler):
     @practice_login_required
     def get(self, **kwargs):     
-        problem_type = memcache.Client().get(unicode(self.auth.user.username)+"_P3ANRightAngle"+'_problem_type')
+        problem_type = memcache.Client().get(str(self.auth.user.username)+"_P3ANRightAngle"+'_problem_type')
         if not problem_type:
             LastProblemID = 0
         else:
@@ -1146,7 +1146,7 @@ class P3ANRightAngle(BaseHandler):
 
     @practice_login_required
     def post(self, **kwargs):     
-        problem_type = memcache.Client().get(unicode(self.auth.user.username)+"_P3ANRightAngle"+'_problem_type')
+        problem_type = memcache.Client().get(str(self.auth.user.username)+"_P3ANRightAngle"+'_problem_type')
         if not problem_type:
             LastProblemID = 0
         else:
@@ -1161,7 +1161,7 @@ class P3ANRightAngle(BaseHandler):
 class P3BGBarGraphs(BaseHandler):
     @practice_login_required
     def get(self, **kwargs):     
-        problem_type = memcache.Client().get(unicode(self.auth.user.username)+"_P3BGBarGraphs"+'_problem_type')
+        problem_type = memcache.Client().get(str(self.auth.user.username)+"_P3BGBarGraphs"+'_problem_type')
         if not problem_type:
             LastProblemID = 0
         else:
@@ -1177,7 +1177,7 @@ class P3BGBarGraphs(BaseHandler):
 
     @practice_login_required
     def post(self, **kwargs):     
-        problem_type = memcache.Client().get(unicode(self.auth.user.username)+"_P3BGBarGraphs"+'_problem_type')
+        problem_type = memcache.Client().get(str(self.auth.user.username)+"_P3BGBarGraphs"+'_problem_type')
         if not problem_type:
             LastProblemID = 0
         else:
@@ -1192,7 +1192,7 @@ class P3BGBarGraphs(BaseHandler):
 class P3APSquareUnits(BaseHandler):
     @practice_login_required
     def get(self, **kwargs):     
-        problem_type = memcache.Client().get(unicode(self.auth.user.username)+"_P3APSquareUnits"+'_problem_type')
+        problem_type = memcache.Client().get(str(self.auth.user.username)+"_P3APSquareUnits"+'_problem_type')
         if not problem_type:
             LastProblemID = 0
         else:
@@ -1208,7 +1208,7 @@ class P3APSquareUnits(BaseHandler):
 
     @practice_login_required
     def post(self, **kwargs):     
-        problem_type = memcache.Client().get(unicode(self.auth.user.username)+"_P3APSquareUnits"+'_problem_type')
+        problem_type = memcache.Client().get(str(self.auth.user.username)+"_P3APSquareUnits"+'_problem_type')
         if not problem_type:
             LastProblemID = 0
         else:
@@ -1223,7 +1223,7 @@ class P3APSquareUnits(BaseHandler):
 class P3APSquareCmM(BaseHandler):
     @practice_login_required
     def get(self, **kwargs):     
-        problem_type = memcache.Client().get(unicode(self.auth.user.username)+"_P3APSquareCmM"+'_problem_type')
+        problem_type = memcache.Client().get(str(self.auth.user.username)+"_P3APSquareCmM"+'_problem_type')
         if not problem_type:
             LastProblemID = 0
         else:
@@ -1239,7 +1239,7 @@ class P3APSquareCmM(BaseHandler):
 
     @practice_login_required
     def post(self, **kwargs):     
-        problem_type = memcache.Client().get(unicode(self.auth.user.username)+"_P3APSquareCmM"+'_problem_type')
+        problem_type = memcache.Client().get(str(self.auth.user.username)+"_P3APSquareCmM"+'_problem_type')
         if not problem_type:
             LastProblemID = 0
         else:
@@ -1254,7 +1254,7 @@ class P3APSquareCmM(BaseHandler):
 class P3APPerimeter(BaseHandler):
     @practice_login_required
     def get(self, **kwargs):     
-        problem_type = memcache.Client().get(unicode(self.auth.user.username)+"_P3APPerimeter"+'_problem_type')
+        problem_type = memcache.Client().get(str(self.auth.user.username)+"_P3APPerimeter"+'_problem_type')
         if not problem_type:
             LastProblemID = 0
         else:
@@ -1270,7 +1270,7 @@ class P3APPerimeter(BaseHandler):
 
     @practice_login_required
     def post(self, **kwargs):     
-        problem_type = memcache.Client().get(unicode(self.auth.user.username)+"_P3APPerimeter"+'_problem_type')
+        problem_type = memcache.Client().get(str(self.auth.user.username)+"_P3APPerimeter"+'_problem_type')
         if not problem_type:
             LastProblemID = 0
         else:
@@ -1285,7 +1285,7 @@ class P3APPerimeter(BaseHandler):
 class P3APArea(BaseHandler):
     @practice_login_required
     def get(self, **kwargs):     
-        problem_type = memcache.Client().get(unicode(self.auth.user.username)+"_P3APArea"+'_problem_type')
+        problem_type = memcache.Client().get(str(self.auth.user.username)+"_P3APArea"+'_problem_type')
         if not problem_type:
             LastProblemID = 0
         else:
@@ -1301,7 +1301,7 @@ class P3APArea(BaseHandler):
 
     @practice_login_required
     def post(self, **kwargs):     
-        problem_type = memcache.Client().get(unicode(self.auth.user.username)+"_P3APArea"+'_problem_type')
+        problem_type = memcache.Client().get(str(self.auth.user.username)+"_P3APArea"+'_problem_type')
         if not problem_type:
             LastProblemID = 0
         else:
@@ -1316,7 +1316,7 @@ class P3APArea(BaseHandler):
 class P3APWordProblems(BaseHandler):
     @practice_login_required
     def get(self, **kwargs):     
-        problem_type = memcache.Client().get(unicode(self.auth.user.username)+"_P3APWordProblems"+'_problem_type')
+        problem_type = memcache.Client().get(str(self.auth.user.username)+"_P3APWordProblems"+'_problem_type')
         if not problem_type:
             LastProblemID = 0
         else:
@@ -1332,7 +1332,7 @@ class P3APWordProblems(BaseHandler):
 
     @practice_login_required
     def post(self, **kwargs):     
-        problem_type = memcache.Client().get(unicode(self.auth.user.username)+"_P3APWordProblems"+'_problem_type')
+        problem_type = memcache.Client().get(str(self.auth.user.username)+"_P3APWordProblems"+'_problem_type')
         if not problem_type:
             LastProblemID = 0
         else:
@@ -1347,7 +1347,7 @@ class P3APWordProblems(BaseHandler):
 class P3FRWhatIsFractions(BaseHandler):
     @practice_login_required
     def get(self, **kwargs):     
-        problem_type = memcache.Client().get(unicode(self.auth.user.username)+"_P3FRWhatIsFractions"+'_problem_type')
+        problem_type = memcache.Client().get(str(self.auth.user.username)+"_P3FRWhatIsFractions"+'_problem_type')
         if not problem_type:
             LastProblemID = 0
         else:
@@ -1363,7 +1363,7 @@ class P3FRWhatIsFractions(BaseHandler):
 
     @practice_login_required
     def post(self, **kwargs):     
-        problem_type = memcache.Client().get(unicode(self.auth.user.username)+"_P3FRWhatIsFractions"+'_problem_type')
+        problem_type = memcache.Client().get(str(self.auth.user.username)+"_P3FRWhatIsFractions"+'_problem_type')
         if not problem_type:
             LastProblemID = 0
         else:
@@ -1378,7 +1378,7 @@ class P3FRWhatIsFractions(BaseHandler):
 class P3FREquivalentFractions(BaseHandler):
     @practice_login_required
     def get(self, **kwargs):     
-        problem_type = memcache.Client().get(unicode(self.auth.user.username)+"_P3FREquivalentFractions"+'_problem_type')
+        problem_type = memcache.Client().get(str(self.auth.user.username)+"_P3FREquivalentFractions"+'_problem_type')
         if not problem_type:
             LastProblemID = 0
         else:
@@ -1394,7 +1394,7 @@ class P3FREquivalentFractions(BaseHandler):
 
     @practice_login_required
     def post(self, **kwargs):     
-        problem_type = memcache.Client().get(unicode(self.auth.user.username)+"_P3FREquivalentFractions"+'_problem_type')
+        problem_type = memcache.Client().get(str(self.auth.user.username)+"_P3FREquivalentFractions"+'_problem_type')
         if not problem_type:
             LastProblemID = 0
         else:
@@ -1409,7 +1409,7 @@ class P3FREquivalentFractions(BaseHandler):
 class P3FRSimplifyingFractions(BaseHandler):
     @practice_login_required
     def get(self, **kwargs):     
-        problem_type = memcache.Client().get(unicode(self.auth.user.username)+"_P3FRSimplifyingFractions"+'_problem_type')
+        problem_type = memcache.Client().get(str(self.auth.user.username)+"_P3FRSimplifyingFractions"+'_problem_type')
         if not problem_type:
             LastProblemID = 0
         else:
@@ -1425,7 +1425,7 @@ class P3FRSimplifyingFractions(BaseHandler):
 
     @practice_login_required
     def post(self, **kwargs):     
-        problem_type = memcache.Client().get(unicode(self.auth.user.username)+"_P3FRSimplifyingFractions"+'_problem_type')
+        problem_type = memcache.Client().get(str(self.auth.user.username)+"_P3FRSimplifyingFractions"+'_problem_type')
         if not problem_type:
             LastProblemID = 0
         else:
@@ -1440,7 +1440,7 @@ class P3FRSimplifyingFractions(BaseHandler):
 class P3FRComparingOrdering(BaseHandler):
     @practice_login_required
     def get(self, **kwargs):     
-        problem_type = memcache.Client().get(unicode(self.auth.user.username)+"_P3FRComparingOrdering"+'_problem_type')
+        problem_type = memcache.Client().get(str(self.auth.user.username)+"_P3FRComparingOrdering"+'_problem_type')
         if not problem_type:
             LastProblemID = 0
         else:
@@ -1456,7 +1456,7 @@ class P3FRComparingOrdering(BaseHandler):
 
     @practice_login_required
     def post(self, **kwargs):     
-        problem_type = memcache.Client().get(unicode(self.auth.user.username)+"_P3FRComparingOrdering"+'_problem_type')
+        problem_type = memcache.Client().get(str(self.auth.user.username)+"_P3FRComparingOrdering"+'_problem_type')
         if not problem_type:
             LastProblemID = 0
         else:
@@ -1471,7 +1471,7 @@ class P3FRComparingOrdering(BaseHandler):
 class P3FRAddition(BaseHandler):
     @practice_login_required
     def get(self, **kwargs):     
-        problem_type = memcache.Client().get(unicode(self.auth.user.username)+"_P3FRAddition"+'_problem_type')
+        problem_type = memcache.Client().get(str(self.auth.user.username)+"_P3FRAddition"+'_problem_type')
         if not problem_type:
             LastProblemID = 0
         else:
@@ -1487,7 +1487,7 @@ class P3FRAddition(BaseHandler):
 
     @practice_login_required
     def post(self, **kwargs):     
-        problem_type = memcache.Client().get(unicode(self.auth.user.username)+"_P3FRAddition"+'_problem_type')
+        problem_type = memcache.Client().get(str(self.auth.user.username)+"_P3FRAddition"+'_problem_type')
         if not problem_type:
             LastProblemID = 0
         else:
@@ -1502,7 +1502,7 @@ class P3FRAddition(BaseHandler):
 class P3FRSubtraction(BaseHandler):
     @practice_login_required
     def get(self, **kwargs):     
-        problem_type = memcache.Client().get(unicode(self.auth.user.username)+"_P3FRSubtraction"+'_problem_type')
+        problem_type = memcache.Client().get(str(self.auth.user.username)+"_P3FRSubtraction"+'_problem_type')
         if not problem_type:
             LastProblemID = 0
         else:
@@ -1518,7 +1518,7 @@ class P3FRSubtraction(BaseHandler):
 
     @practice_login_required
     def post(self, **kwargs):     
-        problem_type = memcache.Client().get(unicode(self.auth.user.username)+"_P3FRSubtraction"+'_problem_type')
+        problem_type = memcache.Client().get(str(self.auth.user.username)+"_P3FRSubtraction"+'_problem_type')
         if not problem_type:
             LastProblemID = 0
         else:
@@ -1533,7 +1533,7 @@ class P3FRSubtraction(BaseHandler):
 class P3PPPerpendicularParallel(BaseHandler):
     @practice_login_required
     def get(self, **kwargs):     
-        problem_type = memcache.Client().get(unicode(self.auth.user.username)+"_P3PPPerpendicularParallel"+'_problem_type')
+        problem_type = memcache.Client().get(str(self.auth.user.username)+"_P3PPPerpendicularParallel"+'_problem_type')
         if not problem_type:
             LastProblemID = 0
         else:
@@ -1549,7 +1549,7 @@ class P3PPPerpendicularParallel(BaseHandler):
 
     @practice_login_required
     def post(self, **kwargs):     
-        problem_type = memcache.Client().get(unicode(self.auth.user.username)+"_P3PPPerpendicularParallel"+'_problem_type')
+        problem_type = memcache.Client().get(str(self.auth.user.username)+"_P3PPPerpendicularParallel"+'_problem_type')
         if not problem_type:
             LastProblemID = 0
         else:
@@ -1561,10 +1561,12 @@ class P3PPPerpendicularParallel(BaseHandler):
         logging.info(Config.template_values)    
         return self.render_template(template_name, **Config.template_values)  
 
-app = Tipfy(rules=rules, config=config)
+# DISABLED: Tipfy routes - using Flask instead
+# app = Tipfy(rules=rules, config=config)
 
 def main():
-    app.run()
+    # app.run()
+    print("Primary3Problems.py: Tipfy routes disabled - using Flask instead")
 
 if __name__ == "__main__":
     main()

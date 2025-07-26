@@ -51,7 +51,7 @@ class P3FRSimplifyingFractions:
             return random.choice(self.GenerateProblemType[1])
         else:
             if LastProblemID in self.ProblemTypes:
-                CurrentProblemKey = [k for k, v in self.ProblemType.iteritems() if LastProblemID in v][0]
+                CurrentProblemKey = [k for k, v in self.ProblemType.items() if LastProblemID in v][0]
                 if CurrentProblemKey == max(self.ProblemType.keys()):
                     NextProblemKey = min(self.ProblemType.keys())
                 else:
@@ -87,9 +87,9 @@ class P3FRSimplifyingFractions:
 
         self.problem = self.CreateFractionStatement("Write", self.numerator, self.denominator, "in its simplest form.", "#000")
         AnswerGCF = LcmGcf.LcmGcf().find_gcf(self.numerator,self.denominator)
-        self.AnswerNumerator = self.numerator / AnswerGCF
-        self.AnswerDenominator = self.denominator / AnswerGCF
-        self.answer = str(self.AnswerNumerator) + "/" + str(self.AnswerDenominator)           
+        self.AnswerNumerator = self.numerator // AnswerGCF
+        self.AnswerDenominator = self.denominator // AnswerGCF
+        self.answer = str(int(self.AnswerNumerator)) + "/" + str(int(self.AnswerDenominator))           
 
         self.unit = ""
         self.dollar_unit = ""      
@@ -98,7 +98,7 @@ class P3FRSimplifyingFractions:
 
         '''Explanation starts...'''
         self.explain_template = "Explanation.html"
-        self.explain_text = self.ExplainType1(self.problem,self.answer,self.AnswerNumerator,self.AnswerDenominator,self.unit,self.dollar_unit,self.numerator,self.denominator,AnswerGCF)
+        self.explain_text = self.ExplainType1(self.problem,self.answer,int(self.AnswerNumerator),int(self.AnswerDenominator),self.unit,self.dollar_unit,self.numerator,self.denominator,AnswerGCF)
         self.explain = {"explain_template":self.explain_template,"explain_text":self.explain_text,
                              "video_link":"www.homecampus.com.sg","explain_note":""}
         '''Explanation ends'''
@@ -143,18 +143,18 @@ class P3FRSimplifyingFractions:
 
         self.problem = self.CreateFractionStatement("The simplest equivalent fraction of", self.numerator, self.denominator, "is:", "#000")        
         AnswerGCF = LcmGcf.LcmGcf().find_gcf(self.numerator,self.denominator)
-        self.AnswerNumerator = self.numerator / AnswerGCF
-        self.AnswerDenominator = self.denominator / AnswerGCF
-        self.answer1 = self.AnswerNumerator
-        self.answer2 = self.AnswerDenominator
+        self.AnswerNumerator = self.numerator // AnswerGCF
+        self.AnswerDenominator = self.denominator // AnswerGCF
+        self.answer1 = int(self.AnswerNumerator)
+        self.answer2 = int(self.AnswerDenominator)
 
         self.answer = [0,self.answer1,self.answer2]
             
         self.wrongAnswers = []
         '''generating 3 wrong answers and making sure any of it is not equal to the correct answer'''
         self.WrongMixed = 0
-        self.wrongAnswers.append([self.WrongMixed,self.numerator,self.denominator/self.multiplier])
-        self.wrongAnswers.append([self.WrongMixed,self.numerator/self.multiplier,self.denominator])
+        self.wrongAnswers.append([self.WrongMixed,self.numerator,self.denominator//self.multiplier])
+        self.wrongAnswers.append([self.WrongMixed,self.numerator//self.multiplier,self.denominator])
         self.wrongAnswers.append([self.WrongMixed,self.numerator1*2,self.denominator1*2])
         self.wrongAnswers.append([self.WrongMixed,self.numerator1*3,self.denominator1*3])
                            
@@ -162,7 +162,7 @@ class P3FRSimplifyingFractions:
         self.problem_type = "ProblemTypeMCQ2"
         '''Explanation starts...'''
         self.explain_template = "Explanation.html"
-        self.explain_text = self.ExplainType2(self.problem,self.answer,self.AnswerNumerator,self.AnswerDenominator,self.numerator,self.denominator,AnswerGCF)
+        self.explain_text = self.ExplainType2(self.problem,self.answer,int(self.AnswerNumerator),int(self.AnswerDenominator),self.numerator,self.denominator,AnswerGCF)
         self.explain = {"explain_template":self.explain_template,"explain_text":self.explain_text,
                              "video_link":"www.homecampus.com.sg","explain_note":""}
         '''Explanation ends'''  
@@ -267,14 +267,16 @@ class P3FRSimplifyingFractions:
                                         [2,3,8,12,"Yes",2,2]
                                         ])
 
-        self.denominator1 = self.fractions[3]
-        self.numerator1 = self.fractions[2]
-        self.denominator2 = self.fractions[1]
-        self.numerator2 = self.fractions[0]
-        self.answer = self.fractions[4]
+        # Extract fractions correctly: [simplified_num, simplified_den, original_num, original_den, "Yes/No", ...]
+        self.simplified_numerator = self.fractions[0]      # 1
+        self.simplified_denominator = self.fractions[1]    # 2
+        self.original_numerator = self.fractions[2]        # 4
+        self.original_denominator = self.fractions[3]      # 8
+        self.answer = self.fractions[4]                    # "Yes" or "No"
         
-        self.problem = self.CreateFractionStatement("Is", self.numerator1, self.denominator2, "the simplest fraction", "#000")
-        self.problem = self.problem + self.CreateFractionStatement("&nbsp;of", self.numerator2, self.denominator2, "?", "#000")
+        # Create problem: "Is 1/2 the simplest form of 4/8?"
+        self.problem = self.CreateFractionStatement("Is", self.simplified_numerator, self.simplified_denominator, "the simplest form", "#000")
+        self.problem = self.problem + self.CreateFractionStatement("&nbsp;of", self.original_numerator, self.original_denominator, "?", "#000")
         
         self.unit = ""
         self.dollar_unit = ""      
@@ -303,15 +305,15 @@ class P3FRSimplifyingFractions:
         self.solution_text = self.solution_text + '<div style="width:45px;display:inline-block;vertical-align:top;text-align:left;"><p style="line-height:20%;text-align:left;">&nbsp;&divide;&nbsp;'+str(fractions[5])+'<br><br></p>'
         self.solution_text = self.solution_text + '<p style="line-height:20%;text-align:left;"><br>&nbsp;&divide;&nbsp;'+str(fractions[5])+'</p></div>'
         self.solution_text = self.solution_text + '<div style="display:inline-block;vertical-align:top;margin-top:10px;">=</div>'
-        self.solution_text = self.solution_text + '<div style="width:30px;display:inline-block;vertical-align:top;margin-left:10px;"><p style="line-height:20%;text-align:center;">'+str(fractions[2]/fractions[5])+'<br>__<br></p>'
-        self.solution_text = self.solution_text + '<p style="line-height:20%;text-align:center;"><br>'+str(fractions[3]/fractions[5])+'</p></div>'
+        self.solution_text = self.solution_text + '<div style="width:30px;display:inline-block;vertical-align:top;margin-left:10px;"><p style="line-height:20%;text-align:center;">'+str(int(fractions[2]//fractions[5]))+'<br>__<br></p>'
+        self.solution_text = self.solution_text + '<p style="line-height:20%;text-align:center;"><br>'+str(int(fractions[3]//fractions[5]))+'</p></div>'
         
         if fractions[6]!=1:
             self.solution_text = self.solution_text + '<div style="width:45px;display:inline-block;vertical-align:top;text-align:left;"><p style="line-height:20%;text-align:left;">&nbsp;&divide;&nbsp;'+str(fractions[6])+'<br><br></p>'
             self.solution_text = self.solution_text + '<p style="line-height:20%;text-align:left;"><br>&nbsp;&divide;&nbsp;'+str(fractions[6])+'</p></div>'
             self.solution_text = self.solution_text + '<div style="display:inline-block;vertical-align:top;margin-top:10px;">=</div>'
-            self.solution_text = self.solution_text + '<div style="width:30px;display:inline-block;vertical-align:top;margin-left:10px;"><p style="line-height:20%;text-align:center;">'+str(fractions[2]/fractions[5]/fractions[6])+'<br>__<br></p>'
-            self.solution_text = self.solution_text + '<p style="line-height:20%;text-align:center;"><br>'+str(fractions[3]/fractions[5]/fractions[6])+'</p></div>'
+            self.solution_text = self.solution_text + '<div style="width:30px;display:inline-block;vertical-align:top;margin-left:10px;"><p style="line-height:20%;text-align:center;">'+str(int(int(fractions[2]//fractions[5])//fractions[6]))+'<br>__<br></p>'
+            self.solution_text = self.solution_text + '<p style="line-height:20%;text-align:center;"><br>'+str(int(int(fractions[3]//fractions[5])//fractions[6]))+'</p></div>'
         
         self.solution_text = self.solution_text + '<br><br>'
 
@@ -319,8 +321,8 @@ class P3FRSimplifyingFractions:
         self.solution_text = self.solution_text + '<div style="width:40px;display:inline-block;vertical-align:top;margin-left:-7px;"><p style="line-height:20%;text-align:center;">'+str(fractions[2])+'<br>__<br></p>'
         self.solution_text = self.solution_text + '<p style="line-height:20%;text-align:center;"><br>'+str(fractions[3])+'</p></div>'
         self.solution_text = self.solution_text + '<div style="display:inline-block;vertical-align:top;margin-top:10px;margin-left:-5px;">&nbsp;is&nbsp;</div>'
-        self.solution_text = self.solution_text + '<div style="width:40px;display:inline-block;vertical-align:top;margin-left:-7px;"><p style="line-height:20%;text-align:center;">'+str(fractions[2]/fractions[5]/fractions[6])+'<br>__<br></p>'
-        self.solution_text = self.solution_text + '<p style="line-height:20%;text-align:center;"><br>'+str(fractions[3]/fractions[5]/fractions[6])+'</p></div>'
+        self.solution_text = self.solution_text + '<div style="width:40px;display:inline-block;vertical-align:top;margin-left:-7px;"><p style="line-height:20%;text-align:center;">'+str(int(int(fractions[2]//fractions[5])//fractions[6]))+'<br>__<br></p>'
+        self.solution_text = self.solution_text + '<p style="line-height:20%;text-align:center;"><br>'+str(int(int(fractions[3]//fractions[5])//fractions[6]))+'</p></div>'
         self.solution_text = self.solution_text + '<div style="display:inline-block;vertical-align:top;margin-top:10px;margin-left:-5px;">.</div><br><br>'
         
         self.solution_text = self.solution_text + "</font>"
@@ -336,6 +338,8 @@ class P3FRSimplifyingFractions:
         self.grade = 3
         self.CheckAnswerType = 3             
         
+        # Generate a random fraction that can be simplified
+        # Format: [correct_num, correct_den, original_num, original_den, wrong_answers...]
         self.fractions = random.choice([[1,2,4,8,2,2,[2,4,8,16,1,8]],
                                         [1,3,4,12,2,2,[2,6,8,12,1,12]],
                                         [1,2,6,12,2,3,[2,4,3,6,2,6]],
@@ -348,24 +352,26 @@ class P3FRSimplifyingFractions:
                                         [1,4,3,12,3,1,[3,4,1,12,9,12]]
                                         ])
 
-        self.denominator1 = self.fractions[3]
-        self.numerator1 = self.fractions[2]
+        # Use the original fraction (indices 2,3) for the problem
+        self.numerator = self.fractions[2]  # Original numerator
+        self.denominator = self.fractions[3]  # Original denominator
 
         self.problem = self.CreateFractionStatement("The simplest form of ", self.numerator, self.denominator, "is:", "#000") 
         
+        # Use the correct simplified answer (indices 0,1)
         self.AnswerNumerator = self.fractions[0]
-        self.AnswerDenominator = self.fractions[1]
-        self.answer1 = self.AnswerNumerator
-        self.answer2 = self.AnswerDenominator
+        self.AnswerDenominator = self.fractions[1] 
+        self.answer1 = int(self.AnswerNumerator)
+        self.answer2 = int(self.AnswerDenominator)
 
-        self.answer = [0,self.answer1,self.answer2]
+        self.answer = [0, self.answer1, self.answer2]
             
         self.wrongAnswers = []
-        '''generating 3 wrong answers and making sure any of it is not equal to the correct answer'''
+        '''generating 3 wrong answers from the predefined wrong answer array'''
         self.WrongMixed = 0
-        self.wrongAnswers.append([self.WrongMixed,self.fractions[6][0],self.fractions[6][1]])
-        self.wrongAnswers.append([self.WrongMixed,self.fractions[6][2],self.fractions[6][3]])
-        self.wrongAnswers.append([self.WrongMixed,self.fractions[6][4],self.fractions[6][5]])
+        self.wrongAnswers.append([self.WrongMixed, self.fractions[6][0], self.fractions[6][1]])
+        self.wrongAnswers.append([self.WrongMixed, self.fractions[6][2], self.fractions[6][3]])
+        self.wrongAnswers.append([self.WrongMixed, self.fractions[6][4], self.fractions[6][5]])
                            
         self.template = "FractionMCQTypeProblems.html"
         self.problem_type = "ProblemTypeMCQ5"
@@ -380,7 +386,7 @@ class P3FRSimplifyingFractions:
                                 self.complexity_level,self.HCScore,self.grade,self.CheckAnswerType)      
 
     def ExplainType5(self,problem,answer,fractions):
-        self.answer_text = "<br>The correct answer is:<br>%s"%(self.CreateFraction(fractions[0], fractions[1],"ffffff"))
+        self.answer_text = "<br>The correct answer is:<br>%s"%(self.CreateFraction(int(fractions[0]), int(fractions[1]),"ffffff"))
        
         self.solution_text = "<font class='ExplanationFont'>"
         
@@ -391,15 +397,15 @@ class P3FRSimplifyingFractions:
         self.solution_text = self.solution_text + '<div style="width:45px;display:inline-block;vertical-align:top;text-align:left;"><p style="line-height:20%;text-align:left;">&nbsp;&divide;&nbsp;'+str(fractions[4])+'<br><br></p>'
         self.solution_text = self.solution_text + '<p style="line-height:20%;text-align:left;"><br>&nbsp;&divide;&nbsp;'+str(fractions[4])+'</p></div>'
         self.solution_text = self.solution_text + '<div style="display:inline-block;vertical-align:top;margin-top:10px;">=</div>'
-        self.solution_text = self.solution_text + '<div style="width:30px;display:inline-block;vertical-align:top;margin-left:10px;"><p style="line-height:20%;text-align:center;">'+str(fractions[2]/fractions[4])+'<br>__<br></p>'
-        self.solution_text = self.solution_text + '<p style="line-height:20%;text-align:center;"><br>'+str(fractions[3]/fractions[4])+'</p></div>'
+        self.solution_text = self.solution_text + '<div style="width:30px;display:inline-block;vertical-align:top;margin-left:10px;"><p style="line-height:20%;text-align:center;">'+str(int(fractions[2]//fractions[4]))+'<br>__<br></p>'
+        self.solution_text = self.solution_text + '<p style="line-height:20%;text-align:center;"><br>'+str(int(fractions[3]//fractions[4]))+'</p></div>'
         
         if fractions[5]!=1:
             self.solution_text = self.solution_text + '<div style="width:45px;display:inline-block;vertical-align:top;text-align:left;"><p style="line-height:20%;text-align:left;">&nbsp;&divide;&nbsp;'+str(fractions[5])+'<br><br></p>'
             self.solution_text = self.solution_text + '<p style="line-height:20%;text-align:left;"><br>&nbsp;&divide;&nbsp;'+str(fractions[5])+'</p></div>'
             self.solution_text = self.solution_text + '<div style="display:inline-block;vertical-align:top;margin-top:10px;">=</div>'
-            self.solution_text = self.solution_text + '<div style="width:30px;display:inline-block;vertical-align:top;margin-left:10px;"><p style="line-height:20%;text-align:center;">'+str(fractions[2]/fractions[4]/fractions[5])+'<br>__<br></p>'
-            self.solution_text = self.solution_text + '<p style="line-height:20%;text-align:center;"><br>'+str(fractions[3]/fractions[4]/fractions[5])+'</p></div>'
+            self.solution_text = self.solution_text + '<div style="width:30px;display:inline-block;vertical-align:top;margin-left:10px;"><p style="line-height:20%;text-align:center;">'+str(int(int(fractions[2]//fractions[4])//fractions[5]))+'<br>__<br></p>'
+            self.solution_text = self.solution_text + '<p style="line-height:20%;text-align:center;"><br>'+str(int(int(fractions[3]//fractions[4])//fractions[5]))+'</p></div>'
         
         self.solution_text = self.solution_text + '<br><br>'
 
@@ -407,8 +413,8 @@ class P3FRSimplifyingFractions:
         self.solution_text = self.solution_text + '<div style="width:40px;display:inline-block;vertical-align:top;margin-left:-7px;"><p style="line-height:20%;text-align:center;">'+str(fractions[2])+'<br>__<br></p>'
         self.solution_text = self.solution_text + '<p style="line-height:20%;text-align:center;"><br>'+str(fractions[3])+'</p></div>'
         self.solution_text = self.solution_text + '<div style="display:inline-block;vertical-align:top;margin-top:10px;margin-left:-5px;">&nbsp;is&nbsp;</div>'
-        self.solution_text = self.solution_text + '<div style="width:40px;display:inline-block;vertical-align:top;margin-left:-7px;"><p style="line-height:20%;text-align:center;">'+str(fractions[2]/fractions[4]/fractions[5])+'<br>__<br></p>'
-        self.solution_text = self.solution_text + '<p style="line-height:20%;text-align:center;"><br>'+str(fractions[3]/fractions[4]/fractions[5])+'</p></div>'
+        self.solution_text = self.solution_text + '<div style="width:40px;display:inline-block;vertical-align:top;margin-left:-7px;"><p style="line-height:20%;text-align:center;">'+str(int(int(fractions[2]//fractions[4])//fractions[5]))+'<br>__<br></p>'
+        self.solution_text = self.solution_text + '<p style="line-height:20%;text-align:center;"><br>'+str(int(int(fractions[3]//fractions[4])//fractions[5]))+'</p></div>'
         self.solution_text = self.solution_text + '<div style="display:inline-block;vertical-align:top;margin-top:10px;margin-left:-5px;">.</div><br><br>'
         
         self.solution_text = self.solution_text + "</font>"
@@ -468,7 +474,7 @@ class P3FRSimplifyingFractions:
                 'dollar_unit':self.dollar_unit}
 
     def ExplainType6(self,problem,answer,unit,dollar_unit,fractions):
-        self.answer_text = "<br>The correct answer is:<br>%s"%(self.CreateFraction(fractions[0], fractions[1],"ffffff"))
+        self.answer_text = "<br>The correct answer is:<br>%s"%(self.CreateFraction(int(fractions[0]), int(fractions[1]),"ffffff"))
        
         self.solution_text = "<font class='ExplanationFont'>"
         
@@ -479,15 +485,15 @@ class P3FRSimplifyingFractions:
         self.solution_text = self.solution_text + '<div style="width:45px;display:inline-block;vertical-align:top;text-align:left;"><p style="line-height:20%;text-align:left;">&nbsp;&divide;&nbsp;'+str(fractions[4])+'<br><br></p>'
         self.solution_text = self.solution_text + '<p style="line-height:20%;text-align:left;"><br>&nbsp;&divide;&nbsp;'+str(fractions[4])+'</p></div>'
         self.solution_text = self.solution_text + '<div style="display:inline-block;vertical-align:top;margin-top:10px;">=</div>'
-        self.solution_text = self.solution_text + '<div style="width:30px;display:inline-block;vertical-align:top;margin-left:10px;"><p style="line-height:20%;text-align:center;">'+str(fractions[2]/fractions[4])+'<br>__<br></p>'
-        self.solution_text = self.solution_text + '<p style="line-height:20%;text-align:center;"><br>'+str(fractions[3]/fractions[4])+'</p></div>'
+        self.solution_text = self.solution_text + '<div style="width:30px;display:inline-block;vertical-align:top;margin-left:10px;"><p style="line-height:20%;text-align:center;">'+str(int(fractions[2]//fractions[4]))+'<br>__<br></p>'
+        self.solution_text = self.solution_text + '<p style="line-height:20%;text-align:center;"><br>'+str(int(fractions[3]//fractions[4]))+'</p></div>'
         
         if fractions[5]!=1:
             self.solution_text = self.solution_text + '<div style="width:45px;display:inline-block;vertical-align:top;text-align:left;"><p style="line-height:20%;text-align:left;">&nbsp;&divide;&nbsp;'+str(fractions[5])+'<br><br></p>'
             self.solution_text = self.solution_text + '<p style="line-height:20%;text-align:left;"><br>&nbsp;&divide;&nbsp;'+str(fractions[5])+'</p></div>'
             self.solution_text = self.solution_text + '<div style="display:inline-block;vertical-align:top;margin-top:10px;">=</div>'
-            self.solution_text = self.solution_text + '<div style="width:30px;display:inline-block;vertical-align:top;margin-left:10px;"><p style="line-height:20%;text-align:center;">'+str(fractions[2]/fractions[4]/fractions[5])+'<br>__<br></p>'
-            self.solution_text = self.solution_text + '<p style="line-height:20%;text-align:center;"><br>'+str(fractions[3]/fractions[4]/fractions[5])+'</p></div>'
+            self.solution_text = self.solution_text + '<div style="width:30px;display:inline-block;vertical-align:top;margin-left:10px;"><p style="line-height:20%;text-align:center;">'+str(int(int(fractions[2]//fractions[4])//fractions[5]))+'<br>__<br></p>'
+            self.solution_text = self.solution_text + '<p style="line-height:20%;text-align:center;"><br>'+str(int(int(fractions[3]//fractions[4])//fractions[5]))+'</p></div>'
         
         self.solution_text = self.solution_text + '<br><br>'
 
@@ -495,8 +501,8 @@ class P3FRSimplifyingFractions:
         self.solution_text = self.solution_text + '<div style="width:40px;display:inline-block;vertical-align:top;margin-left:-7px;"><p style="line-height:20%;text-align:center;">'+str(fractions[2])+'<br>__<br></p>'
         self.solution_text = self.solution_text + '<p style="line-height:20%;text-align:center;"><br>'+str(fractions[3])+'</p></div>'
         self.solution_text = self.solution_text + '<div style="display:inline-block;vertical-align:top;margin-top:10px;margin-left:-5px;">&nbsp;is&nbsp;</div>'
-        self.solution_text = self.solution_text + '<div style="width:40px;display:inline-block;vertical-align:top;margin-left:-7px;"><p style="line-height:20%;text-align:center;">'+str(fractions[2]/fractions[4]/fractions[5])+'<br>__<br></p>'
-        self.solution_text = self.solution_text + '<p style="line-height:20%;text-align:center;"><br>'+str(fractions[3]/fractions[4]/fractions[5])+'</p></div>'
+        self.solution_text = self.solution_text + '<div style="width:40px;display:inline-block;vertical-align:top;margin-left:-7px;"><p style="line-height:20%;text-align:center;">'+str(int(int(fractions[2]//fractions[4])//fractions[5]))+'<br>__<br></p>'
+        self.solution_text = self.solution_text + '<p style="line-height:20%;text-align:center;"><br>'+str(int(int(fractions[3]//fractions[4])//fractions[5]))+'</p></div>'
         self.solution_text = self.solution_text + '<div style="display:inline-block;vertical-align:top;margin-top:10px;margin-left:-5px;">.</div><br><br>'
         
         self.solution_text = self.solution_text + "</font>"
@@ -592,7 +598,7 @@ class P3FRSimplifyingFractions:
         #fraction = fraction + '<p style="line-height:20%;text-align:center;color:#'+colorCode+';">'+str(denominator)+'</p></div>'
         
         fraction = ""
-        fraction = fraction + "<table style='display:inline-block;padding:0 6px;line-height: 15px;'><tr style='padding: 0 5px;text-align: center;border-bottom: 1px solid;'><td>" + str(numerator) + "</td></tr> <tr><td>" + str(denominator) + "</td></tr></table>"
+        fraction = fraction + "<table style='display:inline-block;padding:0 6px;line-height: 15px;'><tr style='padding: 0 5px;text-align: center;border-bottom: 1px solid;'><td>" + str(int(numerator)) + "</td></tr> <tr><td>" + str(int(denominator)) + "</td></tr></table>"
         
         return fraction
     
@@ -624,10 +630,11 @@ class P3FRSimplifyingFractions:
         except IndexError:
             pass
         try:
-            self.value1 = str(self.answer1[0])+"/"+str(self.answer1[1])+"/"+str(self.answer1[2])
-            self.value2 = str(self.answer2[0])+"/"+str(self.answer2[1])+"/"+str(self.answer2[2])
-            self.value3 = str(self.answer3[0])+"/"+str(self.answer3[1])+"/"+str(self.answer3[2])
-            self.value4 = str(self.answer4[0])+"/"+str(self.answer4[1])+"/"+str(self.answer4[2])
+            # For simplifying fractions, use only numerator/denominator (ignore mixed number part)
+            self.value1 = str(int(self.answer1[1]))+"/"+str(int(self.answer1[2]))
+            self.value2 = str(int(self.answer2[1]))+"/"+str(int(self.answer2[2]))
+            self.value3 = str(int(self.answer3[1]))+"/"+str(int(self.answer3[2]))
+            self.value4 = str(int(self.answer4[1]))+"/"+str(int(self.answer4[2]))
         except AttributeError:
             pass
                        

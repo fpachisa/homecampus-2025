@@ -40,8 +40,8 @@ class BaseHandler(RequestHandler, Jinja2Mixin):
         if self.auth.session:
             auth_session = self.auth.session
         
-        memcache.Client().delete(unicode(self.auth.user.username)+"_test_values")
-        memcache.Client().add(unicode(self.auth.user.username)+"_test_values",Config.test_values,3600)        
+        memcache.Client().delete(str(self.auth.user.username)+"_test_values")
+        memcache.Client().add(str(self.auth.user.username)+"_test_values",Config.test_values,3600)        
         
         try:
             counter = Config.test_values['counter']
@@ -83,8 +83,8 @@ class BaseTemplate(RequestHandler, Jinja2Mixin):
         if self.auth.session:
             auth_session = self.auth.session
             
-        memcache.Client().delete(unicode(self.auth.user.username)+"_test_values")
-        memcache.Client().add(unicode(self.auth.user.username)+"_test_values",Config.test_values,3600)        
+        memcache.Client().delete(str(self.auth.user.username)+"_test_values")
+        memcache.Client().add(str(self.auth.user.username)+"_test_values",Config.test_values,3600)        
         
         try:
             counter = Config.test_values['counter']
@@ -125,7 +125,7 @@ class GenerateTests(BaseHandler):
 class GetTest(BaseHandler):     
     @login_required 
     def post(self, **kwargs):
-        TestId = unicode(self.request.form.get('TestId'))
+        TestId = str(self.request.form.get('TestId'))
         logging.info("test_id = "+TestId)
         '''Getting the first problem with counter = 1'''
         counter = 1
@@ -143,7 +143,7 @@ class GetTest(BaseHandler):
 class GetTestProblems(BaseHandler):     
     @login_required 
     def post(self, **kwargs):
-        TestId = unicode(self.request.form.get('TestId'))
+        TestId = str(self.request.form.get('TestId'))
         counter = int(self.request.form.get('counter'))
         answer_submitted = str(self.request.form.get('answer_submitted'))
         next = str(self.request.form.get('next'))
@@ -169,7 +169,7 @@ class GetTestProblems(BaseHandler):
 class GetClickedProblem(BaseHandler):     
     @login_required 
     def post(self, **kwargs):
-        TestId = unicode(self.request.form.get('TestId'))
+        TestId = str(self.request.form.get('TestId'))
         current_counter = int(self.request.form.get('current_counter'))
         clicked_counter = int(self.request.form.get('clicked_counter'))
         answer_submitted = str(self.request.form.get('answer_submitted'))
@@ -191,10 +191,10 @@ class GetClickedProblem(BaseHandler):
 class GenerateTestReport(BaseHandler):
     @login_required 
     def post(self,**kwargs):
-        TestId = unicode(self.request.form.get('TestId'))
+        TestId = str(self.request.form.get('TestId'))
         if TestId == "None":
             logging.info("trying to get TestId from memcache")
-            TestId = memcache.Client().get(unicode(self.auth.user.username)+'_test_values')['test_id']
+            TestId = memcache.Client().get(str(self.auth.user.username)+'_test_values')['test_id']
         try:
             counter = int(self.request.form.get('counter'))
         except:

@@ -53,7 +53,7 @@ class P3FRComparingOrdering:
             return random.choice(self.GenerateProblemType[1])
         else:
             if LastProblemID in self.ProblemTypes:
-                CurrentProblemKey = [k for k, v in self.ProblemType.iteritems() if LastProblemID in v][0]
+                CurrentProblemKey = [k for k, v in self.ProblemType.items() if LastProblemID in v][0]
                 if CurrentProblemKey == max(self.ProblemType.keys()):
                     NextProblemKey = min(self.ProblemType.keys())
                 else:
@@ -205,7 +205,7 @@ class P3FRComparingOrdering:
         self.solution_text = self.solution_text + 'To compare the two fractions, we must first express both the fractions with the same denominator by making a list of equivalent fractions.<br><br>'
         if flag==1:
             self.solution_text = self.solution_text + '<div style="display:inline-block;vertical-align:top;margin-top:10px;">Fraction 1:&nbsp;</div>'
-            for i in range (multiplier-1):
+            for i in range (int(multiplier)-1):
                 self.solution_text = self.solution_text + '<div style="width:40px;display:inline-block;vertical-align:top;margin-left:-7px;"><p style="line-height:20%;text-align:center;">'+str(numerator1*(i+1))+'<br>__<br></p>'
                 self.solution_text = self.solution_text + '<p style="line-height:20%;text-align:center;"><br>'+str(denominator1*(i+1))+'</p></div>'
                 self.solution_text = self.solution_text + '<div style="width:20px;display:inline-block;vertical-align:top;margin-top:10px;margin-left:5px;">=</div>'
@@ -223,14 +223,14 @@ class P3FRComparingOrdering:
             self.solution_text = self.solution_text + '<div style="display:inline-block;vertical-align:top;margin-top:10px;margin-left:-5px;">.</div>'
         else:
             self.solution_text = self.solution_text + '<div style="display:inline-block;vertical-align:top;margin-top:10px;">Fraction 1:&nbsp;</div>'
-            for i in range (multiplier1-1):
+            for i in range (int(multiplier1)-1):
                 self.solution_text = self.solution_text + '<div style="width:40px;display:inline-block;vertical-align:top;margin-left:-7px;"><p style="line-height:20%;text-align:center;">'+str(numerator1*(i+1))+'<br>__<br></p>'
                 self.solution_text = self.solution_text + '<p style="line-height:20%;text-align:center;"><br>'+str(denominator1*(i+1))+'</p></div>'
                 self.solution_text = self.solution_text + '<div style="width:20px;display:inline-block;vertical-align:top;margin-top:10px;margin-left:5px;">=</div>'
             self.solution_text = self.solution_text + '<div style="width:40px;display:inline-block;vertical-align:top;margin-left:-7px;"><p style="line-height:20%;text-align:center;">'+str(numerator1*multiplier1)+'<br>__<br></p>'
             self.solution_text = self.solution_text + '<p style="line-height:20%;text-align:center;"><br>'+str(denominator1*multiplier1)+'</p></div><br><br>'
             self.solution_text = self.solution_text + '<div style="display:inline-block;vertical-align:top;margin-top:10px;">Fraction 2:&nbsp;</div>'
-            for i in range (multiplier2-1):
+            for i in range (int(multiplier2)-1):
                 self.solution_text = self.solution_text + '<div style="width:40px;display:inline-block;vertical-align:top;margin-left:-7px;"><p style="line-height:20%;text-align:center;">'+str(numerator2*(i+1))+'<br>__<br></p>'
                 self.solution_text = self.solution_text + '<p style="line-height:20%;text-align:center;"><br>'+str(denominator2*(i+1))+'</p></div>'
                 self.solution_text = self.solution_text + '<div style="width:20px;display:inline-block;vertical-align:top;margin-top:10px;margin-left:5px;">=</div>'
@@ -354,14 +354,14 @@ class P3FRComparingOrdering:
             
         if flag == 1:
             self.solution_text = self.solution_text + '<div style="display:inline-block;vertical-align:top;margin-top:10px;">%s:&nbsp;&nbsp;&nbsp;</div>'%(names[0])
-            for i in range (multiplier1-1):
+            for i in range (int(multiplier1)-1):
                 self.solution_text = self.solution_text + '<div style="width:40px;display:inline-block;vertical-align:top;margin-left:-7px;"><p style="line-height:20%;text-align:center;">'+str(numerator1*(i+1))+'<br>__<br></p>'
                 self.solution_text = self.solution_text + '<p style="line-height:20%;text-align:center;"><br>'+str(denominator1*(i+1))+'</p></div>'
                 self.solution_text = self.solution_text + '<div style="width:20px;display:inline-block;vertical-align:top;margin-top:10px;margin-left:5px;">=</div>'
             self.solution_text = self.solution_text + '<div style="width:40px;display:inline-block;vertical-align:top;margin-left:-7px;"><p style="line-height:20%;text-align:center;">'+str(numerator1*multiplier1)+'<br>__<br></p>'
             self.solution_text = self.solution_text + '<p style="line-height:20%;text-align:center;"><br>'+str(denominator1*multiplier1)+'</p></div><br><br>'
             self.solution_text = self.solution_text + '<div style="display:inline-block;vertical-align:top;margin-top:10px;">%s:&nbsp;&nbsp;&nbsp;</div>'%(names[2])
-            for i in range (multiplier3-1):
+            for i in range (int(multiplier3)-1):
                 self.solution_text = self.solution_text + '<div style="width:40px;display:inline-block;vertical-align:top;margin-left:-7px;"><p style="line-height:20%;text-align:center;">'+str(numerator3*(i+1))+'<br>__<br></p>'
                 self.solution_text = self.solution_text + '<p style="line-height:20%;text-align:center;"><br>'+str(denominator3*(i+1))+'</p></div>'
                 self.solution_text = self.solution_text + '<div style="width:20px;display:inline-block;vertical-align:top;margin-top:10px;margin-left:5px;">=</div>'
@@ -384,14 +384,14 @@ class P3FRComparingOrdering:
             self.solution_text = self.solution_text + "<br>So, the statement, %s ate a bigger portion than %s, is %s."%(names[0],names[2],answer)
         elif flag == 2:
             self.solution_text = self.solution_text + '<div style="display:inline-block;vertical-align:top;margin-top:10px;">%s:&nbsp;&nbsp;&nbsp;</div>'%(names[0])
-            for i in range (multiplier1-1):
+            for i in range (int(multiplier1)-1):
                 self.solution_text = self.solution_text + '<div style="width:40px;display:inline-block;vertical-align:top;margin-left:-7px;"><p style="line-height:20%;text-align:center;">'+str(numerator1*(i+1))+'<br>__<br></p>'
                 self.solution_text = self.solution_text + '<p style="line-height:20%;text-align:center;"><br>'+str(denominator1*(i+1))+'</p></div>'
                 self.solution_text = self.solution_text + '<div style="width:20px;display:inline-block;vertical-align:top;margin-top:10px;margin-left:5px;">=</div>'
             self.solution_text = self.solution_text + '<div style="width:40px;display:inline-block;vertical-align:top;margin-left:-7px;"><p style="line-height:20%;text-align:center;">'+str(numerator1*multiplier1)+'<br>__<br></p>'
             self.solution_text = self.solution_text + '<p style="line-height:20%;text-align:center;"><br>'+str(denominator1*multiplier1)+'</p></div><br><br>'
             self.solution_text = self.solution_text + '<div style="display:inline-block;vertical-align:top;margin-top:10px;">%s:&nbsp;&nbsp;&nbsp;</div>'%(names[1])
-            for i in range (multiplier2-1):
+            for i in range (int(multiplier2)-1):
                 self.solution_text = self.solution_text + '<div style="width:40px;display:inline-block;vertical-align:top;margin-left:-7px;"><p style="line-height:20%;text-align:center;">'+str(numerator2*(i+1))+'<br>__<br></p>'
                 self.solution_text = self.solution_text + '<p style="line-height:20%;text-align:center;"><br>'+str(denominator2*(i+1))+'</p></div>'
                 self.solution_text = self.solution_text + '<div style="width:20px;display:inline-block;vertical-align:top;margin-top:10px;margin-left:5px;">=</div>'
@@ -414,14 +414,14 @@ class P3FRComparingOrdering:
             self.solution_text = self.solution_text + "<br>So, the statement, %s ate a smaller portion than %s, is %s."%(names[0],names[1],answer)
         else:
             self.solution_text = self.solution_text + '<div style="display:inline-block;vertical-align:top;margin-top:10px;">%s:&nbsp;&nbsp;&nbsp;</div>'%(names[1])
-            for i in range (multiplier2-1):
+            for i in range (int(multiplier2)-1):
                 self.solution_text = self.solution_text + '<div style="width:40px;display:inline-block;vertical-align:top;margin-left:-7px;"><p style="line-height:20%;text-align:center;">'+str(numerator2*(i+1))+'<br>__<br></p>'
                 self.solution_text = self.solution_text + '<p style="line-height:20%;text-align:center;"><br>'+str(denominator2*(i+1))+'</p></div>'
                 self.solution_text = self.solution_text + '<div style="width:20px;display:inline-block;vertical-align:top;margin-top:10px;margin-left:5px;">=</div>'
             self.solution_text = self.solution_text + '<div style="width:40px;display:inline-block;vertical-align:top;margin-left:-7px;"><p style="line-height:20%;text-align:center;">'+str(numerator2*multiplier2)+'<br>__<br></p>'
             self.solution_text = self.solution_text + '<p style="line-height:20%;text-align:center;"><br>'+str(denominator2*multiplier2)+'</p></div><br><br>'
             self.solution_text = self.solution_text + '<div style="display:inline-block;vertical-align:top;margin-top:10px;">%s:&nbsp;&nbsp;&nbsp;</div>'%(names[2])
-            for i in range (multiplier3-1):
+            for i in range (int(multiplier3)-1):
                 self.solution_text = self.solution_text + '<div style="width:40px;display:inline-block;vertical-align:top;margin-left:-7px;"><p style="line-height:20%;text-align:center;">'+str(numerator3*(i+1))+'<br>__<br></p>'
                 self.solution_text = self.solution_text + '<p style="line-height:20%;text-align:center;"><br>'+str(denominator3*(i+1))+'</p></div>'
                 self.solution_text = self.solution_text + '<div style="width:20px;display:inline-block;vertical-align:top;margin-top:10px;margin-left:5px;">=</div>'
@@ -576,14 +576,14 @@ class P3FRComparingOrdering:
         self.solution_text = "<font class='ExplanationFont'>"
         self.solution_text = self.solution_text + 'To compare the two fractions, we must first express the fractions using a common denominator.<br><br>'
         self.solution_text = self.solution_text + '<div style="display:inline-block;vertical-align:top;margin-top:10px;">Fraction 1:&nbsp;&nbsp;&nbsp;</div>'
-        for i in range (multiplier1-1):
+        for i in range (int(multiplier1)-1):
             self.solution_text = self.solution_text + '<div style="width:40px;display:inline-block;vertical-align:top;margin-left:-7px;"><p style="line-height:20%;text-align:center;">'+str(numerator1*(i+1))+'<br>__<br></p>'
             self.solution_text = self.solution_text + '<p style="line-height:20%;text-align:center;"><br>'+str(denominator1*(i+1))+'</p></div>'
             self.solution_text = self.solution_text + '<div style="width:20px;display:inline-block;vertical-align:top;margin-top:10px;margin-left:5px;">=</div>'
         self.solution_text = self.solution_text + '<div style="width:40px;display:inline-block;vertical-align:top;margin-left:-7px;"><p style="line-height:20%;text-align:center;">'+str(numerator1*multiplier1)+'<br>__<br></p>'
         self.solution_text = self.solution_text + '<p style="line-height:20%;text-align:center;"><br>'+str(denominator1*multiplier1)+'</p></div><br><br>'
         self.solution_text = self.solution_text + '<div style="display:inline-block;vertical-align:top;margin-top:10px;">Fraction 2:&nbsp;&nbsp;&nbsp;</div>'
-        for i in range (multiplier2-1):
+        for i in range (int(multiplier2)-1):
             self.solution_text = self.solution_text + '<div style="width:40px;display:inline-block;vertical-align:top;margin-left:-7px;"><p style="line-height:20%;text-align:center;">'+str(numerator2*(i+1))+'<br>__<br></p>'
             self.solution_text = self.solution_text + '<p style="line-height:20%;text-align:center;"><br>'+str(denominator2*(i+1))+'</p></div>'
             self.solution_text = self.solution_text + '<div style="width:20px;display:inline-block;vertical-align:top;margin-top:10px;margin-left:5px;">=</div>'
@@ -804,7 +804,7 @@ class P3FRComparingOrdering:
         if flag==1:
             self.solution_text = self.solution_text + '<div style="display:inline-block;vertical-align:top;margin-top:10px;">Fraction 1:&nbsp;&nbsp;&nbsp;</div>'
             multi = multiplier/denominator1
-            for i in range (multi-1):
+            for i in range (int(multi)-1):
                 self.solution_text = self.solution_text + '<div style="width:40px;display:inline-block;vertical-align:top;margin-left:-7px;"><p style="line-height:20%;text-align:center;">'+str(numerator1*(i+1))+'<br>__<br></p>'
                 self.solution_text = self.solution_text + '<p style="line-height:20%;text-align:center;"><br>'+str(denominator1*(i+1))+'</p></div>'
                 self.solution_text = self.solution_text + '<div style="width:20px;display:inline-block;vertical-align:top;margin-top:10px;margin-left:5px;">=</div>'
@@ -815,7 +815,7 @@ class P3FRComparingOrdering:
                 
             self.solution_text = self.solution_text + '<div style="display:inline-block;vertical-align:top;margin-top:10px;">Fraction 2:&nbsp;&nbsp;&nbsp;</div>'
             multi = multiplier/denominator2
-            for i in range (multi-1):
+            for i in range (int(multi)-1):
                 self.solution_text = self.solution_text + '<div style="width:40px;display:inline-block;vertical-align:top;margin-left:-7px;"><p style="line-height:20%;text-align:center;">'+str(numerator2*(i+1))+'<br>__<br></p>'
                 self.solution_text = self.solution_text + '<p style="line-height:20%;text-align:center;"><br>'+str(denominator2*(i+1))+'</p></div>'
                 self.solution_text = self.solution_text + '<div style="width:20px;display:inline-block;vertical-align:top;margin-top:10px;margin-left:5px;">=</div>'
@@ -833,14 +833,14 @@ class P3FRComparingOrdering:
             self.solution_text = self.solution_text + '<div style="display:inline-block;vertical-align:top;margin-top:10px;margin-left:-5px;">.</div>'
         else:
             self.solution_text = self.solution_text + '<div style="display:inline-block;vertical-align:top;margin-top:10px;">Fraction 1:&nbsp;&nbsp;&nbsp;</div>'
-            for i in range (multiplier1-1):
+            for i in range (int(multiplier1)-1):
                 self.solution_text = self.solution_text + '<div style="width:40px;display:inline-block;vertical-align:top;margin-left:-7px;"><p style="line-height:20%;text-align:center;">'+str(numerator1*(i+1))+'<br>__<br></p>'
                 self.solution_text = self.solution_text + '<p style="line-height:20%;text-align:center;"><br>'+str(denominator1*(i+1))+'</p></div>'
                 self.solution_text = self.solution_text + '<div style="width:20px;display:inline-block;vertical-align:top;margin-top:10px;margin-left:5px;">=</div>'
             self.solution_text = self.solution_text + '<div style="width:40px;display:inline-block;vertical-align:top;margin-left:-7px;"><p style="line-height:20%;text-align:center;">'+str(numerator1*multiplier1)+'<br>__<br></p>'
             self.solution_text = self.solution_text + '<p style="line-height:20%;text-align:center;"><br>'+str(denominator1*multiplier1)+'</p></div><br><br>'
             self.solution_text = self.solution_text + '<div style="display:inline-block;vertical-align:top;margin-top:10px;">Fraction 2:&nbsp;&nbsp;&nbsp;</div>'
-            for i in range (multiplier2-1):
+            for i in range (int(multiplier2)-1):
                 self.solution_text = self.solution_text + '<div style="width:40px;display:inline-block;vertical-align:top;margin-left:-7px;"><p style="line-height:20%;text-align:center;">'+str(numerator2*(i+1))+'<br>__<br></p>'
                 self.solution_text = self.solution_text + '<p style="line-height:20%;text-align:center;"><br>'+str(denominator2*(i+1))+'</p></div>'
                 self.solution_text = self.solution_text + '<div style="width:20px;display:inline-block;vertical-align:top;margin-top:10px;margin-left:5px;">=</div>'
@@ -937,14 +937,14 @@ class P3FRComparingOrdering:
         if denominator1!=denominator2:
             self.solution_text = self.solution_text + 'To compare the two fractions, we must first express the fractions using a common denominator.<br><br>'
             self.solution_text = self.solution_text + '<div style="display:inline-block;vertical-align:top;margin-top:10px;">%s:&nbsp;&nbsp;&nbsp;</div>'%(names[1])
-            for i in range (multiplier1-1):
+            for i in range (int(multiplier1)-1):
                 self.solution_text = self.solution_text + '<div style="width:40px;display:inline-block;vertical-align:top;margin-left:-7px;"><p style="line-height:20%;text-align:center;">'+str(numerator1*(i+1))+'<br>__<br></p>'
                 self.solution_text = self.solution_text + '<p style="line-height:20%;text-align:center;"><br>'+str(denominator1*(i+1))+'</p></div>'
                 self.solution_text = self.solution_text + '<div style="width:20px;display:inline-block;vertical-align:top;margin-top:10px;margin-left:5px;">=</div>'
             self.solution_text = self.solution_text + '<div style="width:40px;display:inline-block;vertical-align:top;margin-left:-7px;"><p style="line-height:20%;text-align:center;">'+str(numerator1*multiplier1)+'<br>__<br></p>'
             self.solution_text = self.solution_text + '<p style="line-height:20%;text-align:center;"><br>'+str(denominator1*multiplier1)+'</p></div><br><br>'
             self.solution_text = self.solution_text + '<div style="display:inline-block;vertical-align:top;margin-top:10px;">%s:&nbsp;&nbsp;&nbsp;</div>'%(names[2])
-            for i in range (multiplier2-1):
+            for i in range (int(multiplier2)-1):
                 self.solution_text = self.solution_text + '<div style="width:40px;display:inline-block;vertical-align:top;margin-left:-7px;"><p style="line-height:20%;text-align:center;">'+str(numerator2*(i+1))+'<br>__<br></p>'
                 self.solution_text = self.solution_text + '<p style="line-height:20%;text-align:center;"><br>'+str(denominator2*(i+1))+'</p></div>'
                 self.solution_text = self.solution_text + '<div style="width:20px;display:inline-block;vertical-align:top;margin-top:10px;margin-left:5px;">=</div>'

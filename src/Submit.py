@@ -559,10 +559,12 @@ def CheckAnswer(concept,template_values,submitted):
 
     return False              
 
-app = Tipfy(rules=rules, config=config)    
+# DISABLED: Tipfy routes - using Flask instead  
+# app = Tipfy(rules=rules, config=config)    
 
 def main():
-    app.run()
+    # app.run()
+    print("Submit.py: Tipfy routes disabled - using Flask instead")
 
 if __name__ == "__main__":
     main()

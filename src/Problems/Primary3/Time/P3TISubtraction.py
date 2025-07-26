@@ -53,7 +53,7 @@ class P3TISubtraction:
             return random.choice(self.GenerateProblemType[1])
         else:
             if LastProblemID in self.ProblemTypes:
-                CurrentProblemKey = [k for k, v in self.ProblemType.iteritems() if LastProblemID in v][0]
+                CurrentProblemKey = [k for k, v in self.ProblemType.items() if LastProblemID in v][0]
                 if CurrentProblemKey == max(self.ProblemType.keys()):
                     NextProblemKey = min(self.ProblemType.keys())
                 else:
@@ -844,15 +844,15 @@ class P3TISubtraction:
     def checkAnswer(self,template,answer,InputAnswer,CheckAnswer):
         if CheckAnswer == 1:
             try:
-                InputAnswer = string.join(str(InputAnswer).split(),"").lower()
-                answer = string.join(str(answer).split(),"")              
+                InputAnswer = "".join(str(InputAnswer).split()).lower()
+                answer = "".join(str(answer).split())              
                 return answer==InputAnswer
             except ValueError:
                 return False
         elif CheckAnswer == 2:
             try:
-                InputAnswer = string.join(str(InputAnswer).split(),"").lower()
-                answer = string.join(str(answer).split(),"")
+                InputAnswer = "".join(str(InputAnswer).split()).lower()
+                answer = "".join(str(answer).split())
                 answer1 = answer
                 if answer.partition("h")[2]=="0min":
                     answer1 = answer.partition("h")[0]+answer.partition("h")[1]                

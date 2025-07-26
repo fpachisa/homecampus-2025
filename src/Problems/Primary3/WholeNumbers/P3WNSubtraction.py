@@ -67,7 +67,7 @@ class P3WNSubtraction:
             return random.choice(self.GenerateProblemType[1])
         else:
             if LastProblemID in self.ProblemTypes:
-                CurrentProblemKey = [k for k, v in self.ProblemType.iteritems() if LastProblemID in v][0]
+                CurrentProblemKey = [k for k, v in self.ProblemType.items() if LastProblemID in v][0]
                 if CurrentProblemKey == max(self.ProblemType.keys()):
                     NextProblemKey = min(self.ProblemType.keys())
                 else:
@@ -1414,7 +1414,8 @@ class P3WNSubtraction:
     def GenerateMCQ(self,wrongAnswers,problem,answer,template,explain,problem_type,complexity_level,HCScore,CheckAnswerType):
         
         '''Removing correct answers from the wrongAnswers list'''
-        wrongAnswers = filter(self.removeCorrectAnswer,wrongAnswers)
+        # Python 3 fix: convert filter object to list
+        wrongAnswers = list(filter(self.removeCorrectAnswer,wrongAnswers))
         
         self.answer1=''
         self.answer2=''
@@ -1423,6 +1424,9 @@ class P3WNSubtraction:
                              
         '''Randomly selecting 3 wrong answers and adding the correct answer as well'''
         try:
+            # Python 3 fix: convert set to list for random.sample()
+            if isinstance(wrongAnswers, set):
+                wrongAnswers = list(wrongAnswers)
             wrongAnswers = random.sample(wrongAnswers,3)
         except ValueError:
             pass
@@ -2668,7 +2672,7 @@ class P3WNSubtraction:
                 hundreds1_td = "<sup>1</sup>%d"%(hundreds1)
                 borrowedFromThousands=1
 
-        if number1>999: # 4-digit number
+        if int(number1)>999: # 4-digit number
             if borrowedFromThousands==1:
                 thousands1_td = "<sup>%d</sup><del>%d</del>"%(thousands1-1,thousands1)
             else:

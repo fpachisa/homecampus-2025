@@ -19,7 +19,7 @@ History:
 '''
 import random
 from random import randint
-import simplejson as json
+import json
 import string
 
 class P3ANIdentifying:
@@ -55,7 +55,7 @@ class P3ANIdentifying:
             return random.choice(self.GenerateProblemType[1])
         else:
             if LastProblemID in self.ProblemTypes:
-                CurrentProblemKey = [k for k, v in self.ProblemType.iteritems() if LastProblemID in v][0]
+                CurrentProblemKey = [k for k, v in self.ProblemType.items() if LastProblemID in v][0]
                 if CurrentProblemKey == max(self.ProblemType.keys()):
                     NextProblemKey = min(self.ProblemType.keys())
                 else:
@@ -774,7 +774,7 @@ class P3ANIdentifying:
                 return False
         elif CheckAnswer == 2:
             try:
-                InputAnswer = string.join(str(InputAnswer).split(),"")
+                InputAnswer = "".join(str(InputAnswer).split())
                 return str(answer)==str(InputAnswer).upper()
             except ValueError:
                 return False                                          

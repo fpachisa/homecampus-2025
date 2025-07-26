@@ -53,7 +53,7 @@ class P3FRSubtraction:
             return random.choice(self.GenerateProblemType[1])
         else:
             if LastProblemID in self.ProblemTypes:
-                CurrentProblemKey = [k for k, v in self.ProblemType.iteritems() if LastProblemID in v][0]
+                CurrentProblemKey = [k for k, v in self.ProblemType.items() if LastProblemID in v][0]
                 if CurrentProblemKey == max(self.ProblemType.keys()):
                     NextProblemKey = min(self.ProblemType.keys())
                 else:
@@ -788,11 +788,11 @@ class P3FRSubtraction:
         self.solution_text = self.solution_text + "<tr><td colspan=%d>%s</td></tr>"%(numerator1,fraction1)
         self.solution_text = self.solution_text + "<tr><td colspan=%d style='padding-bottom:3px;'><img src='/images/explanation/P3_model_up_brace_fraction_%d.png' /></td></tr>"%(numerator1,numerator1)
         self.solution_text = self.solution_text + "<tr>"
-        for i in range (numerator2*multiplier2):
+        for i in range (int(numerator2*multiplier2)):
             self.solution_text = self.solution_text + "<td style='background-color:%s;height:25px;border:white solid 1px;'>&nbsp;</td>"%(self.color1)
-        for i in range (numerator3*multiplier3):
+        for i in range (int(numerator3*multiplier3)):
             self.solution_text = self.solution_text + "<td style='background-color:%s;height:25px;border:white solid 1px;'>&nbsp;</td>"%(self.color2)
-        for i in range (numerator1*multiplier1-numerator2*multiplier2-numerator3*multiplier3):
+        for i in range (int(numerator1*multiplier1-numerator2*multiplier2-numerator3*multiplier3)):
             self.solution_text = self.solution_text + "<td style='height:25px;border:white solid 1px;'>&nbsp;</td>"
         self.solution_text = self.solution_text + "</tr>"
         self.solution_text = self.solution_text + "<tr><td colspan=%d style='padding-bottom:3px;'><img src='/images/explanation/P3_model_down_brace_fraction_%d.png' /></td><td colspan=%d style='padding-bottom:3px;'><img src='/images/explanation/P3_model_down_brace_fraction_%d.png' /></td><td colspan=%d style='padding-bottom:3px;'><img src='/images/explanation/P3_model_down_brace_fraction_%d.png' /></td></tr>"%(numerator2*multiplier2,numerator2*multiplier2,numerator3*multiplier3,numerator3*multiplier3,numerator1*multiplier1-numerator2*multiplier2-numerator3*multiplier3,numerator1*multiplier1-numerator2*multiplier2-numerator3*multiplier3)

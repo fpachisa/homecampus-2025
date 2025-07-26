@@ -71,7 +71,7 @@ class P3WNWordProblems:
             return random.choice(self.GenerateProblemType[1])
         else:
             if LastProblemID in self.ProblemTypes:
-                CurrentProblemKey = [k for k, v in self.ProblemType.iteritems() if LastProblemID in v][0]
+                CurrentProblemKey = [k for k, v in self.ProblemType.items() if LastProblemID in v][0]
                 if CurrentProblemKey == max(self.ProblemType.keys()):
                     NextProblemKey = min(self.ProblemType.keys())
                 else:
@@ -4419,7 +4419,7 @@ class P3WNWordProblems:
         self.number3 = self.numbers[0]
         self.total = self.numbers[1]*self.number3
         #self.number1 = randint(140,self.total/2)
-        self.number1 = randint(self.numbers[1],self.total/2-5) #to not be smaller than 1 unit for the ease of model drawing and also to make sure that number1!=number2
+        self.number1 = randint(self.numbers[1],int(self.total/2)-5) #to not be smaller than 1 unit for the ease of model drawing and also to make sure that number1!=number2
         self.number2 = self.total - self.number1
 
         self.problem = "%s, %s and %s %s.<br><br>"%(self.names[0],self.names[1],self.names[2],self.item[0])
@@ -4428,7 +4428,7 @@ class P3WNWordProblems:
         self.problem = self.problem + "%s %s %d times as much money as %s.<br><br>"%(self.names[1],self.item[1],self.number3,self.names[2])
         self.problem = self.problem + "How much money %s %s %s?"%(self.item[2],self.names[2],self.item[3])
         
-        self.answer = (self.number1+self.number2)/self.number3
+        self.answer = int((self.number1+self.number2)/self.number3)
         
         self.unit = ""
         self.dollar_unit = "$"
@@ -4527,7 +4527,7 @@ class P3WNWordProblems:
         
         self.number3 = self.numbers[0]
         self.total = self.numbers[1]*self.number3
-        self.number1 = randint(self.total/2+20,self.total*2/3) #added +20 for the sake of model
+        self.number1 = randint(int(self.total/2)+20,int(self.total*2/3)) #added +20 for the sake of model
         self.number2 = self.total - self.number1
 
         self.problem = "%s %s %d %s %s.<br><br>"%(self.name,self.item[0],self.number1,self.item[1],self.item[2])
@@ -4722,7 +4722,7 @@ class P3WNWordProblems:
         self.item = random.choice(self.items)
                        
         self.number1 = random.randrange(30,200,2)
-        self.number2 = randint(4,self.number1/2-10)
+        self.number2 = randint(4,int(self.number1/2)-10)
         
         self.problem = "%s had %d %s and %s altogether.<br><br>"%(self.name,self.number1,self.item[0],self.item[1])
         self.problem = self.problem + "After he exchanged %d %s for %d %s, he had the same number of %s as %s.<br><br>"%(self.number2,self.item[0],self.number2,

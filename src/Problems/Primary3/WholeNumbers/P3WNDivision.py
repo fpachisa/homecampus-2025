@@ -83,7 +83,7 @@ class P3WNDivision:
             return random.choice(self.GenerateProblemType[1])
         else:
             if LastProblemID in self.ProblemTypes:
-                CurrentProblemKey = [k for k, v in self.ProblemType.iteritems() if LastProblemID in v][0]
+                CurrentProblemKey = [k for k, v in self.ProblemType.items() if LastProblemID in v][0]
                 if CurrentProblemKey == max(self.ProblemType.keys()):
                     NextProblemKey = min(self.ProblemType.keys())
                 else:
@@ -1779,7 +1779,8 @@ class P3WNDivision:
     def GenerateMCQ(self,wrongAnswers,problem,answer,template,explain,problem_type,complexity_level,HCScore,CheckAnswerType):
         
         '''Removing correct answers from the wrongAnswers list'''
-        wrongAnswers = filter(self.removeCorrectAnswer,wrongAnswers)
+        # Python 3 fix: convert filter object to list
+        wrongAnswers = list(filter(self.removeCorrectAnswer,wrongAnswers))
         
         self.answer1=''
         self.answer2=''
@@ -1788,6 +1789,9 @@ class P3WNDivision:
                              
         '''Randomly selecting 3 wrong answers and adding the correct answer as well'''
         try:
+            # Python 3 fix: convert set to list for random.sample()
+            if isinstance(wrongAnswers, set):
+                wrongAnswers = list(wrongAnswers)
             wrongAnswers = random.sample(wrongAnswers,3)
         except ValueError:
             pass
@@ -3152,7 +3156,7 @@ class P3WNDivision:
         quotientTens,remOnes = divmod(tens1+remTens*10,number2)
         quotientOnes,rem = divmod(ones1+remOnes*10,number2)
         
-        if number1<100:
+        if int(number1)<100:
             if quotientTens==0:
                 self.solution_text = "<table class='ExplanationMoneyTable' border=0>"
                 self.solution_text = self.solution_text + "<tr><td></td><td style='text-align:left;padding:0px;margin:0px;vertical-align:bottom;max-width:2px;'></td><td style='padding-left:0px;'></td><td style='text-align:left;'>%d</td></tr>"%(quotientOnes)

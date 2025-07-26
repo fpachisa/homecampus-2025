@@ -61,7 +61,7 @@ class P3LMKiloGram:
             return random.choice(self.GenerateProblemType[1])
         else:
             if LastProblemID in self.ProblemTypes:
-                CurrentProblemKey = [k for k, v in self.ProblemType.iteritems() if LastProblemID in v][0]
+                CurrentProblemKey = [k for k, v in self.ProblemType.items() if LastProblemID in v][0]
                 if CurrentProblemKey == max(self.ProblemType.keys()):
                     NextProblemKey = min(self.ProblemType.keys())
                 else:
@@ -605,7 +605,7 @@ class P3LMKiloGram:
     def GenerateMCQ(self,wrongAnswers,problem,answer,template,explain,problem_type,complexity_level,HCScore,CheckAnswerType):
         
         '''Removing correct answers from the wrongAnswers list'''
-        wrongAnswers = filter(self.removeCorrectAnswer,wrongAnswers)
+        wrongAnswers = list(filter(self.removeCorrectAnswer,wrongAnswers))
         
         self.answer1=''
         self.answer2=''
@@ -811,7 +811,7 @@ class P3LMKiloGram:
                 return False
         elif CheckAnswer == 2:
             try:
-                answer1 = string.join(str(answer).split(),"")
+                answer1 = "".join(str(answer).split())
                 '''If user enter answer as 1kg 007 g that should also be correct'''
                 if len(answer1.partition("kg")[2])==3:
                     answer2 = answer1.partition("kg")[0]+"kg0"+answer1.partition("kg")[2]
@@ -819,7 +819,7 @@ class P3LMKiloGram:
                     answer2 = answer1.partition("kg")[0]+"kg00"+answer1.partition("kg")[2]
                 else:
                     answer2 = answer1
-                InputAnswer = string.join(str(InputAnswer).split(),"")
+                InputAnswer = "".join(str(InputAnswer).split())
                 return answer1.capitalize() == InputAnswer.capitalize() or answer2.capitalize() == InputAnswer.capitalize()
             except ValueError:
                 return False

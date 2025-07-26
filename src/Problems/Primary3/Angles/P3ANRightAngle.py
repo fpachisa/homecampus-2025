@@ -55,7 +55,7 @@ class P3ANRightAngle:
             return random.choice(self.GenerateProblemType[1])
         else:
             if LastProblemID in self.ProblemTypes:
-                CurrentProblemKey = [k for k, v in self.ProblemType.iteritems() if LastProblemID in v][0]
+                CurrentProblemKey = [k for k, v in self.ProblemType.items() if LastProblemID in v][0]
                 if CurrentProblemKey == max(self.ProblemType.keys()):
                     NextProblemKey = min(self.ProblemType.keys())
                 else:
@@ -810,7 +810,7 @@ class P3ANRightAngle:
             numbers = {'two':2,'three':3,'four':4,'five':5,'six':6,'seven':7,'eight':8,'nine':9}
             try:
                 # if user types two instead of 2 then also it should be correct
-                InputAnswer = numbers[string.join(str(InputAnswer).split(),"").lower()]
+                InputAnswer = numbers["".join(str(InputAnswer).split()).lower()]
             except KeyError:
                 pass
             try:

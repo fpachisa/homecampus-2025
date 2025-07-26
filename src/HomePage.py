@@ -181,7 +181,7 @@ class UnfinishedWorksheets(BaseHandler):
         return self.render_response('Unfinished-Worksheets.html', **params)
     
 def GetConceptRank(grade,username):
-    Query = SubmitProblemsTable.ProblemsTable.gql("where student_id = '"+unicode(username)+"' and grade = "+str(grade))
+    Query = SubmitProblemsTable.ProblemsTable.gql("where student_id = '"+str(username)+"' and grade = "+str(grade))
     Data = Query.fetch(10000)
     ConceptRank = {}
     ''' GETTING ALL CONCEPTS BY GRADES'''

@@ -61,7 +61,7 @@ class P3WNFiguresToWords:
             return random.choice(self.GenerateProblemType[1])
         else:
             if LastProblemID in self.ProblemTypes:
-                CurrentProblemKey = [k for k, v in self.ProblemType.iteritems() if LastProblemID in v][0]
+                CurrentProblemKey = [k for k, v in self.ProblemType.items() if LastProblemID in v][0]
                 if CurrentProblemKey == max(self.ProblemType.keys()):
                     NextProblemKey = min(self.ProblemType.keys())
                 else:
@@ -1019,8 +1019,8 @@ class P3WNFiguresToWords:
         ("-",",","." so that this method can return true as long as main keywords match)'''
         
         if (template=="MCQTypeProblems.html"):
-            InputAnswer= string.join(InputAnswer.split(),"")
-            answer = string.join(answer.split(),"")
+            InputAnswer= "".join(InputAnswer.split())
+            answer = "".join(answer.split())
         else:            
             ''' removing " and" with a space in front so that it doesn't remove and from "thousand" '''
             while  answer.partition(" and")[1]!="":
@@ -1032,7 +1032,7 @@ class P3WNFiguresToWords:
             while  answer.partition(".")[1]!="":
                 answer = answer.partition(".")[0]+answer.partition(".")[2]
 
-            answer = string.join(answer.split(),"")
+            answer = "".join(answer.split())
             InputAnswer = str(InputAnswer)
             while  InputAnswer.partition(" and")[1]!="":
                 InputAnswer = InputAnswer.partition(" and")[0]+InputAnswer.partition(" and")[2]
@@ -1043,7 +1043,7 @@ class P3WNFiguresToWords:
             while  InputAnswer.partition(".")[1]!="":
                 InputAnswer = InputAnswer.partition(".")[0]+InputAnswer.partition(".")[2]
 
-            InputAnswer = string.join(InputAnswer.split(),"")
+            InputAnswer = "".join(InputAnswer.split())
             
         return (InputAnswer.lower()==answer.lower())                           
    

@@ -46,7 +46,7 @@ class ManageClassroom(BaseHandler):
     def get(self, **kwargs):
         ClassInfo = []
         StudentsInfo = []
-        teacher_username = unicode(self.auth.user.username)
+        teacher_username = str(self.auth.user.username)
         ClassInfoQuery = HCClass.HCClass.gql("where teacher_username = '"+teacher_username+"' order by create_date desc").fetch(100)
         '''Class for which the students will be displayed on the screen. By default it will the latest class created but it will change to the class which user chooses.'''
         display_class = self.request.args.get('class_name')
@@ -83,9 +83,9 @@ class ManageClassroom(BaseHandler):
     def post(self, **kwargs):
         CreateClassroomButtonClicked = self.request.form.get('CreateClassroom')
         AddStudentsButtonClicked = self.request.form.get('AddStudents')
-        teacher_username = unicode(self.auth.user.username)
+        teacher_username = str(self.auth.user.username)
         if CreateClassroomButtonClicked is not None:
-            class_name = unicode(self.request.form.get('class_name'))
+            class_name = str(self.request.form.get('class_name'))
             '''removing the "'" from the class name'''
             if "'" in class_name:
                 new_class_name = class_name.replace("'","")
@@ -98,11 +98,11 @@ class ManageClassroom(BaseHandler):
             HCClassInfo.put()
             return self.redirect("/Teacher/Manage_Classroom")
         elif AddStudentsButtonClicked is not None:
-            classname = unicode(self.request.form.get('classname'))
+            classname = str(self.request.form.get('classname'))
             ClassInfo = HCClass.HCClass.gql("where teacher_username = '"+teacher_username+"' and class_name = '"+classname+"'").fetch(1)
             student_skill = ClassInfo[0].class_skill
-            student_first_name_1 = unicode(self.request.form.get('student_first_name'))
-            student_last_name_1 = unicode(self.request.form.get('student_last_name'))
+            student_first_name_1 = str(self.request.form.get('student_first_name'))
+            student_last_name_1 = str(self.request.form.get('student_last_name'))
             if "'" in student_first_name_1:
                 student_first_name = student_first_name_1.replace("'", "")
             else:

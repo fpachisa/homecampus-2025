@@ -892,10 +892,12 @@ class P6PRWordProblems(BaseHandler):
 
         return self.render_template(template_name, **Config.template_values)
                                                                                     
-app = Tipfy(rules=rules, config=config)
+# DISABLED: Tipfy routes - using Flask instead
+# app = Tipfy(rules=rules, config=config)
 
 def main():
-    app.run()
+    # app.run()
+    print("Primary6Problems.py: Tipfy routes disabled - using Flask instead")
 
 if __name__ == "__main__":
     main()

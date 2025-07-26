@@ -79,7 +79,7 @@ class P3WNPlaceValue:
             return random.choice(self.GenerateProblemType[1])
         else:
             if LastProblemID in self.ProblemTypes:
-                CurrentProblemKey = [k for k, v in self.ProblemType.iteritems() if LastProblemID in v][0]
+                CurrentProblemKey = [k for k, v in self.ProblemType.items() if LastProblemID in v][0]
                 if CurrentProblemKey == max(self.ProblemType.keys()):
                     NextProblemKey = min(self.ProblemType.keys())
                 else:
@@ -138,7 +138,7 @@ class P3WNPlaceValue:
             
         self.digitPlace = {"ones":3,"tens":2,"hundreds":1,"thousands":0}
         
-        self.place = self.digitPlace.keys()[randint(0,len(self.digitPlace)-1)]
+        self.place = list(self.digitPlace.keys())[randint(0,len(self.digitPlace)-1)]
         self.digit = self.digits[self.digitPlace[self.place]]
         
         self.answer = self.digits[self.digitPlace[self.place]]
@@ -168,7 +168,7 @@ class P3WNPlaceValue:
             
         self.digitPlace = {"ones":3,"tens":2,"hundreds":1,"thousands":0}
         
-        self.place = self.digitPlace.keys()[randint(0,len(self.digitPlace)-1)]
+        self.place = list(self.digitPlace.keys())[randint(0,len(self.digitPlace)-1)]
         
         self.digit = self.digits[self.digitPlace[self.place]]
         self.answer = self.place
@@ -667,9 +667,9 @@ class P3WNPlaceValue:
         '''Randomly select tens, hundreds keyword in the problem'''
         self.randPlace = randint(0,len(self.digitPlace)-1)
         self.answer = randint(3,40)
-        self.finalNumber = self.digitPlace[self.digitPlace.keys()[self.randPlace]]*self.answer + int(self.number)        
-        self.problem = "How many %s must be added to %s to make %d?" %(self.digitPlace.keys()[self.randPlace],self.number,self.finalNumber)
-        self.unit = self.digitPlace.keys()[self.randPlace]
+        self.finalNumber = self.digitPlace[list(self.digitPlace.keys())[self.randPlace]]*self.answer + int(self.number)        
+        self.problem = "How many %s must be added to %s to make %d?" %(list(self.digitPlace.keys())[self.randPlace],self.number,self.finalNumber)
+        self.unit = list(self.digitPlace.keys())[self.randPlace]
         
         self.template = "EnterTypeProblems.html"
 
@@ -699,9 +699,9 @@ class P3WNPlaceValue:
         '''Randomly select tens, hundreds keyword in the problem'''
         self.randPlace = randint(0,len(self.digitPlace)-1)
         self.answer = randint(3,40)
-        self.finalNumber = self.digitPlace[self.digitPlace.keys()[self.randPlace]]*self.answer + int(self.number)        
-        self.problem = "How many %s must be subtracted from %d to get %s?" %(self.digitPlace.keys()[self.randPlace],self.finalNumber,self.number)
-        self.unit = self.digitPlace.keys()[self.randPlace]
+        self.finalNumber = self.digitPlace[list(self.digitPlace.keys())[self.randPlace]]*self.answer + int(self.number)        
+        self.problem = "How many %s must be subtracted from %d to get %s?" %(list(self.digitPlace.keys())[self.randPlace],self.finalNumber,self.number)
+        self.unit = list(self.digitPlace.keys())[self.randPlace]
         
         self.template = "EnterTypeProblems.html"
 
@@ -759,14 +759,14 @@ class P3WNPlaceValue:
         self.randPlace = randint(0,len(self.digitPlace)-1)
         self.multiplier = randint(10,25)
         
-        self.problem = "%d %s more than %d is:" %(self.multiplier,self.digitPlace.keys()[self.randPlace],self.number)
-        self.answer = (self.digitPlace[self.digitPlace.keys()[self.randPlace]])*self.multiplier + self.number
+        self.problem = "%d %s more than %d is:" %(self.multiplier,list(self.digitPlace.keys())[self.randPlace],self.number)
+        self.answer = (self.digitPlace[list(self.digitPlace.keys())[self.randPlace]])*self.multiplier + self.number
         
         self.template = "EnterTypeProblems.html"
 
         '''Explanation starts...'''
         self.explain_template = "Explanation.html"
-        self.explain_text = self.ExplainType8a(self.problem,self.answer,self.number,self.multiplier,self.digitPlace.keys()[self.randPlace])
+        self.explain_text = self.ExplainType8a(self.problem,self.answer,self.number,self.multiplier,list(self.digitPlace.keys())[self.randPlace])
         self.explain = {"explain_template":self.explain_template,"explain_text":self.explain_text,
                              "video_link":"www.homecampus.com.sg","explain_note":""}
         '''Explanation ends'''
@@ -819,14 +819,14 @@ class P3WNPlaceValue:
         self.randPlace = randint(0,len(self.digitPlace)-1)
         self.multiplier = randint(10,25)
         
-        self.problem = "%d %s less than %d is:" %(self.multiplier,self.digitPlace.keys()[self.randPlace],self.number)
-        self.answer = self.number - (self.digitPlace[self.digitPlace.keys()[self.randPlace]])*self.multiplier
+        self.problem = "%d %s less than %d is:" %(self.multiplier,list(self.digitPlace.keys())[self.randPlace],self.number)
+        self.answer = self.number - (self.digitPlace[list(self.digitPlace.keys())[self.randPlace]])*self.multiplier
         
         self.template = "EnterTypeProblems.html"
 
         '''Explanation starts...'''
         self.explain_template = "Explanation.html"
-        self.explain_text = self.ExplainType8b(self.problem,self.answer,self.number,self.multiplier,self.digitPlace.keys()[self.randPlace])
+        self.explain_text = self.ExplainType8b(self.problem,self.answer,self.number,self.multiplier,list(self.digitPlace.keys())[self.randPlace])
         self.explain = {"explain_template":self.explain_template,"explain_text":self.explain_text,
                              "video_link":"www.homecampus.com.sg","explain_note":""}
         '''Explanation ends'''
@@ -879,7 +879,7 @@ class P3WNPlaceValue:
         self.randPlace = randint(0,len(self.digitPlace)-1)
         self.multiplier = randint(1,25)
         
-        self.number2 = (self.digitPlace[self.digitPlace.keys()[self.randPlace]])*self.multiplier
+        self.number2 = (self.digitPlace[list(self.digitPlace.keys())[self.randPlace]])*self.multiplier
         
         self.problem = "%d more than %d is ______." %(self.number2,self.number)
         self.answer = self.number2 + self.number
@@ -922,7 +922,7 @@ class P3WNPlaceValue:
         self.randPlace = randint(0,len(self.digitPlace)-1)
         self.multiplier = randint(1,25)
         
-        self.number2 = (self.digitPlace[self.digitPlace.keys()[self.randPlace]])*self.multiplier
+        self.number2 = (self.digitPlace[list(self.digitPlace.keys())[self.randPlace]])*self.multiplier
         
         self.problem = "%d less than %d is ______." %(self.number2,self.number)
         self.answer = self.number - self.number2
@@ -1008,7 +1008,7 @@ class P3WNPlaceValue:
         self.randPlace = randint(0,len(self.digitPlace)-1)
         self.multiplier = randint(1,25)
         
-        self.number2 = (self.digitPlace[self.digitPlace.keys()[self.randPlace]])*self.multiplier
+        self.number2 = (self.digitPlace[list(self.digitPlace.keys())[self.randPlace]])*self.multiplier
         
         self.problem = "What number is %d more than %d?" %(self.number2,self.number)
         self.answer = self.number2 + self.number
@@ -1713,7 +1713,8 @@ class P3WNPlaceValue:
     def GenerateMCQ(self,wrongAnswers,problem,answer,template,explain,problem_type,complexity_level,HCScore,CheckAnswerType):
         
         '''Removing correct answers from the wrongAnswers list'''
-        wrongAnswers = filter(self.removeCorrectAnswer,wrongAnswers)
+        # Python 3 fix: convert filter object to list
+        wrongAnswers = list(filter(self.removeCorrectAnswer,wrongAnswers))
         
         self.answer1=''
         self.answer2=''
@@ -1722,7 +1723,7 @@ class P3WNPlaceValue:
                              
         '''Randomly selecting 3 wrong answers and adding the correct answer as well'''
         try:
-            wrongAnswers = random.sample(wrongAnswers,3)
+            wrongAnswers = random.sample(list(wrongAnswers),3)
         except ValueError:
             pass
             
@@ -1766,7 +1767,7 @@ class P3WNPlaceValue:
             
         self.digitPlace = {"ones":3,"tens":2,"hundreds":1,"thousands":0}
         
-        self.place = self.digitPlace.keys()[randint(0,len(self.digitPlace)-1)]
+        self.place = list(self.digitPlace.keys())[randint(0,len(self.digitPlace)-1)]
         self.digit = self.digits[self.digitPlace[self.place]]
         
         self.answer = self.digits[self.digitPlace[self.place]]
@@ -1802,7 +1803,7 @@ class P3WNPlaceValue:
             
         self.digitPlace = {"ones":3,"tens":2,"hundreds":1,"thousands":0}
         
-        self.place = self.digitPlace.keys()[randint(0,len(self.digitPlace)-1)]
+        self.place = list(self.digitPlace.keys())[randint(0,len(self.digitPlace)-1)]
         
         self.digit = self.digits[self.digitPlace[self.place]]
         self.answer = self.place
@@ -2238,11 +2239,11 @@ class P3WNPlaceValue:
         randomly selected in this problem unlike 3 in rest'''
         
         '''Removing correct answers from the wrongAnswers list'''
-        self.wrongAnswers = filter(self.removeCorrectAnswer,self.wrongAnswers)
+        self.wrongAnswers = list(filter(self.removeCorrectAnswer,self.wrongAnswers))
         
         '''Randomly selecting 2 wrong answer and 1 wrong answer and 1 correct answer is always included
         in this example the wrong answer which is always included is 7815'''                     
-        self.wrongAnswers = random.sample(self.wrongAnswers,2)
+        self.wrongAnswers = random.sample(list(self.wrongAnswers),2)
         self.wrongAnswer =''
         for i in range(self.missingDigit,len(self.digits)):
             self.wrongAnswer = self.wrongAnswer + str(self.digits[i])
@@ -2298,9 +2299,9 @@ class P3WNPlaceValue:
         '''Randomly select tens, hundreds keyword in the problem'''
         self.randPlace = randint(0,len(self.digitPlace)-1)
         self.answer = randint(3,40)
-        self.finalNumber = self.digitPlace[self.digitPlace.keys()[self.randPlace]]*self.answer + int(self.number)        
-        self.problem = "How many %s must be added to %s to make %d?" %(self.digitPlace.keys()[self.randPlace],self.number,self.finalNumber)
-        self.unit = self.digitPlace.keys()[self.randPlace]
+        self.finalNumber = self.digitPlace[list(self.digitPlace.keys())[self.randPlace]]*self.answer + int(self.number)        
+        self.problem = "How many %s must be added to %s to make %d?" %(list(self.digitPlace.keys())[self.randPlace],self.number,self.finalNumber)
+        self.unit = list(self.digitPlace.keys())[self.randPlace]
                 
         self.template = "MCQTypeProblems.html"
         
@@ -2339,9 +2340,9 @@ class P3WNPlaceValue:
         '''Randomly select tens, hundreds keyword in the problem'''
         self.randPlace = randint(0,len(self.digitPlace)-1)
         self.answer = randint(3,40)
-        self.finalNumber = self.digitPlace[self.digitPlace.keys()[self.randPlace]]*self.answer + int(self.number)        
-        self.problem = "How many %s must be subtracted from %d to get %s?" %(self.digitPlace.keys()[self.randPlace],self.finalNumber,self.number)
-        self.unit = self.digitPlace.keys()[self.randPlace]
+        self.finalNumber = self.digitPlace[list(self.digitPlace.keys())[self.randPlace]]*self.answer + int(self.number)        
+        self.problem = "How many %s must be subtracted from %d to get %s?" %(list(self.digitPlace.keys())[self.randPlace],self.finalNumber,self.number)
+        self.unit = list(self.digitPlace.keys())[self.randPlace]
                 
         self.template = "MCQTypeProblems.html"
         
@@ -2379,8 +2380,8 @@ class P3WNPlaceValue:
         self.randPlace = randint(0,len(self.digitPlace)-1)
         self.multiplier = randint(10,25)
         
-        self.problem = "%d %s more than %d is:" %(self.multiplier,self.digitPlace.keys()[self.randPlace],self.number)
-        self.answer = (self.digitPlace[self.digitPlace.keys()[self.randPlace]])*self.multiplier + self.number
+        self.problem = "%d %s more than %d is:" %(self.multiplier,list(self.digitPlace.keys())[self.randPlace],self.number)
+        self.answer = (self.digitPlace[list(self.digitPlace.keys())[self.randPlace]])*self.multiplier + self.number
                 
         self.template = "MCQTypeProblems.html"
         
@@ -2389,7 +2390,7 @@ class P3WNPlaceValue:
         
         '''Explanation starts...'''
         self.explain_template = "Explanation.html"
-        self.explain_text = self.ExplainType8a(self.problem,self.answer,self.number,self.multiplier,self.digitPlace.keys()[self.randPlace])
+        self.explain_text = self.ExplainType8a(self.problem,self.answer,self.number,self.multiplier,list(self.digitPlace.keys())[self.randPlace])
         self.explain = {"explain_template":self.explain_template,"explain_text":self.explain_text,
                              "video_link":"www.homecampus.com.sg","explain_note":""}
         '''Explanation ends'''
@@ -2415,8 +2416,8 @@ class P3WNPlaceValue:
         self.randPlace = randint(0,len(self.digitPlace)-1)
         self.multiplier = randint(10,25)
         
-        self.problem = "%d %s less than %d is:" %(self.multiplier,self.digitPlace.keys()[self.randPlace],self.number)
-        self.answer = self.number - (self.digitPlace[self.digitPlace.keys()[self.randPlace]])*self.multiplier
+        self.problem = "%d %s less than %d is:" %(self.multiplier,list(self.digitPlace.keys())[self.randPlace],self.number)
+        self.answer = self.number - (self.digitPlace[list(self.digitPlace.keys())[self.randPlace]])*self.multiplier
                 
         self.template = "MCQTypeProblems.html"
         
@@ -2424,7 +2425,7 @@ class P3WNPlaceValue:
         
         '''Explanation starts...'''
         self.explain_template = "Explanation.html"
-        self.explain_text = self.ExplainType8b(self.problem,self.answer,self.number,self.multiplier,self.digitPlace.keys()[self.randPlace])
+        self.explain_text = self.ExplainType8b(self.problem,self.answer,self.number,self.multiplier,list(self.digitPlace.keys())[self.randPlace])
         self.explain = {"explain_template":self.explain_template,"explain_text":self.explain_text,
                              "video_link":"www.homecampus.com.sg","explain_note":""}
         '''Explanation ends'''
@@ -2450,7 +2451,7 @@ class P3WNPlaceValue:
         self.randPlace = randint(0,len(self.digitPlace)-1)
         self.multiplier = randint(1,25)
         
-        self.number2 = (self.digitPlace[self.digitPlace.keys()[self.randPlace]])*self.multiplier
+        self.number2 = (self.digitPlace[list(self.digitPlace.keys())[self.randPlace]])*self.multiplier
         
         self.problem = "%d more than %d is ______." %(self.number2,self.number)
         self.answer = self.number2 + self.number
@@ -2488,7 +2489,7 @@ class P3WNPlaceValue:
         self.randPlace = randint(0,len(self.digitPlace)-1)
         self.multiplier = randint(1,25)
         
-        self.number2 = (self.digitPlace[self.digitPlace.keys()[self.randPlace]])*self.multiplier
+        self.number2 = (self.digitPlace[list(self.digitPlace.keys())[self.randPlace]])*self.multiplier
         
         self.problem = "%d less than %d is ______." %(self.number2,self.number)
         self.answer = self.number - self.number2
@@ -2562,7 +2563,7 @@ class P3WNPlaceValue:
         self.randPlace = randint(0,len(self.digitPlace)-1)
         self.multiplier = randint(1,25)
         
-        self.number2 = (self.digitPlace[self.digitPlace.keys()[self.randPlace]])*self.multiplier
+        self.number2 = (self.digitPlace[list(self.digitPlace.keys())[self.randPlace]])*self.multiplier
         
         self.problem = "What number is %d more than %d?" %(self.number2,self.number)
         self.answer = self.number2 + self.number
