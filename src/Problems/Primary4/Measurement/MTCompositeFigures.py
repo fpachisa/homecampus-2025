@@ -54,7 +54,7 @@ class MTCompositeFigures:
         #Creating one more problem type so it creates a list and not a list of lists
         self.ProblemTypes = []
         
-        for i in self.ProblemType.values():
+        for i in list(self.ProblemType.values()):
             for k in i:
                 self.ProblemTypes.append(k)
                 
@@ -62,17 +62,17 @@ class MTCompositeFigures:
             LastProblemID = 0
         
         if LastProblemID == 0:
-            return random.choice(random.choice(self.GenerateProblemType.values()))
+            return random.choice(random.choice(list(self.GenerateProblemType.values())))
         else:
             if LastProblemID in self.ProblemTypes:
-                CurrentProblemKey = [k for k, v in self.ProblemType.iteritems() if LastProblemID in v][0]
+                CurrentProblemKey = [k for k, v in self.ProblemType.items() if LastProblemID in v][0]
                 if CurrentProblemKey == max(self.ProblemType.keys()):
                     NextProblemKey = min(self.ProblemType.keys())
                 else:
                     NextProblemKey = CurrentProblemKey + 1 
                 return random.choice(self.GenerateProblemType[NextProblemKey])
             else:
-                return random.choice(random.choice(self.GenerateProblemType.values()))
+                return random.choice(random.choice(list(self.GenerateProblemType.values())))
         #return self.GenerateProblemType8()
 
     def GenerateTestProblem(self,problem_type):
@@ -97,10 +97,10 @@ class MTCompositeFigures:
         self.l3 = randint(35,100)
         self.l4 = randint(35,50)
 
-        self.DisplayL1 = self.l1 / 5
-        self.DisplayL2 = self.l2 / 5
-        self.DisplayL3 = self.l3 / 5
-        self.DisplayL4 = self.l4 / 5
+        self.DisplayL1 = self.l1 // 5
+        self.DisplayL2 = self.l2 // 5
+        self.DisplayL3 = self.l3 // 5
+        self.DisplayL4 = self.l4 // 5
         
         self.FunctionCall = "P4DrawRectangleSquare1("+str(self.l1)+","+str(self.l2)+","+str(self.l3)+","+str(self.l4)+","+str(self.DisplayL1)+","+str(self.DisplayL2)+","+str(self.DisplayL3)+","+str(self.DisplayL4)+")"
         self.answer = 1
@@ -149,10 +149,10 @@ class MTCompositeFigures:
         self.l1 = randint(self.l3+30,160)
         self.l2 = randint(self.l4+30,100)  
 
-        self.DisplayL1 = self.l1 / 8
-        self.DisplayL2 = self.l2 / 8
-        self.DisplayL3 = self.l3 / 8
-        self.DisplayL4 = self.l4 / 8
+        self.DisplayL1 = self.l1 // 8
+        self.DisplayL2 = self.l2 // 8
+        self.DisplayL3 = self.l3 // 8
+        self.DisplayL4 = self.l4 // 8
         
         self.FunctionCall = "P4DrawRectangleSquare2("+str(self.l1)+","+str(self.l2)+","+str(self.l3)+","+str(self.l4)+","+str(self.DisplayL1)+","+str(self.DisplayL2)+","+str(self.DisplayL3)+","+str(self.DisplayL4)+")"
      
@@ -202,11 +202,11 @@ class MTCompositeFigures:
         self.l4 = randint(30,60)
         self.l1 = randint(self.l3+self.l5+20,160)      
         
-        self.DisplayL1 = self.l1 / 5
-        self.DisplayL2 = self.l2 / 5
-        self.DisplayL3 = self.l3 / 5
-        self.DisplayL4 = self.l4 / 5
-        self.DisplayL5 = self.l5 / 5
+        self.DisplayL1 = self.l1 // 5
+        self.DisplayL2 = self.l2 // 5
+        self.DisplayL3 = self.l3 // 5
+        self.DisplayL4 = self.l4 // 5
+        self.DisplayL5 = self.l5 // 5
         
         self.FunctionCall = "P4DrawRectangleSquare3("+str(self.l1)+","+str(self.l2)+","+str(self.l3)+","+str(self.l4)+","+str(self.l5)+","+str(self.DisplayL1)+","+str(self.DisplayL2)+","+str(self.DisplayL3)+","+str(self.DisplayL4)+","+str(self.DisplayL5)+")"
      
@@ -266,11 +266,11 @@ class MTCompositeFigures:
         self.l4 = randint(30,60)
         self.l1 = randint(self.l3+self.l5+20,160)      
         
-        self.DisplayL1 = self.l1 / 6
-        self.DisplayL2 = self.l2 / 6
-        self.DisplayL3 = self.l3 / 6
-        self.DisplayL4 = self.l4 / 6
-        self.DisplayL5 = self.l5 / 6
+        self.DisplayL1 = self.l1 // 6
+        self.DisplayL2 = self.l2 // 6
+        self.DisplayL3 = self.l3 // 6
+        self.DisplayL4 = self.l4 // 6
+        self.DisplayL5 = self.l5 // 6
         
         self.FunctionCall = "P4DrawRectangleSquare4("+str(self.l1)+","+str(self.l2)+","+str(self.l3)+","+str(self.l4)+","+str(self.l5)+","+str(self.DisplayL1)+","+str(self.DisplayL2)+","+str(self.DisplayL3)+","+str(self.DisplayL4)+","+str(self.DisplayL5)+")"
      
@@ -333,15 +333,15 @@ class MTCompositeFigures:
         self.l4 = random.randrange(30,60,8)
         self.l5 = random.randrange(59,self.l1+self.l3-30,8)    
         
-        self.DisplayL1 = self.l1 / 8
-        self.DisplayL2 = self.l2 / 8
-        self.DisplayL3 = self.l3 / 8
-        self.DisplayL4 = self.l4 / 8
-        self.DisplayL5 = self.l5 / 8
+        self.DisplayL1 = self.l1 // 8
+        self.DisplayL2 = self.l2 // 8
+        self.DisplayL3 = self.l3 // 8
+        self.DisplayL4 = self.l4 // 8
+        self.DisplayL5 = self.l5 // 8
         
         if self.DisplayL3 == self.DisplayL5:
             self.l5 = self.l3 + 8
-            self.DisplayL5 = self.l5 / 8
+            self.DisplayL5 = self.l5 // 8
         
         self.FunctionCall = "P4DrawRectangleSquare5("+str(self.l1)+","+str(self.l2)+","+str(self.l3)+","+str(self.l4)+","+str(self.l5)+","+str(self.DisplayL1)+","+str(self.DisplayL2)+","+str(self.DisplayL3)+","+str(self.DisplayL4)+","+str(self.DisplayL5)+")"
      
@@ -397,12 +397,12 @@ class MTCompositeFigures:
         if self.l4 - self.l6 < 4:
             self.l4 = self.l6 + 8
             
-        self.DisplayL1 = self.l1 / 4
-        self.DisplayL2 = self.l2 / 4
-        self.DisplayL3 = self.l3 / 4
-        self.DisplayL4 = self.l4 / 4
-        self.DisplayL5 = self.l5 / 4
-        self.DisplayL6 = self.l6 / 4
+        self.DisplayL1 = self.l1 // 4
+        self.DisplayL2 = self.l2 // 4
+        self.DisplayL3 = self.l3 // 4
+        self.DisplayL4 = self.l4 // 4
+        self.DisplayL5 = self.l5 // 4
+        self.DisplayL6 = self.l6 // 4
         
         self.FunctionCall = "P4DrawRectangleSquare6("+str(self.l1)+","+str(self.l2)+","+str(self.l3)+","+str(self.l4)+","+str(self.l5)+","+str(self.l6)+","+str(self.DisplayL1)+","+str(self.DisplayL2)+","+str(self.DisplayL3)+","+str(self.DisplayL4)+","+str(self.DisplayL5)+","+str(self.DisplayL6)+")"
      
@@ -453,15 +453,15 @@ class MTCompositeFigures:
         self.HCScore = 5
         
         self.l1 = random.randrange(120,160,4)
-        self.l2 = random.randrange(self.l1/4,self.l1/2,4)
-        self.l3 = random.randrange(self.l1/4,self.l1/2,4)
+        self.l2 = random.randrange(int(self.l1/4),int(self.l1/2),4)
+        self.l3 = random.randrange(int(self.l1/4),int(self.l1/2),4)
 
         if self.l2 == self.l3:
             self.l2 = self.l3 + 8
             
-        self.DisplayL1 = self.l1 / 4
-        self.DisplayL2 = self.l2 / 4
-        self.DisplayL3 = self.l3 / 4
+        self.DisplayL1 = self.l1 // 4
+        self.DisplayL2 = self.l2 // 4
+        self.DisplayL3 = self.l3 // 4
         
         self.FunctionCall = "P4DrawRectangleSquare7("+str(self.l1)+","+str(self.l2)+","+str(self.l3)+","+str(self.DisplayL1)+","+str(self.DisplayL2)+","+str(self.DisplayL3)+")"
      

@@ -59,7 +59,7 @@ class FactorMultiple:
         #Creating one more problem type so it creates a list and not a list of lists
         self.ProblemTypes = []
         
-        for i in self.ProblemType.values():
+        for i in list(self.ProblemType.values()):
             for k in i:
                 self.ProblemTypes.append(k)
                 
@@ -67,17 +67,17 @@ class FactorMultiple:
             LastProblemID = 0
         
         if LastProblemID == 0:
-            return random.choice(random.choice(self.GenerateProblemType.values()))
+            return random.choice(random.choice(list(self.GenerateProblemType.values())))
         else:
             if LastProblemID in self.ProblemTypes:
-                CurrentProblemKey = [k for k, v in self.ProblemType.iteritems() if LastProblemID in v][0]
+                CurrentProblemKey = [k for k, v in self.ProblemType.items() if LastProblemID in v][0]
                 if CurrentProblemKey == max(self.ProblemType.keys()):
                     NextProblemKey = min(self.ProblemType.keys())
                 else:
                     NextProblemKey = CurrentProblemKey + 1 
                 return random.choice(self.GenerateProblemType[NextProblemKey])
             else:
-                return random.choice(random.choice(self.GenerateProblemType.values()))
+                return random.choice(random.choice(list(self.GenerateProblemType.values())))
         #return self.GenerateProblemType4()
 
     def GenerateTestProblem(self,problem_type):
@@ -205,7 +205,7 @@ class FactorMultiple:
         self.solution_text =  "<b><u>Problem</b></u>:<br/>"
         self.solution_text = self.solution_text + "<i>"+problem + "</i><br/><br/>"
         self.solution_text = self.solution_text + "<b><u>Solution</b></u>:<br><br>"
-        for i in range(len(answer)/2):
+        for i in range(int(len(answer)/2)):
             self.solution_text = self.solution_text + str(number)+" = "+str(answer[i])+" &times; "+str(answer[len(answer)-i-1])+"<br>"
         self.solution_text = self.solution_text + "<br>Therefore, the factors of "+str(number)+" are "+str(answer)
         self.explain = self.answer_text+"ANSWERSEPARATOR"+self.solution_text
@@ -253,10 +253,10 @@ class FactorMultiple:
         factor2 = Factors.Factors().find_factors(number2)
         self.solution_text = self.solution_text + "<i>"+problem + "</i><br/><br/>"
         self.solution_text = self.solution_text + "<b><u>Solution</b></u>:<br><br>"
-        for i in range(len(factor1)/2):
+        for i in range(int(len(factor1)/2)):
             self.solution_text = self.solution_text + str(number1)+" = "+str(factor1[i])+" &times; "+str(factor1[len(factor1)-i-1])+"<br>"
         self.solution_text = self.solution_text + "<br>The factors of "+str(number1)+" are "+str(factor1)+"<br><br>"
-        for i in range(len(factor2)/2):
+        for i in range(int(len(factor2)/2)):
             self.solution_text = self.solution_text + str(number2)+" = "+str(factor2[i])+" &times; "+str(factor2[len(factor2)-i-1])+"<br>"
         self.solution_text = self.solution_text + "<br>The factors of "+str(number2)+" are "+str(factor2)+"<br><br>"
         self.solution_text = self.solution_text + "Therefore, the common factors of "+str(number1)+" and "+str(number2)+" are "+str(answer)
@@ -453,7 +453,7 @@ class FactorMultiple:
             try:
                 '''converting list to string as Test module can only store string as answer'''
                 answer = str(answer)[1:-1]
-                answer = string.join(answer.split(),"")
+                answer = "".join(answer.split())
                 AnswerList = []
                 while  answer.partition(",")[1]!="":
                     AnswerList.append(int(answer.partition(",")[0]))

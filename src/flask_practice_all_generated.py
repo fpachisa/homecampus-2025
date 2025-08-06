@@ -359,6 +359,202 @@ def create_grade3_problem_content(concept_id, concept_display, generator_module,
         else:
             return f"Error generating problem: {e}. Please refresh the page."
 
+def create_grade4_problem_content(concept_id, concept_display, generator_module, generator_class, full_page=True):
+    """Generic helper function to create Grade 4 problem content"""
+    logging.error(f"=== CREATE_GRADE4_PROBLEM_CONTENT CALLED FOR {concept_id} ===")
+    logging.error(f"=== PARAMETERS: display='{concept_display}', module='{generator_module}', class='{generator_class}', full_page={full_page} ===")
+    try:
+        logging.info(f"Generating {concept_id} problem, full_page={full_page}, method={request.method}")
+        logging.info(f"Current session keys for {concept_id}: {[k for k in session.keys() if concept_id in k]}")
+        
+        # Import the problem generator dynamically
+        try:
+            module = __import__(generator_module, fromlist=[generator_class])
+            GeneratorClass = getattr(module, generator_class)
+            logging.info(f"Successfully imported {generator_class} from {generator_module}")
+        except ImportError as e:
+            logging.error(f"Import error for {generator_module}: {e}")
+            raise
+        except AttributeError as e:
+            logging.error(f"Class {generator_class} not found in {generator_module}: {e}")
+            raise
+        
+        # Get last problem type from session (mimicking memcache)
+        problem_type_number = session.get(f'{concept_id}_problem_type', 0)
+        
+        # Convert numeric problem type to the string format expected by GenerateProblemSequential
+        # For first time (0), pass 0. For subsequent calls, pass the last problem type string
+        last_problem_type_string = session.get(f'{concept_id}_last_problem_type_string', None)
+        
+        logging.info(f"PROBLEM GENERATION DEBUG for {concept_id}:")
+        logging.info(f"  problem_type_number: {problem_type_number}")
+        logging.info(f"  last_problem_type_string: {last_problem_type_string}")
+        logging.info(f"  Will call GenerateProblemSequential with: {0 if problem_type_number == 0 or last_problem_type_string is None else last_problem_type_string}")
+        
+        # Generate the problem
+        try:
+            generator = GeneratorClass()
+            if problem_type_number == 0 or last_problem_type_string is None:
+                # First time generation
+                template_values = generator.GenerateProblemSequential(0)
+            else:
+                # Use the last generated problem type string for sequential generation
+                template_values = generator.GenerateProblemSequential(last_problem_type_string)
+            template_values["concept"] = concept_id
+            
+            # Store the maximum number of problem types for this concept
+            if hasattr(generator, 'ProblemType') and generator.ProblemType:
+                max_types = max(generator.ProblemType.keys())
+                session[f'{concept_id}_max_problem_types'] = max_types
+                logging.info(f"Stored max problem types for {concept_id}: {max_types}")
+                
+            # Store the new problem type string for next sequential generation
+            if template_values.get('problem_type'):
+                session[f'{concept_id}_last_problem_type_string'] = template_values['problem_type']
+                logging.info(f"Stored last problem type string for {concept_id}: {template_values['problem_type']}")
+            
+            # Update the problem type number (used for progress tracking)
+            new_problem_type_number = (problem_type_number + 1)
+            session[f'{concept_id}_problem_type'] = new_problem_type_number
+            logging.info(f"Updated problem_type_number for {concept_id}: {new_problem_type_number}")
+            
+        except Exception as e:
+            logging.error(f"Error calling GenerateProblemSequential for {concept_id}: {e}")
+            import traceback
+            logging.error(f"Full traceback: {traceback.format_exc()}")
+            raise
+        
+        logging.info(f"Generated template values keys for {concept_id}: {list(template_values.keys())}")
+        
+        # DEBUG: Check what template_values contains
+        logging.error(f"TEMPLATE_VALUES DEBUG for {concept_id}: keys={list(template_values.keys())}")
+        logging.error(f"TEMPLATE_VALUES answer: {template_values.get('answer', 'NOT_FOUND')}")
+        logging.error(f"TEMPLATE_VALUES problem_type: {template_values.get('problem_type', 'NOT_FOUND')}")
+        
+        # Store current problem info in session for answer checking
+        current_answer = template_values.get('answer', '')
+        current_explanation = template_values.get('explain', {}).get('explain_text', '')
+        current_problem_type_string = template_values.get('problem_type', 'ProblemType1')
+        
+        logging.info(f"PROBLEM GENERATED for {concept_id}: type='{current_problem_type_string}', answer='{current_answer}'")
+        
+        session[f'{concept_id}_current_answer'] = current_answer
+        session[f'{concept_id}_current_problem_type'] = problem_type_number
+        session[f'{concept_id}_current_explanation'] = current_explanation
+        session[f'{concept_id}_problem_type'] = problem_type_number
+        session[f'{concept_id}_last_problem_type_string'] = current_problem_type_string
+        
+        logging.info(f"Stored session data for {concept_id}: answer='{current_answer}', type_number={problem_type_number}, type_string='{current_problem_type_string}', explanation_length={len(current_explanation) if current_explanation else 0}")
+        
+        # Store the maximum number of problem types for this concept
+        if hasattr(generator, 'ProblemType') and generator.ProblemType:
+            max_types = max(generator.ProblemType.keys())
+            session[f'{concept_id}_max_problem_types'] = max_types
+            logging.info(f"Stored max problem types for {concept_id}: {max_types}")
+        else:
+            # Fallback: try to count ProblemTypes list if available
+            if hasattr(generator, 'ProblemTypes') and generator.ProblemTypes:
+                max_types = len(generator.ProblemTypes)
+                session[f'{concept_id}_max_problem_types'] = max_types
+                logging.info(f"Stored max problem types from ProblemTypes for {concept_id}: {max_types}")
+        
+        # Ensure session changes are saved
+        session.permanent = True
+        session.modified = True
+        
+        # Create a temporary user object for the template context
+        temp_user = type('TempUser', (), {
+            'username': session.get('current_user', {}).get('username', 'guest'),
+            'IsParent': session.get('current_user', {}).get('IsParent', False),
+            'IsTeacher': session.get('current_user', {}).get('IsTeacher', False),
+        })()
+        
+        # Add required template context
+        template_values.update({
+            'current_user': temp_user,  # Problem template needs this
+            'grade': 4,
+            'problems_attempted': session.get('problems_attempted', 1),
+            'ConceptID': concept_id,
+            'test_id': session.get('test_id', ''),
+            'counter': session.get('counter', 1),
+            'from_test': session.get('from_test', 'N'),
+            'concept_display_full': f'Grade 4 - {concept_display}',
+            'concept_display': concept_display,
+            'Concept_HCScore': session.get('Concept_HCScore', 0),
+            'correct_problems': session.get('correct_problems', 0),
+            'Ninja_title': 'White Belt',
+            'Ninja_Percentage': 10,
+            'Ninja_Start': 0,
+            'Ninja_End': 100,
+            'SubscribeMessage': 'N',
+            'practice_page': f'/Grade_4_Math_Practice/{concept_id.replace("P4", "").replace("WN", "Whole_Numbers_").replace("MO", "Money_").replace("TI", "Time_").replace("DC", "Decimals_").replace("FR", "Fractions_").replace("MT", "Measurement_").replace("DA", "Data_Analysis_")}'
+        })
+        
+        # Get the specific template for this problem
+        problem_template = template_values["template"]
+        
+        # Render the problem using its specific template
+        problem_details = render_template(problem_template, **template_values)
+        
+        # Create context for the main practice page
+        handler = FlaskPracticeHandler()
+        practice_context = handler.get_template_context(4, concept_id, "/Practice/Primary_Grade_4_Mathematics")
+        practice_context['Problem_Details'] = problem_details
+        practice_context['problem'] = problem_details  # PracticePageSkeleton.html expects 'problem' variable
+        
+        # Ensure current_user is properly set in practice context for consistency
+        # Use the same temp_user structure for both problem and practice templates
+        if not practice_context.get('current_user') or practice_context.get('current_user') is None:
+            practice_context['current_user'] = temp_user
+        
+        # Add JavaScript variable for concept using consistent user data
+        current_user = practice_context.get('current_user')
+        if current_user and hasattr(current_user, 'username'):
+            user_name = current_user.username
+            is_parent = current_user.IsParent if hasattr(current_user, 'IsParent') else False
+        elif current_user and isinstance(current_user, dict):
+            user_name = current_user.get('username', 'guest')
+            is_parent = current_user.get('IsParent', False)
+        else:
+            # Final fallback for guest users or when no user is logged in
+            user_name = 'guest'
+            is_parent = False
+        
+        concept_script = f"""<script type="text/javascript">
+            var actualConcept = '{concept_id}';
+            var _data = {{
+                student_id: '{user_name}',
+                IsParent: {str(is_parent).lower()},
+                grade: {template_values.get('grade', 4)},
+                complexity_level: '{template_values.get('complexity_level', 'medium')}',
+                HCScore: {template_values.get('HCScore', 5)}
+            }};
+            console.log('Debug: actualConcept set to:', actualConcept);
+            console.log('Debug: _data set to:', _data);
+        </script>"""
+        
+        practice_context['concept_script'] = concept_script
+        
+        # Return the appropriate response
+        if full_page:
+            # Use the same template as Grade 3 for consistent styling
+            return render_template('Practice_Question_Page.html', **practice_context)
+        else:
+            # AJAX request - return only the problem details
+            return problem_details
+            
+    except Exception as e:
+        logging.error(f"Error generating {concept_id} problem: {e}")
+        import traceback
+        logging.error(f"Full traceback: {traceback.format_exc()}")
+        # Fallback to skeleton
+        if full_page:
+            handler = FlaskPracticeHandler()
+            return handler.render_practice_response('Practice_Question_Page.html', 4, concept_id, 
+                                                  Problem_Details=f"Error generating problem: {e}<br>Check server logs for details.")
+        else:
+            return f"Error generating problem: {e}. Please refresh the page."
+
 def g3_whole_numbers_place_values_content(full_page=True):
     """Grade 3: Whole Numbers Place Values"""
     return create_grade3_problem_content(
@@ -845,212 +1041,362 @@ def g3_perpendicular_parallel():
 @flask_practice_all_bp.route('/Grade_4_Math_Practice/Whole_Numbers_Write_Figures', methods=['GET', 'POST'])
 def g4_whole_numbers_write_figures():
     """Grade 4: Whole Numbers Write Figures"""
-    handler = FlaskPracticeHandler()
-    return handler.render_practice_response('Practice_Question_Page.html', 4, 'P4WholeNumbersWriteInFigures',
-                                          Problem_Details="Whole Numbers Write Figures practice content")
+    is_ajax = request.method == 'POST' and not request.form.get('answer')
+    return create_grade4_problem_content(
+        'P4WholeNumbersWriteInFigures',
+        'Write in Figures',
+        'Problems.Primary4.WholeNumbers.WriteInFigures',
+        'WriteInFigures',
+        full_page=not is_ajax
+    )
 
 @flask_practice_all_bp.route('/Grade_4_Math_Practice/Whole_Numbers_Write_Words', methods=['GET', 'POST'])
 def g4_whole_numbers_write_words():
     """Grade 4: Whole Numbers Write Words"""
-    handler = FlaskPracticeHandler()
-    return handler.render_practice_response('Practice_Question_Page.html', 4, 'P4WholeNumbersWriteInWords',
-                                          Problem_Details="Whole Numbers Write Words practice content")
+    is_ajax = request.method == 'POST' and not request.form.get('answer')
+    return create_grade4_problem_content(
+        'P4WholeNumbersWriteInWords',
+        'Write in Words',
+        'Problems.Primary4.WholeNumbers.WriteInWords',
+        'WriteInWords',
+        full_page=not is_ajax
+    )
 
 @flask_practice_all_bp.route('/Grade_4_Math_Practice/Whole_Numbers_Place_Values', methods=['GET', 'POST'])
 def g4_whole_numbers_place_values():
     """Grade 4: Whole Numbers Place Values"""
-    handler = FlaskPracticeHandler()
-    return handler.render_practice_response('Practice_Question_Page.html', 4, 'P4WholeNumbersPlaceValues',
-                                          Problem_Details="Whole Numbers Place Values practice content")
+    is_ajax = request.method == 'POST' and not request.form.get('answer')
+    return create_grade4_problem_content(
+        'P4WholeNumbersPlaceValues',
+        'Place Values',
+        'Problems.Primary4.WholeNumbers.PlaceValue',
+        'PlaceValue',
+        full_page=not is_ajax
+    )
 
 @flask_practice_all_bp.route('/Grade_4_Math_Practice/Whole_Numbers_Comparing_Ordering', methods=['GET', 'POST'])
 def g4_whole_numbers_comparing_ordering():
     """Grade 4: Whole Numbers Comparing and Ordering"""
-    handler = FlaskPracticeHandler()
-    return handler.render_practice_response('Practice_Question_Page.html', 4, 'P4WholeNumbersComparingOrdering',
-                                          Problem_Details="Whole Numbers Comparing and Ordering practice content")
+    is_ajax = request.method == 'POST' and not request.form.get('answer')
+    return create_grade4_problem_content(
+        'P4WholeNumbersComparingOrdering',
+        'Comparing and Ordering',
+        'Problems.Primary4.WholeNumbers.ComparingAndOrdering',
+        'ComparingAndOrdering',
+        full_page=not is_ajax
+    )
 
 @flask_practice_all_bp.route('/Grade_4_Math_Practice/Whole_Numbers_Rounding_Off', methods=['GET', 'POST'])
 def g4_whole_numbers_rounding_off():
     """Grade 4: Whole Numbers Rounding Off"""
-    handler = FlaskPracticeHandler()
-    return handler.render_practice_response('Practice_Question_Page.html', 4, 'P4WholeNumbersRoundingOff',
-                                          Problem_Details="Whole Numbers Rounding Off practice content")
+    is_ajax = request.method == 'POST' and not request.form.get('answer')
+    return create_grade4_problem_content(
+        'P4WholeNumbersRoundingOff',
+        'Rounding Off',
+        'Problems.Primary4.WholeNumbers.RoundingOff',
+        'RoundingOff',
+        full_page=not is_ajax
+    )
 
 @flask_practice_all_bp.route('/Grade_4_Math_Practice/Whole_Numbers_Factors_Multiples', methods=['GET', 'POST'])
 def g4_whole_numbers_factors_multiples():
     """Grade 4: Whole Numbers Factors and Multiples"""
-    handler = FlaskPracticeHandler()
-    return handler.render_practice_response('Practice_Question_Page.html', 4, 'P4WholeNumbersFactorMultiple',
-                                          Problem_Details="Whole Numbers Factors and Multiples practice content")
+    is_ajax = request.method == 'POST' and not request.form.get('answer')
+    return create_grade4_problem_content(
+        'P4WholeNumbersFactorMultiple',
+        'Factors and Multiples',
+        'Problems.Primary4.WholeNumbers.FactorMultiple',
+        'FactorMultiple',
+        full_page=not is_ajax
+    )
 
 @flask_practice_all_bp.route('/Grade_4_Math_Practice/Whole_Numbers_Multiplication_Division', methods=['GET', 'POST'])
 def g4_whole_numbers_multiplication_division():
     """Grade 4: Whole Numbers Multiplication and Division"""
-    handler = FlaskPracticeHandler()
-    return handler.render_practice_response('Practice_Question_Page.html', 4, 'P4WholeNumbersMutliplyDivide',
-                                          Problem_Details="Whole Numbers Multiplication and Division practice content")
+    is_ajax = request.method == 'POST' and not request.form.get('answer')
+    return create_grade4_problem_content(
+        'P4WholeNumbersMutliplyDivide',
+        'Multiplication and Division',
+        'Problems.Primary4.WholeNumbers.MultiplicationDivision',
+        'MultiplicationDivision',
+        full_page=not is_ajax
+    )
 
 @flask_practice_all_bp.route('/Grade_4_Math_Practice/Mixed_Numbers_Improper_Fractions', methods=['GET', 'POST'])
 def g4_mixed_numbers_improper_fractions():
     """Grade 4: Mixed Numbers and Improper Fractions"""
-    handler = FlaskPracticeHandler()
-    return handler.render_practice_response('Practice_Question_Page.html', 4, 'P4FractionsMixedImproper',
-                                          Problem_Details="Mixed Numbers and Improper Fractions practice content")
+    is_ajax = request.method == 'POST' and not request.form.get('answer')
+    return create_grade4_problem_content(
+        'P4FractionsMixedImproper',
+        'Mixed Numbers and Improper Fractions',
+        'Problems.Primary4.Fractions.MixedNumbersImproperFractions',
+        'MixedNumbersImproperFractions',
+        full_page=not is_ajax
+    )
 
 @flask_practice_all_bp.route('/Grade_4_Math_Practice/Fractions_Simplifying', methods=['GET', 'POST'])
 def g4_fractions_simplifying():
     """Grade 4: Fractions Simplifying"""
-    handler = FlaskPracticeHandler()
-    return handler.render_practice_response('Practice_Question_Page.html', 4, 'P4FractionsSimplifying',
-                                          Problem_Details="Fractions Simplifying practice content")
+    is_ajax = request.method == 'POST' and not request.form.get('answer')
+    return create_grade4_problem_content(
+        'P4FractionsSimplifying',
+        'Fractions Simplifying',
+        'Problems.Primary4.Fractions.SimplifyingFractions',
+        'SimplifyingFractions',
+        full_page=not is_ajax
+    )
 
 @flask_practice_all_bp.route('/Grade_4_Math_Practice/Add_Like_Related_Fractions', methods=['GET', 'POST'])
 def g4_add_like_related_fractions():
     """Grade 4: Add Like and Related Fractions"""
-    handler = FlaskPracticeHandler()
-    return handler.render_practice_response('Practice_Question_Page.html', 4, 'P4FractionsAdd',
-                                          Problem_Details="Add Like and Related Fractions practice content")
+    is_ajax = request.method == 'POST' and not request.form.get('answer')
+    return create_grade4_problem_content(
+        'P4FractionsAdd',
+        'Add Like and Related Fractions',
+        'Problems.Primary4.Fractions.AddLikeRelatedFractions',
+        'AddLikeRelatedFractions',
+        full_page=not is_ajax
+    )
 
 @flask_practice_all_bp.route('/Grade_4_Math_Practice/Subtract_Like_Related_Fractions', methods=['GET', 'POST'])
 def g4_subtract_like_related_fractions():
     """Grade 4: Subtract Like and Related Fractions"""
-    handler = FlaskPracticeHandler()
-    return handler.render_practice_response('Practice_Question_Page.html', 4, 'P4FractionsSubtract',
-                                          Problem_Details="Subtract Like and Related Fractions practice content")
+    is_ajax = request.method == 'POST' and not request.form.get('answer')
+    return create_grade4_problem_content(
+        'P4FractionsSubtract',
+        'Subtract Like and Related Fractions',
+        'Problems.Primary4.Fractions.SubtractLikeRelatedFractions',
+        'SubtractLikeRelatedFractions',
+        full_page=not is_ajax
+    )
 
 @flask_practice_all_bp.route('/Grade_4_Math_Practice/Multiplication_Fractions_Whole_Numbers', methods=['GET', 'POST'])
 def g4_multiplication_fractions_whole_numbers():
     """Grade 4: Multiplication of Fractions and Whole Numbers"""
-    handler = FlaskPracticeHandler()
-    return handler.render_practice_response('Practice_Question_Page.html', 4, 'P4FractionsMultiplication',
-                                          Problem_Details="Multiplication of Fractions and Whole Numbers practice content")
+    is_ajax = request.method == 'POST' and not request.form.get('answer')
+    return create_grade4_problem_content(
+        'P4FractionsMultiplication',
+        'Multiplication of Fractions and Whole Numbers',
+        'Problems.Primary4.Fractions.MultiplyProperImproperFractions',
+        'MultiplyProperImproperFractions',
+        full_page=not is_ajax
+    )
 
 @flask_practice_all_bp.route('/Grade_4_Math_Practice/Decimals_Tenths', methods=['GET', 'POST'])
 def g4_decimals_tenths():
     """Grade 4: Decimals Tenths"""
-    handler = FlaskPracticeHandler()
-    return handler.render_practice_response('Practice_Question_Page.html', 4, 'P4DecimalsTenths',
-                                          Problem_Details="Decimals Tenths practice content")
+    is_ajax = request.method == 'POST' and not request.form.get('answer')
+    return create_grade4_problem_content(
+        'P4DecimalsTenths',
+        'Decimals Tenths',
+        'Problems.Primary4.Decimals.DecimalsTenths',
+        'DecimalsTenths',
+        full_page=not is_ajax
+    )
 
 @flask_practice_all_bp.route('/Grade_4_Math_Practice/Decimals_Hundredths', methods=['GET', 'POST'])
 def g4_decimals_hundredths():
     """Grade 4: Decimals Hundredths"""
-    handler = FlaskPracticeHandler()
-    return handler.render_practice_response('Practice_Question_Page.html', 4, 'P4DecimalsHundredths',
-                                          Problem_Details="Decimals Hundredths practice content")
+    is_ajax = request.method == 'POST' and not request.form.get('answer')
+    return create_grade4_problem_content(
+        'P4DecimalsHundredths',
+        'Decimals Hundredths',
+        'Problems.Primary4.Decimals.DecimalsHundredths',
+        'DecimalsHundredths',
+        full_page=not is_ajax
+    )
 
 @flask_practice_all_bp.route('/Grade_4_Math_Practice/Decimals_Thousandths', methods=['GET', 'POST'])
 def g4_decimals_thousandths():
     """Grade 4: Decimals Thousandths"""
-    handler = FlaskPracticeHandler()
-    return handler.render_practice_response('Practice_Question_Page.html', 4, 'P4DecimalsThousandths',
-                                          Problem_Details="Decimals Thousandths practice content")
+    is_ajax = request.method == 'POST' and not request.form.get('answer')
+    return create_grade4_problem_content(
+        'P4DecimalsThousandths',
+        'Decimals Thousandths',
+        'Problems.Primary4.Decimals.DecimalsThousandths',
+        'DecimalsThousandths',
+        full_page=not is_ajax
+    )
 
 @flask_practice_all_bp.route('/Grade_4_Math_Practice/Decimals_Comparing_Ordering', methods=['GET', 'POST'])
 def g4_decimals_comparing_ordering():
     """Grade 4: Decimals Comparing and Ordering"""
-    handler = FlaskPracticeHandler()
-    return handler.render_practice_response('Practice_Question_Page.html', 4, 'P4DecimalsComparingOrdering',
-                                          Problem_Details="Decimals Comparing and Ordering practice content")
+    is_ajax = request.method == 'POST' and not request.form.get('answer')
+    return create_grade4_problem_content(
+        'P4DecimalsComparingOrdering',
+        'Decimals Comparing and Ordering',
+        'Problems.Primary4.Decimals.DecimalsComparingOrdering',
+        'DecimalsComparingOrdering',
+        full_page=not is_ajax
+    )
 
 @flask_practice_all_bp.route('/Grade_4_Math_Practice/Decimals_Rounding_Off', methods=['GET', 'POST'])
 def g4_decimals_rounding_off():
     """Grade 4: Decimals Rounding Off"""
-    handler = FlaskPracticeHandler()
-    return handler.render_practice_response('Practice_Question_Page.html', 4, 'P4DecimalsRoundingOff',
-                                          Problem_Details="Decimals Rounding Off practice content")
+    is_ajax = request.method == 'POST' and not request.form.get('answer')
+    return create_grade4_problem_content(
+        'P4DecimalsRoundingOff',
+        'Decimals Rounding Off',
+        'Problems.Primary4.Decimals.DecimalsRoundingOff',
+        'DecimalsRoundingOff',
+        full_page=not is_ajax
+    )
 
 @flask_practice_all_bp.route('/Grade_4_Math_Practice/Decimals_Fractions', methods=['GET', 'POST'])
 def g4_decimals_fractions():
     """Grade 4: Decimals and Fractions"""
-    handler = FlaskPracticeHandler()
-    return handler.render_practice_response('Practice_Question_Page.html', 4, 'P4DecimalsFractions',
-                                          Problem_Details="Decimals and Fractions practice content")
+    is_ajax = request.method == 'POST' and not request.form.get('answer')
+    return create_grade4_problem_content(
+        'P4DecimalsFractions',
+        'Decimals and Fractions',
+        'Problems.Primary4.Decimals.DecimalsFractions',
+        'DecimalsFractions',
+        full_page=not is_ajax
+    )
 
 @flask_practice_all_bp.route('/Grade_4_Math_Practice/Decimals_Addition_Subtraction', methods=['GET', 'POST'])
 def g4_decimals_addition_subtraction():
     """Grade 4: Decimals Addition and Subtraction"""
-    handler = FlaskPracticeHandler()
-    return handler.render_practice_response('Practice_Question_Page.html', 4, 'P4DecimalsAddSub',
-                                          Problem_Details="Decimals Addition and Subtraction practice content")
+    is_ajax = request.method == 'POST' and not request.form.get('answer')
+    return create_grade4_problem_content(
+        'P4DecimalsAddSub',
+        'Decimals Addition and Subtraction',
+        'Problems.Primary4.Decimals.DecimalsAddSub',
+        'DecimalsAddSub',
+        full_page=not is_ajax
+    )
 
 @flask_practice_all_bp.route('/Grade_4_Math_Practice/Decimals_Multiplication_Division', methods=['GET', 'POST'])
 def g4_decimals_multiplication_division():
     """Grade 4: Decimals Multiplication and Division"""
-    handler = FlaskPracticeHandler()
-    return handler.render_practice_response('Practice_Question_Page.html', 4, 'P4DecimalsMultiplyDivide',
-                                          Problem_Details="Decimals Multiplication and Division practice content")
+    is_ajax = request.method == 'POST' and not request.form.get('answer')
+    return create_grade4_problem_content(
+        'P4DecimalsMultiplyDivide',
+        'Decimals Multiplication and Division',
+        'Problems.Primary4.Decimals.DecimalsMultiplyDivide',
+        'DecimalsMultiplyDivide',
+        full_page=not is_ajax
+    )
 
 @flask_practice_all_bp.route('/Grade_4_Math_Practice/Measurement_24-Hour_Clock', methods=['GET', 'POST'])
 def g4_measurement_24hour_clock():
     """Grade 4: Measurement 24-Hour Clock"""
-    handler = FlaskPracticeHandler()
-    return handler.render_practice_response('Practice_Question_Page.html', 4, 'P4MTTime24Hrs',
-                                          Problem_Details="Measurement 24-Hour Clock practice content")
+    is_ajax = request.method == 'POST' and not request.form.get('answer')
+    return create_grade4_problem_content(
+        'P4MTTime24Hrs',
+        'Measurement 24-Hour Clock',
+        'Problems.Primary4.Measurement.MTTime24Hrs',
+        'MTTime24Hrs',
+        full_page=not is_ajax
+    )
 
 @flask_practice_all_bp.route('/Grade_4_Math_Practice/Measurement_Time_Duration', methods=['GET', 'POST'])
 def g4_measurement_time_duration():
     """Grade 4: Measurement Time Duration"""
-    handler = FlaskPracticeHandler()
-    return handler.render_practice_response('Practice_Question_Page.html', 4, 'P4MTTimeDuration',
-                                          Problem_Details="Measurement Time Duration practice content")
+    is_ajax = request.method == 'POST' and not request.form.get('answer')
+    return create_grade4_problem_content(
+        'P4MTTimeDuration',
+        'Measurement Time Duration',
+        'Problems.Primary4.Measurement.MTTimeDuration',
+        'MTTimeDuration',
+        full_page=not is_ajax
+    )
 
 @flask_practice_all_bp.route('/Grade_4_Math_Practice/Perimeter_Rectangle_Squares', methods=['GET', 'POST'])
 def g4_perimeter_rectangle_squares():
     """Grade 4: Perimeter of Rectangles and Squares"""
-    handler = FlaskPracticeHandler()
-    return handler.render_practice_response('Practice_Question_Page.html', 4, 'P4MTPerimeter',
-                                          Problem_Details="Perimeter of Rectangles and Squares practice content")
+    is_ajax = request.method == 'POST' and not request.form.get('answer')
+    return create_grade4_problem_content(
+        'P4MTPerimeter',
+        'Perimeter of Rectangles and Squares',
+        'Problems.Primary4.Measurement.MTPerimeter',
+        'MTPerimeter',
+        full_page=not is_ajax
+    )
 
 @flask_practice_all_bp.route('/Grade_4_Math_Practice/Area_Rectangle_Squares', methods=['GET', 'POST'])
 def g4_area_rectangle_squares():
     """Grade 4: Area of Rectangles and Squares"""
-    handler = FlaskPracticeHandler()
-    return handler.render_practice_response('Practice_Question_Page.html', 4, 'P4MTArea',
-                                          Problem_Details="Area of Rectangles and Squares practice content")
+    is_ajax = request.method == 'POST' and not request.form.get('answer')
+    return create_grade4_problem_content(
+        'P4MTArea',
+        'Area of Rectangles and Squares',
+        'Problems.Primary4.Measurement.MTArea',
+        'MTArea',
+        full_page=not is_ajax
+    )
 
 @flask_practice_all_bp.route('/Grade_4_Math_Practice/Measurement_Composite_Figures', methods=['GET', 'POST'])
 def g4_measurement_composite_figures():
     """Grade 4: Measurement Composite Figures"""
-    handler = FlaskPracticeHandler()
-    return handler.render_practice_response('Practice_Question_Page.html', 4, 'P4MTCompositeFigures',
-                                          Problem_Details="Measurement Composite Figures practice content")
+    is_ajax = request.method == 'POST' and not request.form.get('answer')
+    return create_grade4_problem_content(
+        'P4MTCompositeFigures',
+        'Measurement Composite Figures',
+        'Problems.Primary4.Measurement.MTCompositeFigures',
+        'MTCompositeFigures',
+        full_page=not is_ajax
+    )
 
 @flask_practice_all_bp.route('/Grade_4_Math_Practice/Data_Analysis_Tables_Bar_Graphs', methods=['GET', 'POST'])
 def g4_data_analysis_tables_bar_graphs():
     """Grade 4: Data Analysis Tables and Bar Graphs"""
-    handler = FlaskPracticeHandler()
-    return handler.render_practice_response('Practice_Question_Page.html', 4, 'P4DATablesBarGraphs',
-                                          Problem_Details="Data Analysis Tables and Bar Graphs practice content")
+    is_ajax = request.method == 'POST' and not request.form.get('answer')
+    return create_grade4_problem_content(
+        'P4DATablesBarGraphs',
+        'Data Analysis Tables and Bar Graphs',
+        'Problems.Primary4.DataAnalysis.P4DATablesBarGraphs',
+        'P4DATablesBarGraphs',
+        full_page=not is_ajax
+    )
 
 @flask_practice_all_bp.route('/Grade_4_Math_Practice/Data_Analysis_Line_Graphs', methods=['GET', 'POST'])
 def g4_data_analysis_line_graphs():
     """Grade 4: Data Analysis Line Graphs"""
-    handler = FlaskPracticeHandler()
-    return handler.render_practice_response('Practice_Question_Page.html', 4, 'P4DALineGraphs',
-                                          Problem_Details="Data Analysis Line Graphs practice content")
+    is_ajax = request.method == 'POST' and not request.form.get('answer')
+    return create_grade4_problem_content(
+        'P4DALineGraphs',
+        'Data Analysis Line Graphs',
+        'Problems.Primary4.DataAnalysis.P4DALineGraphs',
+        'P4DALineGraphs',
+        full_page=not is_ajax
+    )
 
 @flask_practice_all_bp.route('/Grade_4_Math_Practice/Whole_Numbers_Word_Problems', methods=['GET', 'POST'])
 def g4_whole_numbers_word_problems():
     """Grade 4: Whole Numbers Word Problems"""
-    handler = FlaskPracticeHandler()
-    return handler.render_practice_response('Practice_Question_Page.html', 4, 'P4WNWordProblems',
-                                          Problem_Details="Whole Numbers Word Problems practice content")
+    is_ajax = request.method == 'POST' and not request.form.get('answer')
+    return create_grade4_problem_content(
+        'P4WNWordProblems',
+        'Whole Numbers Word Problems',
+        'Problems.Primary4.WholeNumbers.P4WNWordProblems',
+        'P4WNWordProblems',
+        full_page=not is_ajax
+    )
 
 @flask_practice_all_bp.route('/Grade_4_Math_Practice/Decimals_Word_Problems', methods=['GET', 'POST'])
 def g4_decimals_word_problems():
     """Grade 4: Decimals Word Problems"""
-    handler = FlaskPracticeHandler()
-    return handler.render_practice_response('Practice_Question_Page.html', 4, 'P4DCWordProblems',
-                                          Problem_Details="Decimals Word Problems practice content")
+    is_ajax = request.method == 'POST' and not request.form.get('answer')
+    return create_grade4_problem_content(
+        'P4DCWordProblems',
+        'Decimals Word Problems',
+        'Problems.Primary4.Decimals.P4DCWordProblems',
+        'P4DCWordProblems',
+        full_page=not is_ajax
+    )
 
 @flask_practice_all_bp.route('/Grade_4_Math_Practice/Fractions_Word_Problems', methods=['GET', 'POST'])
 def g4_fractions_word_problems():
     """Grade 4: Fractions Word Problems"""
-    handler = FlaskPracticeHandler()
-    return handler.render_practice_response('Practice_Question_Page.html', 4, 'P4FRWordProblems',
-                                          Problem_Details="Fractions Word Problems practice content")
+    is_ajax = request.method == 'POST' and not request.form.get('answer')
+    return create_grade4_problem_content(
+        'P4FRWordProblems',
+        'Fractions Word Problems',
+        'Problems.Primary4.Fractions.P4FRWordProblems',
+        'P4FRWordProblems',
+        full_page=not is_ajax
+    )
 
 
 # ====== GRADE 5 PRACTICE ROUTES (35 routes) ======
@@ -1541,8 +1887,8 @@ def submit_practice_answer():
         logging.info(f"Session current_explanation available for {concept}: {bool(session.get(f'{concept}_current_explanation'))}")
         logging.info(f"All session keys starting with {concept}: {[k for k in session.keys() if k.startswith(concept)]}")
         
-        # Get current problem from session to check answer - handle all Grade 3 concepts generically
-        if concept.startswith('P3'):
+        # Get current problem from session to check answer - handle all Grade 3 and Grade 4 concepts generically
+        if concept.startswith('P3') or concept.startswith('P4'):
             # Get the CURRENT displayed problem's answer and explanation from session
             current_problem_answer = session.get(f'{concept}_current_answer')
             current_problem_type = session.get(f'{concept}_current_problem_type')
@@ -1571,10 +1917,17 @@ def submit_practice_answer():
                 problem_text = f"{concept} problem"
                 explanation_text = current_explanation or 'No explanation available'
             
-            # Normalize both answers for comparison (handle 1/2 vs 1.0/2.0)
-            normalized_submitted = normalize_fraction_answer(answer.lower().strip())
-            normalized_correct = normalize_fraction_answer(correct_answer.lower().strip())
-            is_correct = normalized_submitted == normalized_correct
+            # Check for empty submitted answer first
+            if not answer.strip():
+                is_correct = False
+                normalized_submitted = ""
+                normalized_correct = normalize_fraction_answer(correct_answer.lower().strip())
+                logging.error(f"ANSWER COMPARISON DEBUG: Empty answer submitted")
+            else:
+                # Normalize both answers for comparison (handle 1/2 vs 1.0/2.0)
+                normalized_submitted = normalize_fraction_answer(answer.lower().strip())
+                normalized_correct = normalize_fraction_answer(correct_answer.lower().strip())
+                is_correct = normalized_submitted == normalized_correct
             
             logging.error(f"ANSWER COMPARISON DEBUG: submitted='{answer}' -> normalized='{normalized_submitted}'")
             logging.error(f"ANSWER COMPARISON DEBUG: correct='{correct_answer}' -> normalized='{normalized_correct}'")

@@ -43,7 +43,7 @@ class MTTime24Hrs:
         #Creating one more problem type so it creates a list and not a list of lists
         self.ProblemTypes = []
         
-        for i in self.ProblemType.values():
+        for i in list(self.ProblemType.values()):
             for k in i:
                 self.ProblemTypes.append(k)
                 
@@ -51,17 +51,17 @@ class MTTime24Hrs:
             LastProblemID = 0
         
         if LastProblemID == 0:
-            return random.choice(random.choice(self.GenerateProblemType.values()))
+            return random.choice(random.choice(list(self.GenerateProblemType.values())))
         else:
             if LastProblemID in self.ProblemTypes:
-                CurrentProblemKey = [k for k, v in self.ProblemType.iteritems() if LastProblemID in v][0]
+                CurrentProblemKey = [k for k, v in self.ProblemType.items() if LastProblemID in v][0]
                 if CurrentProblemKey == max(self.ProblemType.keys()):
                     NextProblemKey = min(self.ProblemType.keys())
                 else:
                     NextProblemKey = CurrentProblemKey + 1 
                 return random.choice(self.GenerateProblemType[NextProblemKey])
             else:
-                return random.choice(random.choice(self.GenerateProblemType.values()))
+                return random.choice(random.choice(list(self.GenerateProblemType.values())))
         #return self.GenerateProblemType2()
 
     def GenerateTestProblem(self,problem_type):
@@ -176,16 +176,16 @@ class MTTime24Hrs:
         if CheckAnswer==1:
             try:
                 if " " in InputAnswer:
-                    InputAnswer = string.join(InputAnswer.split(),"")[0:4]
-                    answer = string.join(answer.split(),"")[0:4]
+                    InputAnswer = "".join(InputAnswer.split())[0:4]
+                    answer = "".join(answer.split())[0:4]
                     return answer==InputAnswer
             except ValueError:
                 return False
         elif CheckAnswer==2:
             try:
                 if " " in InputAnswer:
-                    InputAnswer = string.join(InputAnswer.split(),"")
-                    answer = string.join(answer.split(),"")
+                    InputAnswer = "".join(InputAnswer.split())
+                    answer = "".join(answer.split())
                     '''Two different logic for 1:29am and 11:29am because of the length of the string'''
                     if len(answer)==9:
                         if "." in InputAnswer[3:]:

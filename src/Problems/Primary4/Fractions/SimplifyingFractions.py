@@ -51,7 +51,7 @@ class SimplifyingFractions:
         #Creating one more problem type so it creates a list and not a list of lists
         self.ProblemTypes = []
         
-        for i in self.ProblemType.values():
+        for i in list(self.ProblemType.values()):
             for k in i:
                 self.ProblemTypes.append(k)
                 
@@ -59,17 +59,17 @@ class SimplifyingFractions:
             LastProblemID = 0
         
         if LastProblemID == 0:
-            return random.choice(random.choice(self.GenerateProblemType.values()))
+            return random.choice(random.choice(list(self.GenerateProblemType.values())))
         else:
             if LastProblemID in self.ProblemTypes:
-                CurrentProblemKey = [k for k, v in self.ProblemType.iteritems() if LastProblemID in v][0]
+                CurrentProblemKey = [k for k, v in self.ProblemType.items() if LastProblemID in v][0]
                 if CurrentProblemKey == max(self.ProblemType.keys()):
                     NextProblemKey = min(self.ProblemType.keys())
                 else:
                     NextProblemKey = CurrentProblemKey + 1 
                 return random.choice(self.GenerateProblemType[NextProblemKey])
             else:
-                return random.choice(random.choice(self.GenerateProblemType.values()))
+                return random.choice(random.choice(list(self.GenerateProblemType.values())))
         #return self.GenerateProblemTypeMCQ2()
         
     def GenerateTestProblem(self,problem_type):
@@ -109,8 +109,8 @@ class SimplifyingFractions:
         self.problem = self.problem + "</tr></table>"
         
         gcf = LcmGcf.LcmGcf().find_gcf(self.numerator1,self.denominator)        
-        self.AnswerDenominator = self.denominator/gcf
-        self.AnswerNumerator = self.numerator1/gcf
+        self.AnswerDenominator = int(self.denominator/gcf)
+        self.AnswerNumerator = int(self.numerator1/gcf)
         self.answer1 = self.AnswerNumerator
         self.answer2 = self.AnswerDenominator
         self.answer3 = self.mixed
@@ -173,8 +173,8 @@ class SimplifyingFractions:
 
         gcf = LcmGcf.LcmGcf().find_gcf(self.numerator,self.denominator)                        
 
-        self.answer1 = self.numerator/gcf
-        self.answer2 = self.denominator/gcf
+        self.answer1 = int(self.numerator/gcf)
+        self.answer2 = int(self.denominator/gcf)
         self.answer = str(self.answer1)+"/"+str(self.answer2)     
        
         self.template = "EnterTypeProblems.html"
@@ -267,8 +267,8 @@ class SimplifyingFractions:
         self.problem = self.problem + "</tr></table>"
         
         gcf = LcmGcf.LcmGcf().find_gcf(self.numerator1,self.denominator)        
-        self.AnswerDenominator = self.denominator/gcf
-        self.AnswerNumerator = self.numerator1/gcf
+        self.AnswerDenominator = int(self.denominator/gcf)
+        self.AnswerNumerator = int(self.numerator1/gcf)
         self.answer1 = self.AnswerNumerator
         self.answer2 = self.AnswerDenominator
         self.answer3 = self.mixed   
@@ -325,8 +325,8 @@ class SimplifyingFractions:
 
         gcf = LcmGcf.LcmGcf().find_gcf(self.numerator,self.denominator)                        
 
-        self.answer1 = self.numerator/gcf
-        self.answer2 = self.denominator/gcf
+        self.answer1 = int(self.numerator/gcf)
+        self.answer2 = int(self.denominator/gcf)
         self.answer3 = 0
         self.answer = [self.answer3,self.answer1,self.answer2]     
         

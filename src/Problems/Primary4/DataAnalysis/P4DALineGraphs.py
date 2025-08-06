@@ -19,7 +19,7 @@ History:
 '''
 import random
 from random import randint
-import simplejson as json
+import json
 from Problems import PersonName
 import logging
 
@@ -47,7 +47,7 @@ class P4DALineGraphs:
         #Creating one more problem type so it creates a list and not a list of lists
         self.ProblemTypes = []
         
-        for i in self.ProblemType.values():
+        for i in list(self.ProblemType.values()):
             for k in i:
                 self.ProblemTypes.append(k)
                 
@@ -55,17 +55,17 @@ class P4DALineGraphs:
             LastProblemID = 0
         
         if LastProblemID == 0:
-            return random.choice(random.choice(self.GenerateProblemType.values()))
+            return random.choice(random.choice(list(self.GenerateProblemType.values())))
         else:
             if LastProblemID in self.ProblemTypes:
-                CurrentProblemKey = [k for k, v in self.ProblemType.iteritems() if LastProblemID in v][0]
+                CurrentProblemKey = [k for k, v in self.ProblemType.items() if LastProblemID in v][0]
                 if CurrentProblemKey == max(self.ProblemType.keys()):
                     NextProblemKey = min(self.ProblemType.keys())
                 else:
                     NextProblemKey = CurrentProblemKey + 1 
                 return random.choice(self.GenerateProblemType[NextProblemKey])
             else:
-                return random.choice(random.choice(self.GenerateProblemType.values()))
+                return random.choice(random.choice(list(self.GenerateProblemType.values())))
         #return self.GenerateProblemTypeMCQ3d()
 
     def GenerateTestProblem(self,problem_type):
@@ -127,7 +127,7 @@ class P4DALineGraphs:
                            ]
         
         self.QuestionYear = random.randrange(4,24,4)
-        self.answer = self.heights[self.QuestionYear/4]
+        self.answer = self.heights[int(self.QuestionYear/4)]
         
         self.wrongAnswers = []
         self.wrongAnswers.append(self.answer+5)
@@ -207,7 +207,7 @@ class P4DALineGraphs:
                            ]
         
         self.QuestionYear = random.randrange(2,22,4)
-        self.answer = (self.heights[self.QuestionYear/4] + self.heights[self.QuestionYear/4+1]) / 2
+        self.answer = int((self.heights[int(self.QuestionYear/4)] + self.heights[int(self.QuestionYear/4)+1]) / 2)
         
         self.wrongAnswers = []
         self.wrongAnswers.append(self.answer+5)
@@ -293,14 +293,14 @@ class P4DALineGraphs:
             self.Year2 = random.randrange(2,24,2)
         
         if self.Year1%4==0:
-            self.HeightYear1 = self.heights[self.Year1/4]
+            self.HeightYear1 = self.heights[int(self.Year1/4)]
         else:
-            self.HeightYear1 = (self.heights[self.Year1/4] + self.heights[self.Year1/4+1]) / 2
+            self.HeightYear1 = int((self.heights[int(self.Year1/4)] + self.heights[int(self.Year1/4)+1]) / 2)
         
         if self.Year2%4==0:
-            self.HeightYear2 = self.heights[self.Year2/4]
+            self.HeightYear2 = self.heights[int(self.Year2/4)]
         else:
-            self.HeightYear2 = (self.heights[self.Year2/4] + self.heights[self.Year2/4+1]) / 2
+            self.HeightYear2 = int((self.heights[int(self.Year2/4)] + self.heights[int(self.Year2/4)+1]) / 2)
         
         self.answer = abs(self.HeightYear1-self.HeightYear2)
                
@@ -352,7 +352,7 @@ class P4DALineGraphs:
         self.xAxisMax = self.xAxis[0]
         self.xAxisInterval = self.xAxis[1]
         self.yAxisInterval = random.choice([2,4,6,8,10])
-        self.yAxisMax = self.yAxisInterval * self.xAxisMax / self.xAxisInterval
+        self.yAxisMax = int(self.yAxisInterval * self.xAxisMax / self.xAxisInterval)
         self.xAxisLabel = "Length(cm)"
         self.yAxisLabel = "Price($)"
         self.ChartName = "Price of lace"
@@ -367,13 +367,13 @@ class P4DALineGraphs:
         self.yAxisLabel = json.dumps(self.yAxisLabel)
         self.ChartName = json.dumps(self.ChartName)
         
-        self.length = random.randrange(self.xAxisInterval/2,self.xAxisMax,self.xAxisInterval/2)
+        self.length = random.randrange(int(self.xAxisInterval/2),self.xAxisMax,int(self.xAxisInterval/2))
         
         self.FunctionCall = "P4DrawLineChart1("+str(self.xAxisMax)+","+str(self.yAxisMax)+","+str(self.xAxisInterval)+","+str(self.yAxisInterval)+","+self.xAxisLabel+","+self.yAxisLabel+","+self.ChartName+","+self.DataPoints+")"
         self.problem = "The graph below shows the price of different lengths of lace at a shop. "
         self.problem = self.problem + "Find the price of "+str(self.length)+" cm of lace."
         
-        self.answer = self.length * self.yAxisInterval / self.xAxisInterval
+        self.answer = int(self.length * self.yAxisInterval / self.xAxisInterval)
         
         self.unit = ''
         self.dollar = '$'
@@ -405,7 +405,7 @@ class P4DALineGraphs:
         self.xAxisMax = self.xAxis[0]
         self.xAxisInterval = self.xAxis[1]
         self.yAxisInterval = random.choice([2,4,6,8,10])
-        self.yAxisMax = self.yAxisInterval * self.xAxisMax / self.xAxisInterval
+        self.yAxisMax = int(self.yAxisInterval * self.xAxisMax / self.xAxisInterval)
         self.xAxisLabel = "Length(cm)"
         self.yAxisLabel = "Price($)"
         self.ChartName = "Price of lace"
@@ -420,13 +420,13 @@ class P4DALineGraphs:
         self.yAxisLabel = json.dumps(self.yAxisLabel)
         self.ChartName = json.dumps(self.ChartName)
         
-        self.money = random.randrange(self.yAxisInterval/2,self.yAxisMax,self.yAxisInterval/2)
+        self.money = random.randrange(int(self.yAxisInterval/2),self.yAxisMax,int(self.yAxisInterval/2))
         
         self.FunctionCall = "P4DrawLineChart1("+str(self.xAxisMax)+","+str(self.yAxisMax)+","+str(self.xAxisInterval)+","+str(self.yAxisInterval)+","+self.xAxisLabel+","+self.yAxisLabel+","+self.ChartName+","+self.DataPoints+")"
         self.problem = "The graph below shows the price of different lengths of lace at a shop. "
         self.problem = self.problem + self.name+" paid $"+str(self.money)+" for some lace. How many centimeters of lace did she buy?"
         
-        self.answer = self.money * self.xAxisInterval / self.yAxisInterval
+        self.answer = int(self.money * self.xAxisInterval / self.yAxisInterval)
         
         self.unit = 'cm'
         self.dollar = ''
@@ -458,7 +458,7 @@ class P4DALineGraphs:
         self.xAxisMax = self.xAxis[0]
         self.xAxisInterval = self.xAxis[1]
         self.yAxisInterval = random.choice([2,4,6,8,10])
-        self.yAxisMax = self.yAxisInterval * self.xAxisMax / self.xAxisInterval
+        self.yAxisMax = int(self.yAxisInterval * self.xAxisMax / self.xAxisInterval)
         self.xAxisLabel = "Length(cm)"
         self.yAxisLabel = "Price($)"
         self.ChartName = "Price of lace"
@@ -473,18 +473,18 @@ class P4DALineGraphs:
         self.yAxisLabel = json.dumps(self.yAxisLabel)
         self.ChartName = json.dumps(self.ChartName)
         
-        self.length1 = random.randrange(self.xAxisInterval/2,self.xAxisMax,self.xAxisInterval/2)
-        self.length2 = random.randrange(self.xAxisInterval/2,self.xAxisMax,self.xAxisInterval/2)
+        self.length1 = random.randrange(int(self.xAxisInterval/2),self.xAxisMax,int(self.xAxisInterval/2))
+        self.length2 = random.randrange(int(self.xAxisInterval/2),self.xAxisMax,int(self.xAxisInterval/2))
         
         while self.length1==self.length2:
-            self.length1 = random.randrange(self.xAxisInterval/2,self.xAxisMax,self.xAxisInterval/2)
+            self.length1 = random.randrange(int(self.xAxisInterval/2),self.xAxisMax,int(self.xAxisInterval/2))
         
         self.FunctionCall = "P4DrawLineChart1("+str(self.xAxisMax)+","+str(self.yAxisMax)+","+str(self.xAxisInterval)+","+str(self.yAxisInterval)+","+self.xAxisLabel+","+self.yAxisLabel+","+self.ChartName+","+self.DataPoints+")"
         self.problem = "The graph below shows the price of different lengths of lace at a shop. "
         self.problem = self.problem + self.names[0]+" bought "+str(self.length1)+" cm of lace. "+self.names[1]+" bought "+str(self.length2)+" cm of lace. "
         self.problem = self.problem + "How much did they pay for the lace altogether?"
         
-        self.answer = (self.length1+self.length2) * self.yAxisInterval / self.xAxisInterval
+        self.answer = int((self.length1+self.length2) * self.yAxisInterval / self.xAxisInterval)
         
         self.unit = ''
         self.dollar = '$'
@@ -516,7 +516,7 @@ class P4DALineGraphs:
         self.xAxisMax = self.xAxis[0]
         self.xAxisInterval = self.xAxis[1]
         self.yAxisInterval = random.choice([2,4,6,8,10])
-        self.yAxisMax = self.yAxisInterval * self.xAxisMax / self.xAxisInterval
+        self.yAxisMax = int(self.yAxisInterval * self.xAxisMax / self.xAxisInterval)
         self.xAxisLabel = "Length(cm)"
         self.yAxisLabel = "Price($)"
         self.ChartName = "Price of lace"
@@ -531,8 +531,8 @@ class P4DALineGraphs:
         self.yAxisLabel = json.dumps(self.yAxisLabel)
         self.ChartName = json.dumps(self.ChartName)
         
-        self.length1 = random.randrange(self.xAxisInterval/2,self.xAxisMax,self.xAxisInterval/2)
-        self.cost = self.length1 * self.yAxisInterval / self.xAxisInterval
+        self.length1 = random.randrange(int(self.xAxisInterval/2),self.xAxisMax,int(self.xAxisInterval/2))
+        self.cost = int(self.length1 * self.yAxisInterval / self.xAxisInterval)
         if self.cost < 50:
             self.paid = 50
         elif self.cost < 100:
@@ -594,10 +594,10 @@ class P4DALineGraphs:
         self.DataPoints = [0,0]
         
         for i in range(7):
-            self.cake = random.randrange(self.yAxisInterval/2,self.yAxisMax,self.yAxisInterval/2)
+            self.cake = random.randrange(int(self.yAxisInterval/2),self.yAxisMax,int(self.yAxisInterval/2))
             try:
                 if self.cake == min(self.CakesSold) and self.cake!= self.yAxisMax:
-                    self.cake = self.cake + self.yAxisInterval/2
+                    self.cake = self.cake + int(self.yAxisInterval/2)
             except ValueError:
                 pass     
             self.CakesSold.append(self.cake)
@@ -666,10 +666,10 @@ class P4DALineGraphs:
         self.DataPoints = [0,0]
         
         for i in range(7):
-            self.cake = random.randrange(self.yAxisInterval/2,self.yAxisMax,self.yAxisInterval/2)
+            self.cake = random.randrange(int(self.yAxisInterval/2),self.yAxisMax,int(self.yAxisInterval/2))
             try:
-                if self.cake == max(self.CakesSold) and self.cake > self.yAxisInterval/2:
-                    self.cake = self.cake - self.yAxisInterval/2
+                if self.cake == max(self.CakesSold) and self.cake > int(self.yAxisInterval/2):
+                    self.cake = self.cake - int(self.yAxisInterval/2)
             except ValueError:
                 pass     
             self.CakesSold.append(self.cake)
@@ -738,7 +738,7 @@ class P4DALineGraphs:
         self.DataPoints = [0,0]
         
         for i in range(7):
-            self.cake = random.randrange(self.yAxisInterval/2,self.yAxisMax,self.yAxisInterval/2)  
+            self.cake = random.randrange(int(self.yAxisInterval/2),self.yAxisMax,int(self.yAxisInterval/2))  
             self.CakesSold.append(self.cake)
             self.DataPoints.append([i+1,self.cake])
        
@@ -762,7 +762,7 @@ class P4DALineGraphs:
 
         i = 1
         while i < 4:
-            self.WrongSell = self.answer + random.choice([-1,1]) * i * self.yAxisInterval/2
+            self.WrongSell = self.answer + random.choice([-1,1]) * i * int(self.yAxisInterval/2)
             if self.WrongSell not in self.wrongAnswers and self.WrongSell > 0 and self.WrongSell < self.yAxisMax:
                 self.wrongAnswers.append(self.WrongSell)
                 i = i + 1
@@ -807,7 +807,7 @@ class P4DALineGraphs:
         
         i = 0
         while i < 7:
-            self.cake = random.randrange(self.yAxisInterval/2,self.yAxisMax,self.yAxisInterval/2)
+            self.cake = random.randrange(int(self.yAxisInterval/2),self.yAxisMax,int(self.yAxisInterval/2))
             if self.cake not in self.CakesSold:
                 self.CakesSold.append(self.cake)
                 self.DataPoints.append([i+1,self.cake])

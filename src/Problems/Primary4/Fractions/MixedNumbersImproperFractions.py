@@ -52,7 +52,7 @@ class MixedNumbersImproperFractions:
         #Creating one more problem type so it creates a list and not a list of lists
         self.ProblemTypes = []
         
-        for i in self.ProblemType.values():
+        for i in list(self.ProblemType.values()):
             for k in i:
                 self.ProblemTypes.append(k)
                 
@@ -60,17 +60,17 @@ class MixedNumbersImproperFractions:
             LastProblemID = 0
         
         if LastProblemID == 0:
-            return random.choice(random.choice(self.GenerateProblemType.values()))
+            return random.choice(random.choice(list(self.GenerateProblemType.values())))
         else:
             if LastProblemID in self.ProblemTypes:
-                CurrentProblemKey = [k for k, v in self.ProblemType.iteritems() if LastProblemID in v][0]
+                CurrentProblemKey = [k for k, v in self.ProblemType.items() if LastProblemID in v][0]
                 if CurrentProblemKey == max(self.ProblemType.keys()):
                     NextProblemKey = min(self.ProblemType.keys())
                 else:
                     NextProblemKey = CurrentProblemKey + 1 
                 return random.choice(self.GenerateProblemType[NextProblemKey])
             else:
-                return random.choice(random.choice(self.GenerateProblemType.values()))
+                return random.choice(random.choice(list(self.GenerateProblemType.values())))
         #return self.GenerateProblemType1()
         
     def GenerateTestProblem(self,problem_type):
@@ -124,8 +124,8 @@ class MixedNumbersImproperFractions:
         gcf = LcmGcf.LcmGcf().find_gcf(int(answer1), int(answer2))
         #Adding the simplified fraction if possible
         if gcf!=1:
-            self.SimpleAnswer1 = int(answer1)/gcf
-            self.SimpleAnswer2 = int(answer2)/gcf
+            self.SimpleAnswer1 = int(int(answer1)/gcf)
+            self.SimpleAnswer2 = int(int(answer2)/gcf)
             self.answer_text = self.answer_text + "<td align='center'><u>"+"&nbsp;"*len(str(self.SimpleAnswer2))+str(self.SimpleAnswer1)+"&nbsp;"*len(str(self.SimpleAnswer2))+"</u><br>"+"&nbsp;"*len(str(self.SimpleAnswer1))+str(self.SimpleAnswer2)+"</td>"              
             self.answer_text = self.answer_text + "<td align='center'>&nbsp;Or&nbsp;</td>"
         self.answer_text = self.answer_text + "<td align='center'><u>"+"&nbsp;"*len(str(self.answer2))+str(self.answer1)+"&nbsp;"*len(str(self.answer2))+"</u><br>"+"&nbsp;"*len(str(self.answer1))+str(self.answer2)+"</td>"
@@ -212,8 +212,8 @@ class MixedNumbersImproperFractions:
         gcf = LcmGcf.LcmGcf().find_gcf(int(answer1), int(answer2))
         #Adding the simplified fraction if possible
         if gcf!=1:
-            self.SimpleAnswer1 = int(answer1)/gcf
-            self.SimpleAnswer2 = int(answer2)/gcf
+            self.SimpleAnswer1 = int(int(answer1)/gcf)
+            self.SimpleAnswer2 = int(int(answer2)/gcf)
             self.answer_text = self.answer_text + "<td>"+str(answer3)+"</td>"
             self.answer_text = self.answer_text + "<td align='center'><u>"+"&nbsp;"*len(str(self.SimpleAnswer2))+str(self.SimpleAnswer1)+"&nbsp;"*len(str(self.SimpleAnswer2))+"</u><br>"+"&nbsp;"*len(str(self.SimpleAnswer1))+str(self.SimpleAnswer2)+"</td>"              
             self.answer_text = self.answer_text + "<td align='center'>&nbsp;Or&nbsp;</td>"
@@ -306,8 +306,8 @@ class MixedNumbersImproperFractions:
         self.AnswerDenominator = self.denominator
         self.AnswerNumerator = self.numerator
         gcf = LcmGcf.LcmGcf().find_gcf(self.AnswerNumerator, self.AnswerDenominator)
-        self.answer1 = self.AnswerNumerator/gcf
-        self.answer2 = self.AnswerDenominator/gcf
+        self.answer1 = int(self.AnswerNumerator/gcf)
+        self.answer2 = int(self.AnswerDenominator/gcf)
         self.answer = [0,self.answer1,self.answer2]
         
         self.wrongAnswers = []
@@ -359,8 +359,8 @@ class MixedNumbersImproperFractions:
         self.AnswerDenominator = self.denominator
         self.AnswerNumerator = self.numerator1
         gcf = LcmGcf.LcmGcf().find_gcf(self.AnswerNumerator, self.AnswerDenominator)
-        self.answer1 = self.AnswerNumerator/gcf
-        self.answer2 = self.AnswerDenominator/gcf      
+        self.answer1 = int(self.AnswerNumerator/gcf)
+        self.answer2 = int(self.AnswerDenominator/gcf)      
         self.answer3 = self.AnswerMixed
         self.answer = [self.answer3,self.answer1,self.answer2]     
         
@@ -399,7 +399,7 @@ class MixedNumbersImproperFractions:
                         InputNumerator = int(str(InputAnswer).partition("/")[0])
                         InputDenominator = int(str(InputAnswer).partition("/")[2])
                         InputGCF = LcmGcf.LcmGcf().find_gcf(InputNumerator,InputDenominator)
-                        return (AnswerNumerator/AnswerGCF==InputNumerator/InputGCF and AnswerDenominator/AnswerGCF==InputDenominator/InputGCF)
+                        return (int(AnswerNumerator/AnswerGCF)==int(InputNumerator/InputGCF) and int(AnswerDenominator/AnswerGCF)==int(InputDenominator/InputGCF))
                     except ValueError:
                         return False
                 else:
@@ -417,7 +417,7 @@ class MixedNumbersImproperFractions:
                         AnswerNumerator = int(str(RemainingInput).partition("/")[0])
                         AnswerGCF = LcmGcf.LcmGcf().find_gcf(AnswerNumerator,AnswerDenominator)
                         InputGCF = LcmGcf.LcmGcf().find_gcf(InputNumerator,InputDenominator)
-                        return (AnswerMixed==InputMixed and AnswerNumerator/AnswerGCF==InputNumerator/InputGCF and AnswerDenominator/AnswerGCF==InputDenominator/InputGCF)
+                        return (AnswerMixed==InputMixed and int(AnswerNumerator/AnswerGCF)==int(InputNumerator/InputGCF) and int(AnswerDenominator/AnswerGCF)==int(InputDenominator/InputGCF))
                     except ValueError:
                         return False                                 
         elif CheckAnswerType == 3:          

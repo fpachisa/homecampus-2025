@@ -58,7 +58,7 @@ class AddLikeRelatedFractions:
         #Creating one more problem type so it creates a list and not a list of lists
         self.ProblemTypes = []
         
-        for i in self.ProblemType.values():
+        for i in list(self.ProblemType.values()):
             for k in i:
                 self.ProblemTypes.append(k)
                 
@@ -66,17 +66,17 @@ class AddLikeRelatedFractions:
             LastProblemID = 0
         
         if LastProblemID == 0:
-            return random.choice(random.choice(self.GenerateProblemType.values()))
+            return random.choice(random.choice(list(self.GenerateProblemType.values())))
         else:
             if LastProblemID in self.ProblemTypes:
-                CurrentProblemKey = [k for k, v in self.ProblemType.iteritems() if LastProblemID in v][0]
+                CurrentProblemKey = [k for k, v in self.ProblemType.items() if LastProblemID in v][0]
                 if CurrentProblemKey == max(self.ProblemType.keys()):
                     NextProblemKey = min(self.ProblemType.keys())
                 else:
                     NextProblemKey = CurrentProblemKey + 1 
                 return random.choice(self.GenerateProblemType[NextProblemKey])
             else:
-                return random.choice(random.choice(self.GenerateProblemType.values()))
+                return random.choice(random.choice(list(self.GenerateProblemType.values())))
         #return self.GenerateProblemTypeMCQ5()
         
     def GenerateTestProblem(self,problem_type):
@@ -143,15 +143,15 @@ class AddLikeRelatedFractions:
         gcf = LcmGcf.LcmGcf().find_gcf(answer1,answer2)
         #Adding the simplified fraction if possible        
         if gcf!=1:
-            self.SimpleAnswer1 = answer1/gcf
-            self.SimpleAnswer2 = answer2/gcf
+            self.SimpleAnswer1 = int(answer1/gcf)
+            self.SimpleAnswer2 = int(answer2/gcf)
             if self.SimpleAnswer2!=1:
                 self.answer_text = self.answer_text + "<td align='center'><u>"+"&nbsp;"*len(str(self.SimpleAnswer2))+str(self.SimpleAnswer1)+"&nbsp;"*len(str(self.SimpleAnswer2))+"</u><br>"+"&nbsp;"*len(str(self.SimpleAnswer1))+str(self.SimpleAnswer2)+"</td>"              
                 self.answer_text = self.answer_text + "<td align='center'>&nbsp;Or&nbsp;</td>"
         if answer1%answer2!=0:
             self.answer_text = self.answer_text + "<td align='center'><u>"+"&nbsp;"*len(str(self.answer2))+str(self.answer1)+"&nbsp;"*len(str(self.answer2))+"</u><br>"+"&nbsp;"*len(str(self.answer1))+str(self.answer2)+"</td>"
         else:
-            self.answer_text = self.answer_text + "<td>&nbsp;"+str(answer1/answer2)+"&nbsp;</td>"
+            self.answer_text = self.answer_text + "<td>&nbsp;"+str(int(answer1/answer2))+"&nbsp;</td>"
         self.answer_text = self.answer_text + "</tr></table>"
         self.solution_text = "<b><u>Solution</b></u>:<br><br>"
         self.solution_text = self.solution_text + "<table class='FractionsTable' style='color:white'><tr>"
@@ -209,8 +209,8 @@ class AddLikeRelatedFractions:
         self.AnswerDenominator = self.denominator
         self.AnswerNumerator = self.numerator1 + self.numerator2
         gcf = LcmGcf.LcmGcf().find_gcf(self.AnswerNumerator,self.AnswerDenominator)
-        self.answer1 = self.AnswerNumerator/gcf
-        self.answer2 = self.AnswerDenominator/gcf
+        self.answer1 = int(self.AnswerNumerator/gcf)
+        self.answer2 = int(self.AnswerDenominator/gcf)
         self.answer = str(self.answer1)+"/"+str(self.answer2)
        
         self.template = "EnterTypeProblems.html"
@@ -233,7 +233,7 @@ class AddLikeRelatedFractions:
         if answer1%answer2!=0:
             self.answer_text = self.answer_text + "<td align='center'><u>"+"&nbsp;"*len(str(self.answer2))+str(self.answer1)+"&nbsp;"*len(str(self.answer2))+"</u><br>"+"&nbsp;"*len(str(self.answer1))+str(self.answer2)+"</td>"
         else:
-            self.answer_text = self.answer_text + "<td>&nbsp;"+str(answer1/answer2)+"&nbsp;</td>"
+            self.answer_text = self.answer_text + "<td>&nbsp;"+str(int(answer1/answer2))+"&nbsp;</td>"
         self.answer_text = self.answer_text + "</tr></table>"
         self.solution_text = "<b><u>Solution</b></u>:<br><br>"
         self.solution_text = self.solution_text + "<table class='FractionsTable' style='color:white'><tr>"
@@ -297,10 +297,10 @@ class AddLikeRelatedFractions:
         self.problem = self.problem + "</tr></table>"
         
         self.AnswerDenominator = self.denominator1
-        self.AnswerNumerator = self.numerator1 + self.numerator2*self.denominator1/self.denominator2
+        self.AnswerNumerator = self.numerator1 + int(self.numerator2*self.denominator1/self.denominator2)
         gcf = LcmGcf.LcmGcf().find_gcf(self.AnswerNumerator,self.AnswerDenominator)
-        self.answer1 = self.AnswerNumerator/gcf
-        self.answer2 = self.AnswerDenominator/gcf
+        self.answer1 = int(self.AnswerNumerator/gcf)
+        self.answer2 = int(self.AnswerDenominator/gcf)
         self.answer = str(self.answer1)+"/"+str(self.answer2)
        
         self.template = "EnterTypeProblems.html"
@@ -317,13 +317,13 @@ class AddLikeRelatedFractions:
     def ExplainType3(self,problem,answer1,answer2,numerator1,numerator2,denominator1,denominator2):
         self.answer_text = "<table class='FractionsTable' style='color:white'><tr>"
         self.answer_text = self.answer_text + "<td>The correct answer is:&nbsp; </td>"
-        gcf = LcmGcf.LcmGcf().find_gcf(numerator1+numerator2*denominator1/denominator2,denominator1)
+        gcf = LcmGcf.LcmGcf().find_gcf(numerator1+numerator2*int(denominator1/denominator2),denominator1)
         self.SimpleAnswer1 = answer1
         self.SimpleAnswer2 = answer2
         if answer1%answer2!=0:
             self.answer_text = self.answer_text + "<td align='center'><u>"+"&nbsp;"*len(str(self.answer2))+str(self.answer1)+"&nbsp;"*len(str(self.answer2))+"</u><br>"+"&nbsp;"*len(str(self.answer1))+str(self.answer2)+"</td>"
         else:
-            self.answer_text = self.answer_text + "<td>&nbsp;"+str(answer1/answer2)+"&nbsp;</td>"
+            self.answer_text = self.answer_text + "<td>&nbsp;"+str(int(answer1/answer2))+"&nbsp;</td>"
         self.answer_text = self.answer_text + "</tr></table>"
         self.solution_text = "<b><u>Solution</b></u>:<br><br>"
         self.solution_text = self.solution_text + "<table class='FractionsTable' style='color:white'><tr>"
@@ -332,30 +332,30 @@ class AddLikeRelatedFractions:
         self.solution_text = self.solution_text + "<td><u>"+"&nbsp;"*len(str(denominator2))+str(numerator2)+"&nbsp;"*len(str(denominator2))+"</u><br>&nbsp;"+str(denominator2)+"</td>"
         self.solution_text = self.solution_text + "<td align='center'>&nbsp;do not have same denominator.</td></tr>"
         self.solution_text = self.solution_text + "</tr></table>"
-        self.solution_text = self.solution_text + "<br>However, "+str(denominator2)+" is a factor of "+str(denominator1)+". To make both denominators equal multiply the smaller denominator with "+str(denominator1/denominator2)+"<br><br>"
+        self.solution_text = self.solution_text + "<br>However, "+str(denominator2)+" is a factor of "+str(denominator1)+". To make both denominators equal multiply the smaller denominator with "+str(int(denominator1/denominator2))+"<br><br>"
         self.solution_text = self.solution_text + "Remember to multiply the numerator as well with the same number<br><br>"
         self.solution_text = self.solution_text + "<table class='FractionsTable' style='color:white'><tr>"
         self.solution_text = self.solution_text + "<td>=&nbsp;</td>"
         self.solution_text = self.solution_text + "<td><u>"+"&nbsp;"*len(str(denominator1))+str(numerator1)+"&nbsp;"*len(str(denominator1))+"</u><br>&nbsp;"+str(denominator1)+"</td>"
         self.solution_text = self.solution_text + "<td>&nbsp;+&nbsp;</td>"
-        self.solution_text = self.solution_text + "<td><u>&nbsp;"+str(numerator2)+" &times; "+str(denominator1/denominator2)+"&nbsp;</u><br>&nbsp;"+str(denominator2)+" &times; "+str(denominator1/denominator2)+"</td>"
+        self.solution_text = self.solution_text + "<td><u>&nbsp;"+str(numerator2)+" &times; "+str(int(denominator1/denominator2))+"&nbsp;</u><br>&nbsp;"+str(denominator2)+" &times; "+str(int(denominator1/denominator2))+"</td>"
         self.solution_text = self.solution_text + "</tr></table>"
         self.solution_text = self.solution_text + "<table class='FractionsTable' style='color:white'><tr>"
         self.solution_text = self.solution_text + "<td>=&nbsp;</td>"
         self.solution_text = self.solution_text + "<td><u>"+"&nbsp;"*len(str(denominator1))+str(numerator1)+"&nbsp;"*len(str(denominator1))+"</u><br>&nbsp;"+str(denominator1)+"</td>"
         self.solution_text = self.solution_text + "<td>&nbsp;+&nbsp;</td>"
-        self.solution_text = self.solution_text + "<td><u>"+"&nbsp;"*len(str(denominator1))+str(numerator2*denominator1/denominator2)+"&nbsp;"*len(str(denominator1))+"</u><br>&nbsp;"+str(denominator1)+"</td>"       
+        self.solution_text = self.solution_text + "<td><u>"+"&nbsp;"*len(str(denominator1))+str(numerator2*int(denominator1/denominator2))+"&nbsp;"*len(str(denominator1))+"</u><br>&nbsp;"+str(denominator1)+"</td>"       
         self.solution_text = self.solution_text + "<table class='FractionsTable' style='color:white'><tr>"
         self.solution_text = self.solution_text + "<td>=&nbsp;</td>"
-        self.solution_text = self.solution_text + "<td><u>&nbsp;"+str(numerator1)+" + "+str(numerator2*denominator1/denominator2)+"&nbsp;</u><br>"+"&nbsp;"*(len(str(numerator1))+len(str(numerator2))+2)+str(denominator1)+"</td>"
+        self.solution_text = self.solution_text + "<td><u>&nbsp;"+str(numerator1)+" + "+str(numerator2*int(denominator1/denominator2))+"&nbsp;</u><br>"+"&nbsp;"*(len(str(numerator1))+len(str(numerator2))+2)+str(denominator1)+"</td>"
         self.solution_text = self.solution_text + "<td>&nbsp;=&nbsp;</td>"
-        self.solution_text = self.solution_text + "<td><u>"+"&nbsp;"*len(str(denominator1))+str(numerator1+numerator2*denominator1/denominator2)+"&nbsp;"*len(str(denominator1))+"</u><br>&nbsp;"+str(denominator1)+"</td>"
+        self.solution_text = self.solution_text + "<td><u>"+"&nbsp;"*len(str(denominator1))+str(numerator1+numerator2*int(denominator1/denominator2))+"&nbsp;"*len(str(denominator1))+"</u><br>&nbsp;"+str(denominator1)+"</td>"
         self.solution_text = self.solution_text + "</tr></table>"
         if gcf!=1:
             self.solution_text = self.solution_text + "<table class='FractionsTable' style='color:white'><tr><td>It requires further simplification:</td></tr></table>"            
             if self.SimpleAnswer2!=1:
                 self.solution_text = self.solution_text + "<table class='FractionsTable' style='color:white'>"
-                self.solution_text = self.solution_text + "<tr><td align='center'><u>"+"&nbsp;"*len(str(answer2))+"<del>"+str(numerator1+numerator2*denominator1/denominator2)+"</del>&nbsp;"+str(self.SimpleAnswer1)+"&nbsp;"*len(str(answer2))+"</u><br>"+"&nbsp;"*len(str(answer1))+"<del>"+str(denominator1)+"</del>&nbsp;"+str(self.SimpleAnswer2)+"</td>"
+                self.solution_text = self.solution_text + "<tr><td align='center'><u>"+"&nbsp;"*len(str(answer2))+"<del>"+str(numerator1+numerator2*int(denominator1/denominator2))+"</del>&nbsp;"+str(self.SimpleAnswer1)+"&nbsp;"*len(str(answer2))+"</u><br>"+"&nbsp;"*len(str(answer1))+"<del>"+str(denominator1)+"</del>&nbsp;"+str(self.SimpleAnswer2)+"</td>"
                 self.solution_text = self.solution_text + "<td>&nbsp;= &nbsp;</td>"
                 self.solution_text = self.solution_text + "<td align='center'><u>"+"&nbsp;"*len(str(self.SimpleAnswer2))+str(self.SimpleAnswer1)+"&nbsp;"*len(str(self.SimpleAnswer2))+"</u><br>"+"&nbsp;"*len(str(self.SimpleAnswer1))+str(self.SimpleAnswer2)+"</td></tr></table>"
                 self.solution_text = self.solution_text + "<table class='FractionsTable' style='color:white'><tr><td>Hence the correct answer is &nbsp;&nbsp;</td>"
@@ -403,10 +403,10 @@ class AddLikeRelatedFractions:
         self.problem = self.problem + "</tr></table>"
         
         self.AnswerDenominator = self.denominator1
-        self.AnswerNumerator = self.numerator1 + self.numerator2*self.denominator1/self.denominator2 + self.numerator3
+        self.AnswerNumerator = self.numerator1 + int(self.numerator2*self.denominator1/self.denominator2) + self.numerator3
         gcf = LcmGcf.LcmGcf().find_gcf(self.AnswerNumerator,self.AnswerDenominator)
-        self.answer1 = self.AnswerNumerator/gcf
-        self.answer2 = self.AnswerDenominator/gcf
+        self.answer1 = int(self.AnswerNumerator/gcf)
+        self.answer2 = int(self.AnswerDenominator/gcf)
         self.answer = str(self.answer1)+"/"+str(self.answer2)
        
         self.template = "EnterTypeProblems.html"
@@ -423,13 +423,13 @@ class AddLikeRelatedFractions:
     def ExplainType4(self,problem,answer1,answer2,numerator1,numerator2,numerator3,denominator1,denominator2):
         self.answer_text = "<table class='FractionsTable' style='color:white'><tr>"
         self.answer_text = self.answer_text + "<td>The correct answer is:&nbsp; </td>"
-        gcf = LcmGcf.LcmGcf().find_gcf(numerator1+numerator2*denominator1/denominator2+numerator3,denominator1)
+        gcf = LcmGcf.LcmGcf().find_gcf(numerator1+numerator2*int(denominator1/denominator2)+numerator3,denominator1)
         self.SimpleAnswer1 = answer1
         self.SimpleAnswer2 = answer2
         if answer1%answer2!=0:
             self.answer_text = self.answer_text + "<td align='center'><u>"+"&nbsp;"*len(str(self.answer2))+str(self.answer1)+"&nbsp;"*len(str(self.answer2))+"</u><br>"+"&nbsp;"*len(str(self.answer1))+str(self.answer2)+"</td>"
         else:
-            self.answer_text = self.answer_text + "<td>&nbsp;"+str(answer1/answer2)+"&nbsp;</td>"
+            self.answer_text = self.answer_text + "<td>&nbsp;"+str(int(answer1/answer2))+"&nbsp;</td>"
         self.answer_text = self.answer_text + "</tr></table>"
         self.solution_text = "<b><u>Solution</b></u>:<br><br>"
         self.solution_text = self.solution_text + "<table class='FractionsTable' style='color:white'><tr>"
@@ -438,13 +438,13 @@ class AddLikeRelatedFractions:
         self.solution_text = self.solution_text + "<td><u>"+"&nbsp;"*len(str(denominator2))+str(numerator2)+"&nbsp;"*len(str(denominator2))+"</u><br>&nbsp;"+str(denominator2)+"</td>"
         self.solution_text = self.solution_text + "<td align='center'>&nbsp;do not have same denominator.</td></tr>"
         self.solution_text = self.solution_text + "</tr></table>"
-        self.solution_text = self.solution_text + "<br>However, "+str(denominator2)+" is a factor of "+str(denominator1)+". To make both denominators equal multiply the smaller denominator with "+str(denominator1/denominator2)+"<br><br>"
+        self.solution_text = self.solution_text + "<br>However, "+str(denominator2)+" is a factor of "+str(denominator1)+". To make both denominators equal multiply the smaller denominator with "+str(int(denominator1/denominator2))+"<br><br>"
         self.solution_text = self.solution_text + "Remember to multiply the numerator as well with the same number<br><br>"
         self.solution_text = self.solution_text + "<table class='FractionsTable' style='color:white'><tr>"
         self.solution_text = self.solution_text + "<td>=&nbsp;</td>"
         self.solution_text = self.solution_text + "<td><u>"+"&nbsp;"*len(str(denominator1))+str(numerator1)+"&nbsp;"*len(str(denominator1))+"</u><br>&nbsp;"+str(denominator1)+"</td>"
         self.solution_text = self.solution_text + "<td>&nbsp;+&nbsp;</td>"
-        self.solution_text = self.solution_text + "<td><u>&nbsp;"+str(numerator2)+" &times; "+str(denominator1/denominator2)+"&nbsp;</u><br>&nbsp;"+str(denominator2)+" &times; "+str(denominator1/denominator2)+"</td>"
+        self.solution_text = self.solution_text + "<td><u>&nbsp;"+str(numerator2)+" &times; "+str(int(denominator1/denominator2))+"&nbsp;</u><br>&nbsp;"+str(denominator2)+" &times; "+str(int(denominator1/denominator2))+"</td>"
         self.solution_text = self.solution_text + "<td>&nbsp;+&nbsp;</td>"
         self.solution_text = self.solution_text + "<td><u>"+"&nbsp;"*len(str(denominator1))+str(numerator3)+"&nbsp;"*len(str(denominator1))+"</u><br>&nbsp;"+str(denominator1)+"</td>"
         self.solution_text = self.solution_text + "</tr></table>"
@@ -452,21 +452,21 @@ class AddLikeRelatedFractions:
         self.solution_text = self.solution_text + "<td>=&nbsp;</td>"
         self.solution_text = self.solution_text + "<td><u>"+"&nbsp;"*len(str(denominator1))+str(numerator1)+"&nbsp;"*len(str(denominator1))+"</u><br>&nbsp;"+str(denominator1)+"</td>"
         self.solution_text = self.solution_text + "<td>&nbsp;+&nbsp;</td>"
-        self.solution_text = self.solution_text + "<td><u>"+"&nbsp;"*len(str(denominator1))+str(numerator2*denominator1/denominator2)+"&nbsp;"*len(str(denominator1))+"</u><br>&nbsp;"+str(denominator1)+"</td>"       
+        self.solution_text = self.solution_text + "<td><u>"+"&nbsp;"*len(str(denominator1))+str(numerator2*int(denominator1/denominator2))+"&nbsp;"*len(str(denominator1))+"</u><br>&nbsp;"+str(denominator1)+"</td>"       
         self.solution_text = self.solution_text + "<td>&nbsp;+&nbsp;</td>"
         self.solution_text = self.solution_text + "<td><u>"+"&nbsp;"*len(str(denominator1))+str(numerator3)+"&nbsp;"*len(str(denominator1))+"</u><br>&nbsp;"+str(denominator1)+"</td>"
         self.solution_text = self.solution_text + "</tr></table>"
         self.solution_text = self.solution_text + "<table class='FractionsTable' style='color:white'><tr>"
         self.solution_text = self.solution_text + "<td>=&nbsp;</td>"
-        self.solution_text = self.solution_text + "<td><u>&nbsp;"+str(numerator1)+" + "+str(numerator2*denominator1/denominator2)+" + "+str(numerator3)+"&nbsp;</u><br>"+"&nbsp;"*(len(str(numerator1))+len(str(numerator2))+len(str(numerator3))+4)+str(denominator1)+"</td>"
+        self.solution_text = self.solution_text + "<td><u>&nbsp;"+str(numerator1)+" + "+str(numerator2*int(denominator1/denominator2))+" + "+str(numerator3)+"&nbsp;</u><br>"+"&nbsp;"*(len(str(numerator1))+len(str(numerator2))+len(str(numerator3))+4)+str(denominator1)+"</td>"
         self.solution_text = self.solution_text + "<td>&nbsp;=&nbsp;</td>"
-        self.solution_text = self.solution_text + "<td><u>"+"&nbsp;"*len(str(denominator1))+str(numerator1+numerator2*denominator1/denominator2+numerator3)+"&nbsp;"*len(str(denominator1))+"</u><br>&nbsp;"+str(denominator1)+"</td>"
+        self.solution_text = self.solution_text + "<td><u>"+"&nbsp;"*len(str(denominator1))+str(numerator1+numerator2*int(denominator1/denominator2)+numerator3)+"&nbsp;"*len(str(denominator1))+"</u><br>&nbsp;"+str(denominator1)+"</td>"
         self.solution_text = self.solution_text + "</tr></table>"
         if gcf!=1:
             self.solution_text = self.solution_text + "<table class='FractionsTable' style='color:white'><tr><td>It requires further simplification:</td></tr></table>"            
             if self.SimpleAnswer2!=1:
                 self.solution_text = self.solution_text + "<table class='FractionsTable' style='color:white'>"
-                self.solution_text = self.solution_text + "<tr><td align='center'><u>"+"&nbsp;"*len(str(answer2))+"<del>"+str(numerator1+numerator2*denominator1/denominator2+numerator3)+"</del>&nbsp;"+str(self.SimpleAnswer1)+"&nbsp;"*len(str(answer2))+"</u><br>"+"&nbsp;"*len(str(answer1))+"<del>"+str(denominator1)+"</del>&nbsp;"+str(self.SimpleAnswer2)+"</td>"
+                self.solution_text = self.solution_text + "<tr><td align='center'><u>"+"&nbsp;"*len(str(answer2))+"<del>"+str(numerator1+numerator2*int(denominator1/denominator2)+numerator3)+"</del>&nbsp;"+str(self.SimpleAnswer1)+"&nbsp;"*len(str(answer2))+"</u><br>"+"&nbsp;"*len(str(answer1))+"<del>"+str(denominator1)+"</del>&nbsp;"+str(self.SimpleAnswer2)+"</td>"
                 self.solution_text = self.solution_text + "<td>&nbsp;= &nbsp;</td>"
                 self.solution_text = self.solution_text + "<td align='center'><u>"+"&nbsp;"*len(str(self.SimpleAnswer2))+str(self.SimpleAnswer1)+"&nbsp;"*len(str(self.SimpleAnswer2))+"</u><br>"+"&nbsp;"*len(str(self.SimpleAnswer1))+str(self.SimpleAnswer2)+"</td></tr></table>"
                 self.solution_text = self.solution_text + "<table class='FractionsTable' style='color:white'><tr><td>Hence the correct answer is &nbsp;&nbsp;</td>"
@@ -517,8 +517,8 @@ class AddLikeRelatedFractions:
         self.multiplier = self.denominator1/self.denominator2
         self.AnswerNumerator = self.numerator1 + self.numerator2*self.multiplier + self.numerator3*self.multiplier
         gcf = LcmGcf.LcmGcf().find_gcf(self.AnswerNumerator,self.AnswerDenominator)
-        self.answer1 = self.AnswerNumerator/gcf
-        self.answer2 = self.AnswerDenominator/gcf
+        self.answer1 = int(self.AnswerNumerator/gcf)
+        self.answer2 = int(self.AnswerDenominator/gcf)
         self.answer = str(self.answer1)+"/"+str(self.answer2)
        
         self.template = "EnterTypeProblems.html"
@@ -552,30 +552,30 @@ class AddLikeRelatedFractions:
         self.solution_text = self.solution_text + "<td><u>"+"&nbsp;"*len(str(denominator2))+str(numerator3)+"&nbsp;"*len(str(denominator2))+"</u><br>&nbsp;"+str(denominator2)+"</td>"
         self.solution_text = self.solution_text + "<td align='center'>&nbsp;do not have same denominator.</td></tr>"
         self.solution_text = self.solution_text + "</tr></table>"
-        self.solution_text = self.solution_text + "<br>However, "+str(denominator2)+" is a factor of "+str(denominator1)+". To make all denominators equal multiply the smaller denominator with "+str(denominator1/denominator2)+"<br><br>"
+        self.solution_text = self.solution_text + "<br>However, "+str(denominator2)+" is a factor of "+str(denominator1)+". To make all denominators equal multiply the smaller denominator with "+str(int(denominator1/denominator2))+"<br><br>"
         self.solution_text = self.solution_text + "Remember to multiply the numerator as well with the same number<br><br>"
         
         self.solution_text = self.solution_text + "<table class='FractionsTable' style='color:white'><tr>"
         self.solution_text = self.solution_text + "<td>=&nbsp;</td>"
         self.solution_text = self.solution_text + "<td><u>"+"&nbsp;"*len(str(denominator1))+str(numerator1)+"&nbsp;"*len(str(denominator1))+"</u><br>&nbsp;"+str(denominator1)+"</td>"
         self.solution_text = self.solution_text + "<td>&nbsp;+&nbsp;</td>"
-        self.solution_text = self.solution_text + "<td><u>&nbsp;"+str(numerator2)+" &times; "+str(denominator1/denominator2)+"&nbsp;</u><br>&nbsp;"+str(denominator2)+" &times; "+str(denominator1/denominator2)+"</td>"
+        self.solution_text = self.solution_text + "<td><u>&nbsp;"+str(numerator2)+" &times; "+str(int(denominator1/denominator2))+"&nbsp;</u><br>&nbsp;"+str(denominator2)+" &times; "+str(int(denominator1/denominator2))+"</td>"
         self.solution_text = self.solution_text + "<td>&nbsp;+&nbsp;</td>"
-        self.solution_text = self.solution_text + "<td><u>&nbsp;"+str(numerator3)+" &times; "+str(denominator1/denominator2)+"&nbsp;</u><br>&nbsp;"+str(denominator2)+" &times; "+str(denominator1/denominator2)+"</td>"
+        self.solution_text = self.solution_text + "<td><u>&nbsp;"+str(numerator3)+" &times; "+str(int(denominator1/denominator2))+"&nbsp;</u><br>&nbsp;"+str(denominator2)+" &times; "+str(int(denominator1/denominator2))+"</td>"
         self.solution_text = self.solution_text + "</tr></table>"
         
         self.solution_text = self.solution_text + "<table class='FractionsTable' style='color:white'><tr>"
         self.solution_text = self.solution_text + "<td>=&nbsp;</td>"
         self.solution_text = self.solution_text + "<td><u>"+"&nbsp;"*len(str(denominator1))+str(numerator1)+"&nbsp;"*len(str(denominator1))+"</u><br>&nbsp;"+str(denominator1)+"</td>"
         self.solution_text = self.solution_text + "<td>&nbsp;+&nbsp;</td>"
-        self.solution_text = self.solution_text + "<td><u>"+"&nbsp;"*len(str(denominator1))+str(numerator2*denominator1/denominator2)+"&nbsp;"*len(str(denominator1))+"</u><br>&nbsp;"+str(denominator1)+"</td>"       
+        self.solution_text = self.solution_text + "<td><u>"+"&nbsp;"*len(str(denominator1))+str(numerator2*int(denominator1/denominator2))+"&nbsp;"*len(str(denominator1))+"</u><br>&nbsp;"+str(denominator1)+"</td>"       
         self.solution_text = self.solution_text + "<td>&nbsp;+&nbsp;</td>"
-        self.solution_text = self.solution_text + "<td><u>"+"&nbsp;"*len(str(denominator1))+str(numerator3*denominator1/denominator2)+"&nbsp;"*len(str(denominator1))+"</u><br>&nbsp;"+str(denominator1)+"</td>"
+        self.solution_text = self.solution_text + "<td><u>"+"&nbsp;"*len(str(denominator1))+str(numerator3*int(denominator1/denominator2))+"&nbsp;"*len(str(denominator1))+"</u><br>&nbsp;"+str(denominator1)+"</td>"
         self.solution_text = self.solution_text + "</tr></table>"
 
         self.solution_text = self.solution_text + "<table class='FractionsTable' style='color:white'><tr>"
         self.solution_text = self.solution_text + "<td>=&nbsp;</td>"
-        self.solution_text = self.solution_text + "<td><u>&nbsp;"+str(numerator1)+" + "+str(numerator2*denominator1/denominator2)+" + "+str(numerator3*multiplier)+"&nbsp;</u><br>"+"&nbsp;"*(len(str(numerator1))+len(str(numerator2))+len(str(numerator3))+4)+str(denominator1)+"</td>"
+        self.solution_text = self.solution_text + "<td><u>&nbsp;"+str(numerator1)+" + "+str(numerator2*int(denominator1/denominator2))+" + "+str(numerator3*multiplier)+"&nbsp;</u><br>"+"&nbsp;"*(len(str(numerator1))+len(str(numerator2))+len(str(numerator3))+4)+str(denominator1)+"</td>"
         self.solution_text = self.solution_text + "<td>&nbsp;=&nbsp;</td>"
         self.solution_text = self.solution_text + "<td><u>"+"&nbsp;"*len(str(denominator1))+str(numerator1+numerator2*multiplier+numerator3*multiplier)+"&nbsp;"*len(str(denominator1))+"</u><br>&nbsp;"+str(denominator1)+"</td>"
         self.solution_text = self.solution_text + "</tr></table>"
@@ -584,7 +584,7 @@ class AddLikeRelatedFractions:
             self.solution_text = self.solution_text + "<table class='FractionsTable' style='color:white'><tr><td>It requires further simplification:</td></tr></table>"            
             if self.SimpleAnswer2!=1:
                 self.solution_text = self.solution_text + "<table class='FractionsTable' style='color:white'>"
-                self.solution_text = self.solution_text + "<tr><td align='center'><u>"+"&nbsp;"*len(str(answer2))+"<del>"+str(numerator1+numerator2*denominator1/denominator2+numerator3*denominator1/denominator2)+"</del>&nbsp;"+str(self.SimpleAnswer1)+"&nbsp;"*len(str(answer2))+"</u><br>"+"&nbsp;"*len(str(answer1))+"<del>"+str(denominator1)+"</del>&nbsp;"+str(self.SimpleAnswer2)+"</td>"
+                self.solution_text = self.solution_text + "<tr><td align='center'><u>"+"&nbsp;"*len(str(answer2))+"<del>"+str(numerator1+numerator2*int(denominator1/denominator2)+numerator3*int(denominator1/denominator2))+"</del>&nbsp;"+str(self.SimpleAnswer1)+"&nbsp;"*len(str(answer2))+"</u><br>"+"&nbsp;"*len(str(answer1))+"<del>"+str(denominator1)+"</del>&nbsp;"+str(self.SimpleAnswer2)+"</td>"
                 self.solution_text = self.solution_text + "<td>&nbsp;= &nbsp;</td>"
                 self.solution_text = self.solution_text + "<td align='center'><u>"+"&nbsp;"*len(str(self.SimpleAnswer2))+str(self.SimpleAnswer1)+"&nbsp;"*len(str(self.SimpleAnswer2))+"</u><br>"+"&nbsp;"*len(str(self.SimpleAnswer1))+str(self.SimpleAnswer2)+"</td></tr></table>"
                 self.solution_text = self.solution_text + "<table class='FractionsTable' style='color:white'><tr><td>Hence the correct answer is &nbsp;&nbsp;</td>"
@@ -708,8 +708,8 @@ class AddLikeRelatedFractions:
         self.AnswerDenominator = self.denominator
         self.AnswerNumerator = self.numerator1 + self.numerator2
         gcf = LcmGcf.LcmGcf().find_gcf(self.AnswerNumerator,self.AnswerDenominator)
-        self.answer1 = self.AnswerNumerator/gcf
-        self.answer2 = self.AnswerDenominator/gcf
+        self.answer1 = int(self.AnswerNumerator/gcf)
+        self.answer2 = int(self.AnswerDenominator/gcf)
         self.answer3 = 0
         self.answer = [self.answer3,self.answer1,self.answer2]     
         
@@ -759,10 +759,10 @@ class AddLikeRelatedFractions:
         self.problem = self.problem + "</tr></table>"
         
         self.AnswerDenominator = self.denominator1
-        self.AnswerNumerator = self.numerator1 + self.numerator2*self.denominator1/self.denominator2
+        self.AnswerNumerator = self.numerator1 + int(self.numerator2*self.denominator1/self.denominator2)
         gcf = LcmGcf.LcmGcf().find_gcf(self.AnswerNumerator,self.AnswerDenominator)
-        self.answer1 = self.AnswerNumerator/gcf
-        self.answer2 = self.AnswerDenominator/gcf
+        self.answer1 = int(self.AnswerNumerator/gcf)
+        self.answer2 = int(self.AnswerDenominator/gcf)
         self.answer3 = 0
         self.answer = [self.answer3,self.answer1,self.answer2]     
         
@@ -815,10 +815,10 @@ class AddLikeRelatedFractions:
         self.problem = self.problem + "</tr></table>"
         
         self.AnswerDenominator = self.denominator1
-        self.AnswerNumerator = self.numerator1 + self.numerator2*self.denominator1/self.denominator2 + self.numerator3
+        self.AnswerNumerator = self.numerator1 + int(self.numerator2*self.denominator1/self.denominator2) + self.numerator3
         gcf = LcmGcf.LcmGcf().find_gcf(self.AnswerNumerator,self.AnswerDenominator)
-        self.answer1 = self.AnswerNumerator/gcf
-        self.answer2 = self.AnswerDenominator/gcf
+        self.answer1 = int(self.AnswerNumerator/gcf)
+        self.answer2 = int(self.AnswerDenominator/gcf)
         self.answer3 = 0
         self.answer = [self.answer3,self.answer1,self.answer2]     
         
@@ -874,8 +874,8 @@ class AddLikeRelatedFractions:
         self.multiplier = self.denominator1/self.denominator2
         self.AnswerNumerator = self.numerator1 + self.numerator2*self.multiplier + self.numerator3*self.multiplier
         gcf = LcmGcf.LcmGcf().find_gcf(self.AnswerNumerator,self.AnswerDenominator)
-        self.answer1 = self.AnswerNumerator/gcf
-        self.answer2 = self.AnswerDenominator/gcf
+        self.answer1 = int(self.AnswerNumerator/gcf)
+        self.answer2 = int(self.AnswerDenominator/gcf)
         self.answer3 = 0
         self.answer = [self.answer3,self.answer1,self.answer2]     
         
@@ -955,7 +955,7 @@ class AddLikeRelatedFractions:
                         AnswerNumerator = int(str(RemainingInput).partition("/")[0])
                         AnswerGCF = LcmGcf.LcmGcf().find_gcf(AnswerNumerator,AnswerDenominator)
                         InputGCF = LcmGcf.LcmGcf().find_gcf(InputNumerator,InputDenominator)
-                        return (AnswerMixed==InputMixed and AnswerNumerator/AnswerGCF==InputNumerator/InputGCF and AnswerDenominator/AnswerGCF==InputDenominator/InputGCF)
+                        return (AnswerMixed==InputMixed and int(AnswerNumerator/AnswerGCF)==int(InputNumerator/InputGCF) and int(AnswerDenominator/AnswerGCF)==int(InputDenominator/InputGCF))
                     except ValueError:
                         return False                                 
         elif CheckAnswerType == 4:

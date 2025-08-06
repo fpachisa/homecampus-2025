@@ -95,7 +95,7 @@ class PlaceValue:
         #Creating one more problem type so it creates a list and not a list of lists
         self.ProblemTypes = []
         
-        for i in self.ProblemType.values():
+        for i in list(self.ProblemType.values()):
             for k in i:
                 self.ProblemTypes.append(k)
                 
@@ -103,17 +103,17 @@ class PlaceValue:
             LastProblemID = 0
         
         if LastProblemID == 0:
-            return random.choice(random.choice(self.GenerateProblemType.values()))
+            return random.choice(random.choice(list(self.GenerateProblemType.values())))
         else:
             if LastProblemID in self.ProblemTypes:
-                CurrentProblemKey = [k for k, v in self.ProblemType.iteritems() if LastProblemID in v][0]
+                CurrentProblemKey = [k for k, v in self.ProblemType.items() if LastProblemID in v][0]
                 if CurrentProblemKey == max(self.ProblemType.keys()):
                     NextProblemKey = min(self.ProblemType.keys())
                 else:
                     NextProblemKey = CurrentProblemKey + 1 
                 return random.choice(self.GenerateProblemType[NextProblemKey])
             else:
-                return random.choice(random.choice(self.GenerateProblemType.values()))
+                return random.choice(random.choice(list(self.GenerateProblemType.values())))
         #return self.GenerateProblemTypeMCQ8()
         
     def GenerateTestProblem(self,problem_type):
@@ -361,7 +361,7 @@ class PlaceValue:
             
         self.digitPlace = {"tens":3,"hundreds":2,"thousands":1,"ten thousands":0}
         
-        self.place = self.digitPlace.keys()[randint(0,len(self.digitPlace)-1)]
+        self.place = list(self.digitPlace.keys())[randint(0,len(self.digitPlace)-1)]
         
         self.answer = self.digits[self.digitPlace[self.place]]
         self.problem = "%s<br>Which digit is in the %s place?" %(self.number,self.place)
@@ -415,14 +415,14 @@ class PlaceValue:
         
         '''Randomly select tens, hundreds or thousands keyword in the problem'''
         self.randPlace = randint(0,2)        
-        self.problem = "How many %s are there in %s?" %(self.digitPlace.keys()[self.randPlace],self.number)
+        self.problem = "How many %s are there in %s?" %(list(self.digitPlace.keys())[self.randPlace],self.number)
         
-        self.answer =int(self.number)/(self.digitPlace[self.digitPlace.keys()[self.randPlace]])
+        self.answer =int(self.number)/(self.digitPlace[list(self.digitPlace.keys())[self.randPlace]])
         self.template = "EnterTypeProblems.html"
 
         '''Explanation starts...'''
         self.explain_template = "Explanation.html"
-        self.explain_text = self.ExplainType5(self.problem,str(self.answer),self.number,self.digitPlace.keys()[self.randPlace])
+        self.explain_text = self.ExplainType5(self.problem,str(self.answer),self.number,list(self.digitPlace.keys())[self.randPlace])
         self.explain = {"explain_template":self.explain_template,"explain_text":self.explain_text,
                              "video_link":"www.homecampus.com.sg","explain_note":""}
         '''Explanation ends'''
@@ -465,14 +465,14 @@ class PlaceValue:
         '''Randomly select tens, hundreds keyword in the problem'''
         self.randPlace = randint(0,len(self.digitPlace)-1)
         self.answer = randint(10,90)
-        self.finalNumber = self.digitPlace[self.digitPlace.keys()[self.randPlace]]*self.answer + int(self.number)        
-        self.problem = "How many %s must be added to %s to make %d?" %(self.digitPlace.keys()[self.randPlace],self.number,self.finalNumber)
+        self.finalNumber = self.digitPlace[list(self.digitPlace.keys())[self.randPlace]]*self.answer + int(self.number)        
+        self.problem = "How many %s must be added to %s to make %d?" %(list(self.digitPlace.keys())[self.randPlace],self.number,self.finalNumber)
         
         self.template = "EnterTypeProblems.html"
 
         '''Explanation starts...'''
         self.explain_template = "Explanation.html"
-        self.explain_text = self.ExplainType6(self.problem,str(self.answer),int(self.number),self.finalNumber,self.digitPlace.keys()[self.randPlace])
+        self.explain_text = self.ExplainType6(self.problem,str(self.answer),int(self.number),self.finalNumber,list(self.digitPlace.keys())[self.randPlace])
         self.explain = {"explain_template":self.explain_template,"explain_text":self.explain_text,
                              "video_link":"www.homecampus.com.sg","explain_note":""}
         '''Explanation ends'''
@@ -513,14 +513,14 @@ class PlaceValue:
         self.randPlace = randint(0,len(self.digitPlace)-1)
         self.multiplier = randint(100,250)
         
-        self.problem = "%d %s more than %d is:" %(self.multiplier,self.digitPlace.keys()[self.randPlace],self.number)
-        self.answer = (self.digitPlace[self.digitPlace.keys()[self.randPlace]])*self.multiplier + self.number
+        self.problem = "%d %s more than %d is:" %(self.multiplier,list(self.digitPlace.keys())[self.randPlace],self.number)
+        self.answer = (self.digitPlace[list(self.digitPlace.keys())[self.randPlace]])*self.multiplier + self.number
         
         self.template = "EnterTypeProblems.html"
 
         '''Explanation starts...'''
         self.explain_template = "Explanation.html"
-        self.explain_text = self.ExplainType7(self.problem,str(self.answer),self.number,self.multiplier,self.digitPlace.keys()[self.randPlace])
+        self.explain_text = self.ExplainType7(self.problem,str(self.answer),self.number,self.multiplier,list(self.digitPlace.keys())[self.randPlace])
         self.explain = {"explain_template":self.explain_template,"explain_text":self.explain_text,
                              "video_link":"www.homecampus.com.sg","explain_note":""}
         '''Explanation ends'''
@@ -609,7 +609,7 @@ class PlaceValue:
     def GenerateMCQ(self,wrongAnswers,problem,answer,template,explain,problem_type,complexity_level,HCScore,grade,CheckAnswerType):
         
         '''Removing correct answers from the wrongAnswers list'''
-        wrongAnswers = filter(self.removeCorrectAnswer,wrongAnswers)
+        wrongAnswers = list(filter(self.removeCorrectAnswer,wrongAnswers))
         
         self.answer1=''
         self.answer2=''
@@ -769,7 +769,7 @@ class PlaceValue:
         randomly selected in this problem unlike 3 in rest'''
         
         '''Removing correct answers from the wrongAnswers list'''
-        self.wrongAnswers = filter(self.removeCorrectAnswer,self.wrongAnswers)
+        self.wrongAnswers = list(filter(self.removeCorrectAnswer,self.wrongAnswers))
         
         '''Randomly selecting 2 wrong answer and 1 wrong answer and 1 correct answer is always included
         in this example the wrong answer which is always included is 7815'''                     
@@ -877,7 +877,7 @@ class PlaceValue:
             
         self.digitPlace = {"tens":3,"hundreds":2,"thousands":1,"ten thousands":0}
         
-        self.place = self.digitPlace.keys()[randint(0,len(self.digitPlace)-1)]
+        self.place = list(self.digitPlace.keys())[randint(0,len(self.digitPlace)-1)]
         
         self.answer = self.digits[self.digitPlace[self.place]]
         self.problem = "%s<br>Which digit is in the %s place?" %(self.number,self.place)
@@ -918,9 +918,9 @@ class PlaceValue:
         
         '''Randomly select tens, hundreds or thousands keyword in the problem'''
         self.randPlace = randint(0,2)        
-        self.problem = "How many %s are there in %s?" %(self.digitPlace.keys()[self.randPlace],self.number)
+        self.problem = "How many %s are there in %s?" %(list(self.digitPlace.keys())[self.randPlace],self.number)
         
-        self.answer =int(self.number)/(self.digitPlace[self.digitPlace.keys()[self.randPlace]])
+        self.answer =int(self.number)/(self.digitPlace[list(self.digitPlace.keys())[self.randPlace]])
         self.template = "MCQTypeProblems.html"
         
         self.wrongAnswers=[]
@@ -931,7 +931,7 @@ class PlaceValue:
                    
         '''Explanation starts...'''
         self.explain_template = "Explanation.html"
-        self.explain_text = self.ExplainType5(self.problem,str(self.answer),self.number,self.digitPlace.keys()[self.randPlace])
+        self.explain_text = self.ExplainType5(self.problem,str(self.answer),self.number,list(self.digitPlace.keys())[self.randPlace])
         self.explain = {"explain_template":self.explain_template,"explain_text":self.explain_text,
                              "video_link":"www.homecampus.com.sg","explain_note":""}
         '''Explanation ends'''
@@ -961,8 +961,8 @@ class PlaceValue:
         '''Randomly select tens, hundreds keyword in the problem'''
         self.randPlace = randint(0,len(self.digitPlace)-1)
         self.answer = randint(10,90)
-        self.finalNumber = self.digitPlace[self.digitPlace.keys()[self.randPlace]]*self.answer + int(self.number)        
-        self.problem = "How many %s must be added to %s to make %d?" %(self.digitPlace.keys()[self.randPlace],self.number,self.finalNumber)
+        self.finalNumber = self.digitPlace[list(self.digitPlace.keys())[self.randPlace]]*self.answer + int(self.number)        
+        self.problem = "How many %s must be added to %s to make %d?" %(list(self.digitPlace.keys())[self.randPlace],self.number,self.finalNumber)
         
         self.wrongAnswers = []
         self.wrongAnswers.append(int((self.finalNumber-int(self.number))/10))
@@ -974,7 +974,7 @@ class PlaceValue:
                    
         '''Explanation starts...'''
         self.explain_template = "Explanation.html"
-        self.explain_text = self.ExplainType6(self.problem,str(self.answer),int(self.number),self.finalNumber,self.digitPlace.keys()[self.randPlace])
+        self.explain_text = self.ExplainType6(self.problem,str(self.answer),int(self.number),self.finalNumber,list(self.digitPlace.keys())[self.randPlace])
         self.explain = {"explain_template":self.explain_template,"explain_text":self.explain_text,
                              "video_link":"www.homecampus.com.sg","explain_note":""}
         '''Explanation ends'''
@@ -1000,8 +1000,8 @@ class PlaceValue:
         self.randPlace = randint(0,len(self.digitPlace)-1)
         self.multiplier = randint(100,250)
         
-        self.problem = "%d %s more than %d is:" %(self.multiplier,self.digitPlace.keys()[self.randPlace],self.number)
-        self.answer = (self.digitPlace[self.digitPlace.keys()[self.randPlace]])*self.multiplier + self.number
+        self.problem = "%d %s more than %d is:" %(self.multiplier,list(self.digitPlace.keys())[self.randPlace],self.number)
+        self.answer = (self.digitPlace[list(self.digitPlace.keys())[self.randPlace]])*self.multiplier + self.number
         
         self.wrongAnswers = []
         self.wrongAnswers.append(self.number + self.multiplier*10)
@@ -1013,7 +1013,7 @@ class PlaceValue:
                    
         '''Explanation starts...'''
         self.explain_template = "Explanation.html"
-        self.explain_text = self.ExplainType7(self.problem,str(self.answer),self.number,self.multiplier,self.digitPlace.keys()[self.randPlace])
+        self.explain_text = self.ExplainType7(self.problem,str(self.answer),self.number,self.multiplier,list(self.digitPlace.keys())[self.randPlace])
         self.explain = {"explain_template":self.explain_template,"explain_text":self.explain_text,
                              "video_link":"www.homecampus.com.sg","explain_note":""}
         '''Explanation ends'''

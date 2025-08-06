@@ -79,7 +79,7 @@ class WriteInWords:
         #Creating one more problem type so it creates a list and not a list of lists
         self.ProblemTypes = []
         
-        for i in self.ProblemType.values():
+        for i in list(self.ProblemType.values()):
             for k in i:
                 self.ProblemTypes.append(k)
                 
@@ -87,17 +87,17 @@ class WriteInWords:
             LastProblemID = 0
         
         if LastProblemID == 0:
-            return random.choice(random.choice(self.GenerateProblemType.values()))
+            return random.choice(random.choice(list(self.GenerateProblemType.values())))
         else:
             if LastProblemID in self.ProblemTypes:
-                CurrentProblemKey = [k for k, v in self.ProblemType.iteritems() if LastProblemID in v][0]
+                CurrentProblemKey = [k for k, v in self.ProblemType.items() if LastProblemID in v][0]
                 if CurrentProblemKey == max(self.ProblemType.keys()):
                     NextProblemKey = min(self.ProblemType.keys())
                 else:
                     NextProblemKey = CurrentProblemKey + 1 
                 return random.choice(self.GenerateProblemType[NextProblemKey])
             else:
-                return random.choice(random.choice(self.GenerateProblemType.values()))
+                return random.choice(random.choice(list(self.GenerateProblemType.values())))
         #return self.GenerateProblemTypeMCQ5()
         
     def GenerateTestProblem(self,problem_type):
@@ -412,10 +412,10 @@ class WriteInWords:
         self.answer2 = str(self.wrongAnswers[1])
         self.answer3 = str(self.wrongAnswers[2])
         self.answer4 = str(self.wrongAnswers[3])
-        self.value1 = string.join(self.answer1.split(),"")
-        self.value2 = string.join(self.answer2.split(),"")
-        self.value3 = string.join(self.answer3.split(),"")
-        self.value4 = string.join(self.answer4.split(),"")              
+        self.value1 = "".join(self.answer1.split())
+        self.value2 = "".join(self.answer2.split())
+        self.value3 = "".join(self.answer3.split())
+        self.value4 = "".join(self.answer4.split())              
         return {'problem':problem,'answer':answer,'template':self.template,
                 'answer1':self.answer1,'answer2':self.answer2,'answer3':self.answer3,
                 'answer4':self.answer4,'value1':self.value1,'value2':self.value2
@@ -427,8 +427,8 @@ class WriteInWords:
         ("-",",","." so that this method can return true as long as main keywords match)'''
         
         if (template=="MCQTypeProblems.html"):
-            input= string.join(input.split(),"")
-            answer = string.join(answer.split(),"")
+            input= "".join(input.split())
+            answer = "".join(answer.split())
         else:            
             ''' removing " and" with a space in front so that it doesn't remove and from "thousand" '''
             while  answer.partition(" and")[1]!="":
@@ -440,7 +440,7 @@ class WriteInWords:
             while  answer.partition(".")[1]!="":
                 answer = answer.partition(".")[0]+answer.partition(".")[2]
 
-            answer = string.join(answer.split(),"")
+            answer = "".join(answer.split())
             input = str(input)
             while  input.partition(" and")[1]!="":
                 input = input.partition(" and")[0]+input.partition(" and")[2]
@@ -448,7 +448,7 @@ class WriteInWords:
                 input = input.partition(",")[0]+input.partition(",")[2]
             while  input.partition("-")[1]!="":
                 input = input.partition("-")[0]+input.partition("-")[2]
-            input = string.join(input.split(),"")
+            input = "".join(input.split())
             
         return (input.lower()==answer.lower())      
         
@@ -461,40 +461,30 @@ class WriteInWords:
         self.solution_text = self.solution_text + "<i>"+problem + "</i><br/><br/>"
         self.solution_text = self.solution_text + "<b><u>Solution</b></u>:<br/>"
         self.solution_text = self.solution_text + "Create a place value table as shown below:<br/>"
-        self.solution_text = self.solution_text + "<table id='explanation' border=1><tr>"
-        for i in range(self.remainder):
-            self.solution_text = self.solution_text + "<td>"+number[i]+"</td>"     
-        for j in range(self.ThreeDigitGroup):
-            if(self.remainder==0 and j==0):
-                # if the number length is exactly divisible by 3 then avoiding one extra blank space at the beginning of the table
-                self.solution_text = self.solution_text
-            else:
-                self.solution_text = self.solution_text + "<td>&nbsp;</td>"
-            for i in range(3):               
-                self.solution_text = self.solution_text + "<td>"+number[i+self.remainder+j*3]+"</td>"
-        self.solution_text = self.solution_text + "</tr><tr>"
-        for i in range(self.remainder):
-            if self.remainder==1:
-                self.solution_text = self.solution_text + "<td>"+self.PlaceValue[i]+"</td>"
-            else:
-                self.solution_text = self.solution_text + "<td>"+self.PlaceValue[3-i-2]+"</td>"     
-        for j in range(self.ThreeDigitGroup):
-            if(self.remainder==0 and j==0):
-                # if the number length is exactly divisible by 3 then avoiding one extra blank space at the beginning of the table
-                self.solution_text = self.solution_text
-            else:
-                self.solution_text = self.solution_text + "<td>&nbsp;</td>"
-            for i in range(3):               
-                self.solution_text = self.solution_text + "<td>"+self.PlaceValue[3-i-1]+"</td>"
-        self.solution_text = self.solution_text + "</tr><tr>"
-        if(self.remainder!=0):
-            self.solution_text = self.solution_text + "<td colspan="+str(self.remainder)+">"+self.Value[self.ThreeDigitGroup]+"</td>"
-            self.solution_text = self.solution_text + "<td>&nbsp;</td>"            
-        for i in range(self.ThreeDigitGroup-1):
-            self.solution_text = self.solution_text + "<td colspan=3>"+self.Value[self.ThreeDigitGroup-1]+"</td>"
-            self.solution_text = self.solution_text + "<td>&nbsp;</td>"
-        self.solution_text = self.solution_text + "<td colspan=3></td>"
-        self.solution_text = self.solution_text + "</tr></table><br>"
+
+        # --- Revised table logic starts here ---
+        self.solution_text += "<table id='explanation' border=1>"
+        
+        # ROW 1: The Digits (without the blank separator)
+        self.solution_text += "<tr>"
+        for i in range(len(number)):
+            self.solution_text += f"<td>{number[i]}</td>"
+        self.solution_text += "</tr>"
+
+        # ROW 2: Group and Place Values
+        self.solution_text += "<tr>"
+        # Add the group name (e.g., "thousand") spanning the first few cells
+        if self.remainder != 0:
+            group_name = self.Value.get(self.ThreeDigitGroup, "")
+            self.solution_text += f"<td colspan={self.remainder}><b>{group_name}</b></td>"
+        
+        # Add the standard place values for the three-digit group
+        for i in range(3):
+            self.solution_text += f"<td>{self.PlaceValue[2-i]}</td>" # Simplified loop for hundreds, tens, ones
+        self.solution_text += "</tr>"
+        
+        self.solution_text += "</table><br>"
+        # --- End of revised logic ---        
         self.solution_text = self.solution_text + "based on above table you can write the number as:<br/>"
         self.solution_text = self.solution_text + "<i><b>"+answer+"</b></i>"
         self.explain = self.answer_text+"ANSWERSEPARATOR"+self.solution_text
@@ -512,40 +502,29 @@ class WriteInWords:
         self.solution_text = self.solution_text + "<b><u>Solution</b></u>:<br/>"
         self.solution_text = self.solution_text + "Total = "+str(amount1)+" + "+str(amount2)+" = "+number+"<br/><br/>"
         self.solution_text = self.solution_text + "Create a place value table as shown below:<br/>"
-        self.solution_text = self.solution_text + "<table id='explanation' border=1><tr>"
-        for i in range(self.remainder):
-            self.solution_text = self.solution_text + "<td>"+number[i]+"</td>"     
-        for j in range(self.ThreeDigitGroup):
-            if(self.remainder==0 and j==0):
-                # if the number length is exactly divisible by 3 then avoiding one extra blank space at the beginning of the table
-                self.solution_text = self.solution_text
-            else:
-                self.solution_text = self.solution_text + "<td>&nbsp;</td>"
-            for i in range(3):               
-                self.solution_text = self.solution_text + "<td>"+number[i+self.remainder+j*3]+"</td>"
-        self.solution_text = self.solution_text + "</tr><tr>"
-        for i in range(self.remainder):
-            if self.remainder==1:
-                self.solution_text = self.solution_text + "<td>"+self.PlaceValue[i]+"</td>"
-            else:
-                self.solution_text = self.solution_text + "<td>"+self.PlaceValue[3-i-2]+"</td>"     
-        for j in range(self.ThreeDigitGroup):
-            if(self.remainder==0 and j==0):
-                # if the number length is exactly divisible by 3 then avoiding one extra blank space at the beginning of the table
-                self.solution_text = self.solution_text
-            else:
-                self.solution_text = self.solution_text + "<td>&nbsp;</td>"
-            for i in range(3):               
-                self.solution_text = self.solution_text + "<td>"+self.PlaceValue[3-i-1]+"</td>"
-        self.solution_text = self.solution_text + "</tr><tr>"
-        if(self.remainder!=0):
-            self.solution_text = self.solution_text + "<td colspan="+str(self.remainder)+">"+self.Value[self.ThreeDigitGroup]+"</td>"
-            self.solution_text = self.solution_text + "<td>&nbsp;</td>"            
-        for i in range(self.ThreeDigitGroup-1):
-            self.solution_text = self.solution_text + "<td colspan=3>"+self.Value[self.ThreeDigitGroup-1]+"</td>"
-            self.solution_text = self.solution_text + "<td>&nbsp;</td>"
-        self.solution_text = self.solution_text + "<td colspan=3></td>"
-        self.solution_text = self.solution_text + "</tr></table><br>"
+        # --- Revised table logic starts here ---
+        self.solution_text += "<table id='explanation' border=1>"
+        
+        # ROW 1: The Digits (without the blank separator)
+        self.solution_text += "<tr>"
+        for i in range(len(number)):
+            self.solution_text += f"<td>{number[i]}</td>"
+        self.solution_text += "</tr>"
+
+        # ROW 2: Group and Place Values
+        self.solution_text += "<tr>"
+        # Add the group name (e.g., "thousand") spanning the first few cells
+        if self.remainder != 0:
+            group_name = self.Value.get(self.ThreeDigitGroup, "")
+            self.solution_text += f"<td colspan={self.remainder}><b>{group_name}</b></td>"
+        
+        # Add the standard place values for the three-digit group
+        for i in range(3):
+            self.solution_text += f"<td>{self.PlaceValue[2-i]}</td>" # Simplified loop for hundreds, tens, ones
+        self.solution_text += "</tr>"
+        
+        self.solution_text += "</table><br>"
+        # --- End of revised logic ---
         self.solution_text = self.solution_text + "based on above table you can write the number as:<br/>"
         self.solution_text = self.solution_text + "<i><b>"+answer+"</b></i>"
         self.explain = self.answer_text+"ANSWERSEPARATOR"+self.solution_text

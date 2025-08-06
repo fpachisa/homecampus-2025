@@ -47,7 +47,7 @@ class P4WNWordProblems:
         #Creating one more problem type so it creates a list and not a list of lists
         self.ProblemTypes = []
         
-        for i in self.ProblemType.values():
+        for i in list(self.ProblemType.values()):
             for k in i:
                 self.ProblemTypes.append(k)
                 
@@ -55,17 +55,17 @@ class P4WNWordProblems:
             LastProblemID = 0
         
         if LastProblemID == 0:
-            return random.choice(random.choice(self.GenerateProblemType.values()))
+            return random.choice(random.choice(list(self.GenerateProblemType.values())))
         else:
             if LastProblemID in self.ProblemTypes:
-                CurrentProblemKey = [k for k, v in self.ProblemType.iteritems() if LastProblemID in v][0]
+                CurrentProblemKey = [k for k, v in self.ProblemType.items() if LastProblemID in v][0]
                 if CurrentProblemKey == max(self.ProblemType.keys()):
                     NextProblemKey = min(self.ProblemType.keys())
                 else:
                     NextProblemKey = CurrentProblemKey + 1 
                 return random.choice(self.GenerateProblemType[NextProblemKey])
             else:
-                return random.choice(random.choice(self.GenerateProblemType.values()))
+                return random.choice(random.choice(list(self.GenerateProblemType.values())))
         #return self.GenerateProblemType8()
         
     def GenerateTestProblem(self,problem_type):
@@ -166,7 +166,7 @@ class P4WNWordProblems:
         self.problem = self.problem + self.names[0]+" gave some marbles to "+self.names[1]+". In the end, the two boys had an equal number of marbles."
         self.problem = self.problem + " How many marbles did "+self.names[0]+" give to "+self.names[1]+"?"
         
-        self.answer = self.diff / 2
+        self.answer = int(self.diff / 2)
         self.CheckAnswerType = 1
 
         self.unit = "marbles"
@@ -209,10 +209,10 @@ class P4WNWordProblems:
         self.number2 = self.more1 + self.number1
         
         if self.RandomIndexGroup1[0] == 1:
-            self.number3 = randint(2,4) * self.number2 / 10
+            self.number3 = int(randint(2,4) * self.number2 / 10)
             self.number4 = self.number2 - self.number3
         else:
-            self.number3 = randint(2,4) * self.number1 / 10
+            self.number3 = int(randint(2,4) * self.number1 / 10)
             self.number4 = self.number1 - self.number3
         
         self.more2 = self.number4 - self.number3
@@ -304,7 +304,7 @@ class P4WNWordProblems:
         self.Months = {"January":31,"March":31,"April":30,"May":31,"June":30,"July":31,
                   "August":31,"September":30,"October":31,"November":30,"December":31}
         
-        self.month = random.choice(self.Months.keys())
+        self.month = random.choice(list(self.Months.keys()))
         self.days = self.Months[self.month]
         
         self.problem =  "A farmer picks "+str(self.EachDay)+" kg of "+self.fruit+" a day. "
@@ -446,7 +446,7 @@ class P4WNWordProblems:
         self.multiplier = randint (20,50)
         
         self.total = (self.times + 1) * self.multiplier
-        self.given = randint(2,5) * self.multiplier / 10
+        self.given = int(randint(2,5) * self.multiplier / 10)
                                 
         self.problem = self.names[0]+" and "+self.names[1]+" had "+str(self.total)+" paper clips altogether. "
         self.problem = self.problem + self.names[0]+" gave away "+str(self.given)+" paper clips to "+self.names[1]+". "

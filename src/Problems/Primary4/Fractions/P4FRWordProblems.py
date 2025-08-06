@@ -48,7 +48,7 @@ class P4FRWordProblems:
         #Creating one more problem type so it creates a list and not a list of lists
         self.ProblemTypes = []
         
-        for i in self.ProblemType.values():
+        for i in list(self.ProblemType.values()):
             for k in i:
                 self.ProblemTypes.append(k)
                 
@@ -56,17 +56,17 @@ class P4FRWordProblems:
             LastProblemID = 0
         
         if LastProblemID == 0:
-            return random.choice(random.choice(self.GenerateProblemType.values()))
+            return random.choice(random.choice(list(self.GenerateProblemType.values())))
         else:
             if LastProblemID in self.ProblemTypes:
-                CurrentProblemKey = [k for k, v in self.ProblemType.iteritems() if LastProblemID in v][0]
+                CurrentProblemKey = [k for k, v in self.ProblemType.items() if LastProblemID in v][0]
                 if CurrentProblemKey == max(self.ProblemType.keys()):
                     NextProblemKey = min(self.ProblemType.keys())
                 else:
                     NextProblemKey = CurrentProblemKey + 1 
                 return random.choice(self.GenerateProblemType[NextProblemKey])
             else:
-                return random.choice(random.choice(self.GenerateProblemType.values()))
+                return random.choice(random.choice(list(self.GenerateProblemType.values())))
         #return self.GenerateProblemType2()
         
     def GenerateTestProblem(self,problem_type):
@@ -91,22 +91,22 @@ class P4FRWordProblems:
         self.denominator1 = randint(2,12)
         self.numerator1 = randint(1,self.denominator1-1)
         self.gcf1 = LcmGcf.LcmGcf().find_gcf(self.denominator1, self.numerator1)
-        self.denominator1 = self.denominator1 / self.gcf1
-        self.numerator1 = self.numerator1 / self.gcf1
+        self.denominator1 = int(self.denominator1 / self.gcf1)
+        self.numerator1 = int(self.numerator1 / self.gcf1)
         self.whole1 = randint(2,9)
 
         self.denominator2 = randint(2,12)
         self.numerator2 = randint(1,self.denominator2-1)
         self.gcf2 = LcmGcf.LcmGcf().find_gcf(self.denominator2, self.numerator2)
-        self.denominator2 = self.denominator2 / self.gcf2
-        self.numerator2 = self.numerator2 / self.gcf2
+        self.denominator2 = int(self.denominator2 / self.gcf2)
+        self.numerator2 = int(self.numerator2 / self.gcf2)
         self.whole2 = randint(2,9)
 
         self.denominator3 = random.choice([self.denominator1,self.denominator2])
         self.numerator3 = randint(1,self.denominator3-1)
         self.gcf3 = LcmGcf.LcmGcf().find_gcf(self.denominator3, self.numerator3)
-        self.denominator3 = self.denominator3 / self.gcf3
-        self.numerator3 = self.numerator3 / self.gcf3
+        self.denominator3 = int(self.denominator3 / self.gcf3)
+        self.numerator3 = int(self.numerator3 / self.gcf3)
         self.whole3 = randint(2,9)
 
         self.problem = "A farmer picked apples, bananas and oranges. He picked "+str(self.whole1)+" "+str(self.numerator1)+"&frasl;"+str(self.denominator1)+" kg of apples, "
@@ -130,8 +130,8 @@ class P4FRWordProblems:
         self.AnswerDenominator = self.denominator1*self.denominator2
         
         self.AnswerGcf = LcmGcf.LcmGcf().find_gcf(self.AnswerDenominator,self.AnswerNumerator)
-        self.AnswerDenominator = self.AnswerDenominator / self.AnswerGcf
-        self.AnswerNumerator = self.AnswerNumerator / self.AnswerGcf
+        self.AnswerDenominator = int(self.AnswerDenominator / self.AnswerGcf)
+        self.AnswerNumerator = int(self.AnswerNumerator / self.AnswerGcf)
         
         div,mod = divmod(self.AnswerNumerator,self.AnswerDenominator)
         
@@ -163,7 +163,7 @@ class P4FRWordProblems:
         if self.answer0!='0':
             self.answer_text = self.answer_text + "<td>"+self.answer0+"</td>"
         if self.answer1!='0':
-            self.answer_text = self.answer_text + "<td align='center'><u>"+"&nbsp;"*(len(self.answer2)/2)+self.answer1+"&nbsp;"*(len(self.answer2)/2)+"</u><br>"+"&nbsp;"*(len(self.answer1)/2)+self.answer2+"</td>"
+            self.answer_text = self.answer_text + "<td align='center'><u>"+"&nbsp;"*int(len(self.answer2)/2)+self.answer1+"&nbsp;"*int(len(self.answer2)/2)+"</u><br>"+"&nbsp;"*int(len(self.answer1)/2)+self.answer2+"</td>"
         self.answer_text = self.answer_text + "<td>&nbsp;"+unit+"</td>"
         self.answer_text = self.answer_text + "</tr></table>"
         
@@ -183,22 +183,22 @@ class P4FRWordProblems:
         self.denominator1 = random.choice([2,3,4,6,12])
         self.numerator1 = randint(1,self.denominator1-1)
         self.gcf1 = LcmGcf.LcmGcf().find_gcf(self.denominator1, self.numerator1)
-        self.denominator1 = self.denominator1 / self.gcf1
-        self.numerator1 = self.numerator1 / self.gcf1
+        self.denominator1 = int(self.denominator1 / self.gcf1)
+        self.numerator1 = int(self.numerator1 / self.gcf1)
         self.whole1 = randint(2,4)
 
         self.denominator2 = random.choice([2,3,4,6,12])
         self.numerator2 = randint(1,self.denominator2-1)
         self.gcf2 = LcmGcf.LcmGcf().find_gcf(self.denominator2, self.numerator2)
-        self.denominator2 = self.denominator2 / self.gcf2
-        self.numerator2 = self.numerator2 / self.gcf2
+        self.denominator2 = int(self.denominator2 / self.gcf2)
+        self.numerator2 = int(self.numerator2 / self.gcf2)
         self.whole2 = 0
 
         self.denominator3 = random.choice([self.denominator1,self.denominator2])
         self.numerator3 = randint(1,self.denominator3-1)
         self.gcf3 = LcmGcf.LcmGcf().find_gcf(self.denominator3, self.numerator3)
-        self.denominator3 = self.denominator3 / self.gcf3
-        self.numerator3 = self.numerator3 / self.gcf3
+        self.denominator3 = int(self.denominator3 / self.gcf3)
+        self.numerator3 = int(self.numerator3 / self.gcf3)
         self.whole3 = randint(2,4)
         
         if self.denominator1 == self.denominator3:
@@ -213,8 +213,8 @@ class P4FRWordProblems:
         
         
         self.TotalGcf = LcmGcf.LcmGcf().find_gcf(self.TotalDenominator,self.TotalNumerator)
-        self.TotalDenominator = self.TotalDenominator / self.TotalGcf
-        self.TotalNumerator = self.TotalNumerator / self.TotalGcf
+        self.TotalDenominator = int(self.TotalDenominator / self.TotalGcf)
+        self.TotalNumerator = int(self.TotalNumerator / self.TotalGcf)
         
         self.TotalWhole,self.TotalNumerator = divmod(self.TotalNumerator,self.TotalDenominator)        
        
@@ -262,7 +262,7 @@ class P4FRWordProblems:
         if self.answer0!='0':
             self.answer_text = self.answer_text + "<td>"+self.answer0+"</td>"
         if self.answer1!='0':
-            self.answer_text = self.answer_text + "<td align='center'><u>"+"&nbsp;"*(len(self.answer2)/2)+self.answer1+"&nbsp;"*(len(self.answer2)/2)+"</u><br>"+"&nbsp;"*(len(self.answer1)/2)+self.answer2+"</td>"
+            self.answer_text = self.answer_text + "<td align='center'><u>"+"&nbsp;"*int(len(self.answer2)/2)+self.answer1+"&nbsp;"*int(len(self.answer2)/2)+"</u><br>"+"&nbsp;"*int(len(self.answer1)/2)+self.answer2+"</td>"
         self.answer_text = self.answer_text + "<td>&nbsp;"+unit+"</td>"
         self.answer_text = self.answer_text + "</tr></table>"
         
@@ -282,8 +282,8 @@ class P4FRWordProblems:
         self.denominator1 = random.choice([2,3,4,5,6,7])
         self.numerator1 = randint(1,self.denominator1-1)
         self.gcf1 = LcmGcf.LcmGcf().find_gcf(self.denominator1, self.numerator1)
-        self.denominator1 = self.denominator1 / self.gcf1
-        self.numerator1 = self.numerator1 / self.gcf1
+        self.denominator1 = int(self.denominator1 / self.gcf1)
+        self.numerator1 = int(self.numerator1 / self.gcf1)
 
         self.number = randint(2,6)
       
@@ -292,7 +292,7 @@ class P4FRWordProblems:
         self.problem = self.name+" made some lemonade. He gave "+str(self.number)+" litres to his sister and "       
         self.problem = self.problem + "<table id='fractionTable' class='FractionsTable'>"
         self.problem = self.problem + "<tr><td>kept the rest for himself. If he kept&nbsp;</td>"
-        self.problem = self.problem + "<td align='center'><u>"+"&nbsp;"*(len(str(self.denominator1))/2)+str(self.numerator1)+"&nbsp;"*(len(str(self.denominator1))/2)+"</u><br>"+"&nbsp;"*(len(str(self.numerator1))/2)+str(self.denominator1)+"</td>"
+        self.problem = self.problem + "<td align='center'><u>"+"&nbsp;"*(int(len(str(self.denominator1))/2))+str(self.numerator1)+"&nbsp;"*(int(len(str(self.denominator1))/2))+"</u><br>"+"&nbsp;"*(int(len(str(self.numerator1))/2))+str(self.denominator1)+"</td>"
         self.problem = self.problem + "<td>&nbsp;of the lemonade for himself,</td></tr>"
         self.problem = self.problem + "</tr></table>"
         self.problem = self.problem + "how many litres of lemonade did he make?"
@@ -312,8 +312,8 @@ class P4FRWordProblems:
         self.AnswerNumerator = self.denominator1 * self.number
         self.AnswerGcf = LcmGcf.LcmGcf().find_gcf(self.AnswerNumerator, self.AnswerDenominator)
         
-        self.AnswerDenominator = self.AnswerDenominator / self.AnswerGcf
-        self.AnswerNumerator = self.AnswerNumerator / self.AnswerGcf
+        self.AnswerDenominator = int(self.AnswerDenominator / self.AnswerGcf)
+        self.AnswerNumerator = int(self.AnswerNumerator / self.AnswerGcf)
         
         div,mod = divmod(self.AnswerNumerator,self.AnswerDenominator)
         '''can't have answer as list (can't store list in datastore for tests module) so creating a string'''
@@ -344,7 +344,7 @@ class P4FRWordProblems:
         if self.answer0!='0':
             self.answer_text = self.answer_text + "<td>"+self.answer0+"</td>"
         if self.answer1!='0':
-            self.answer_text = self.answer_text + "<td align='center'><u>"+"&nbsp;"*(len(self.answer2)/2)+self.answer1+"&nbsp;"*(len(self.answer2)/2)+"</u><br>"+"&nbsp;"*(len(self.answer1)/2)+self.answer2+"</td>"
+            self.answer_text = self.answer_text + "<td align='center'><u>"+"&nbsp;"*int(len(self.answer2)/2)+self.answer1+"&nbsp;"*int(len(self.answer2)/2)+"</u><br>"+"&nbsp;"*int(len(self.answer1)/2)+self.answer2+"</td>"
         self.answer_text = self.answer_text + "<td>&nbsp;"+unit+"</td>"
         self.answer_text = self.answer_text + "</tr></table>"
         
@@ -365,8 +365,8 @@ class P4FRWordProblems:
         self.NumeratorLeft = randint(1,self.DenominatorLeft-1)
         
         self.GcfLeft = LcmGcf.LcmGcf().find_gcf(self.DenominatorLeft, self.NumeratorLeft)
-        self.DenominatorLeft = self.DenominatorLeft / self.GcfLeft
-        self.NumeratorLeft = self.NumeratorLeft / self.GcfLeft
+        self.DenominatorLeft = int(self.DenominatorLeft / self.GcfLeft)
+        self.NumeratorLeft = int(self.NumeratorLeft / self.GcfLeft)
         
         self.TotalNumerator = self.DenominatorLeft
         self.TotalDenominator = self.NumeratorLeft
@@ -381,17 +381,17 @@ class P4FRWordProblems:
         self.DenominatorSold = self.DenominatorLeft
  
         self.GcfSold = LcmGcf.LcmGcf().find_gcf(self.DenominatorSold, self.NumeratorSold)
-        self.DenominatorSold = self.DenominatorSold / self.GcfSold
-        self.NumeratorSold = self.NumeratorSold / self.GcfSold       
+        self.DenominatorSold = int(self.DenominatorSold / self.GcfSold)
+        self.NumeratorSold = int(self.NumeratorSold / self.GcfSold)       
         
                 
         self.problem = "<table id='fractionTable' class='FractionsTable'>"
         self.problem = self.problem + "<td>"+self.name+" had&nbsp;</td>"
         self.problem = self.problem + "<td>"+str(self.mixed)+"</td>"
         if self.TotalNumerator!=0:            
-            self.problem = self.problem + "<td align='center'><u>"+"&nbsp;"*(len(str(self.TotalDenominator))/2)+str(self.TotalNumerator)+"&nbsp;"*(len(str(self.TotalDenominator))/2)+"</u><br>"+"&nbsp;"*(len(str(self.TotalNumerator))/2)+str(self.TotalDenominator)+"</td>"
+            self.problem = self.problem + "<td align='center'><u>"+"&nbsp;"*(int(len(str(self.TotalDenominator))/2))+str(self.TotalNumerator)+"&nbsp;"*(int(len(str(self.TotalDenominator))/2))+"</u><br>"+"&nbsp;"*(int(len(str(self.TotalNumerator))/2))+str(self.TotalDenominator)+"</td>"
         self.problem = self.problem + "<td>&nbsp;kg of peanuts. She sold&nbsp;</td>"
-        self.problem = self.problem + "<td align='center'><u>"+"&nbsp;"*(len(str(self.DenominatorSold))/2)+str(self.NumeratorSold)+"&nbsp;"*(len(str(self.DenominatorSold))/2)+"</u><br>"+"&nbsp;"*(len(str(self.NumeratorSold))/2)+str(self.DenominatorSold)+"</td>"
+        self.problem = self.problem + "<td align='center'><u>"+"&nbsp;"*(int(len(str(self.DenominatorSold))/2))+str(self.NumeratorSold)+"&nbsp;"*(int(len(str(self.DenominatorSold))/2))+"</u><br>"+"&nbsp;"*(int(len(str(self.NumeratorSold))/2))+str(self.DenominatorSold)+"</td>"
         self.problem = self.problem + "<td>&nbsp;of them.</td>"
         self.problem = self.problem + "</tr></table>"
         self.problem = self.problem + "Find the mass of peanuts she had left."       
@@ -438,14 +438,14 @@ class P4FRWordProblems:
         
         self.problem = "<table id='fractionTable' class='FractionsTable'>"
         self.problem = self.problem + "<td>"+self.name+" has "+str(self.number)+" coins.&nbsp;</td>"
-        self.problem = self.problem + "<td align='center'><u>"+"&nbsp;"*(len(str(self.denominator1))/2)+str(1)+"&nbsp;"*(len(str(self.denominator1))/2)+"</u><br>"+"&nbsp;"*(len(str(1))/2)+str(self.denominator1)+"</td>"
+        self.problem = self.problem + "<td align='center'><u>"+"&nbsp;"*(int(len(str(self.denominator1))/2))+str(1)+"&nbsp;"*(int(len(str(self.denominator1))/2))+"</u><br>"+"&nbsp;"*(int(len(str(1))/2))+str(self.denominator1)+"</td>"
         self.problem = self.problem + "<td>&nbsp;of them are Singapore coins,&nbsp;</td>"
-        self.problem = self.problem + "<td align='center'><u>"+"&nbsp;"*(len(str(self.denominator2))/2)+str(1)+"&nbsp;"*(len(str(self.denominator2))/2)+"</u><br>"+"&nbsp;"*(len(str(1))/2)+str(self.denominator2)+"</td>"
+        self.problem = self.problem + "<td align='center'><u>"+"&nbsp;"*(int(len(str(self.denominator2))/2))+str(1)+"&nbsp;"*(int(len(str(self.denominator2))/2))+"</u><br>"+"&nbsp;"*(int(len(str(1))/2))+str(self.denominator2)+"</td>"
         self.problem = self.problem + "<td>&nbsp;of them are US</td>"
         self.problem = self.problem + "</tr></table>"
         self.problem = self.problem + "coins and the rest are Indian coins. How many Indian coins does he have?"       
         
-        self.answer = self.number - self.number/self.denominator1 - self.number/self.denominator2
+        self.answer = self.number - int(self.number/self.denominator1) - int(self.number/self.denominator2)
         
         self.CheckAnswerType = 2
 
@@ -482,8 +482,8 @@ class P4FRWordProblems:
         self.numerator1 = randint(1,self.denominator1-1)
         self.gcf1 = LcmGcf.LcmGcf().find_gcf(self.denominator1, self.numerator1)
         
-        self.denominator1 = self.denominator1 / self.gcf1
-        self.numerator1 = self.numerator1 / self.gcf1
+        self.denominator1 = int(self.denominator1 / self.gcf1)
+        self.numerator1 = int(self.numerator1 / self.gcf1)
         
         self.number = randint(10,20)
         
@@ -491,12 +491,12 @@ class P4FRWordProblems:
         
         self.problem = "<table id='fractionTable' class='FractionsTable'>"
         self.problem = self.problem + "<td>"+self.name+" had a piece of ribbon. She used&nbsp;</td>"
-        self.problem = self.problem + "<td align='center'><u>"+"&nbsp;"*(len(str(self.denominator1))/2)+str(self.numerator1)+"&nbsp;"*(len(str(self.denominator1))/2)+"</u><br>"+"&nbsp;"*(len(str(self.numerator1))/2)+str(self.denominator1)+"</td>"
+        self.problem = self.problem + "<td align='center'><u>"+"&nbsp;"*(int(len(str(self.denominator1))/2))+str(self.numerator1)+"&nbsp;"*(int(len(str(self.denominator1))/2))+"</u><br>"+"&nbsp;"*(int(len(str(self.numerator1))/2))+str(self.denominator1)+"</td>"
         self.problem = self.problem + "<td>&nbsp;of it to make bows.</td>"
         self.problem = self.problem + "</tr></table>"
         self.problem = self.problem + "She used "+str(self.LengthUsed)+" cm of the ribbon to make bows. Find the length of the ribbon she had at first."       
         
-        self.answer = self.LengthUsed * self.denominator1 / self.numerator1
+        self.answer = int(self.LengthUsed * self.denominator1 / self.numerator1)
         
         self.CheckAnswerType = 2
 
@@ -549,29 +549,29 @@ class P4FRWordProblems:
         self.SpentNumerator = randint(1,self.SpentDenominator-1)
         self.SpentGcf = LcmGcf.LcmGcf().find_gcf(self.SpentDenominator,self.SpentNumerator)
         
-        self.SpentDenominator = self.SpentDenominator / self.SpentGcf
-        self.SpentNumerator = self.SpentNumerator / self.SpentGcf
+        self.SpentDenominator = int(self.SpentDenominator / self.SpentGcf)
+        self.SpentNumerator = int(self.SpentNumerator / self.SpentGcf)
 
         self.LeftDenominator = self.numbers[1]
         self.LeftNumerator = randint(1,self.LeftDenominator-1)
         self.LeftGcf = LcmGcf.LcmGcf().find_gcf(self.LeftDenominator,self.LeftNumerator)
         
-        self.LeftDenominator = self.LeftDenominator / self.LeftGcf
-        self.LeftNumerator = self.LeftNumerator / self.LeftGcf
+        self.LeftDenominator = int(self.LeftDenominator / self.LeftGcf)
+        self.LeftNumerator = int(self.LeftNumerator / self.LeftGcf)
         
         self.Total = self.numbers[2]
         
         self.problem = self.name + " received $"+str(self.Total)+" of pocket money."
         self.problem = self.problem + "<table id='fractionTable' class='FractionsTable'>"
         self.problem = self.problem + "<td>He spent&nbsp;</td>"
-        self.problem = self.problem + "<td align='center'><u>"+"&nbsp;"*(len(str(self.SpentDenominator))/2)+str(self.SpentNumerator)+"&nbsp;"*(len(str(self.SpentDenominator))/2)+"</u><br>"+"&nbsp;"*(len(str(self.SpentNumerator))/2)+str(self.SpentDenominator)+"</td>"
+        self.problem = self.problem + "<td align='center'><u>"+"&nbsp;"*(int(len(str(self.SpentDenominator))/2))+str(self.SpentNumerator)+"&nbsp;"*(int(len(str(self.SpentDenominator))/2))+"</u><br>"+"&nbsp;"*(int(len(str(self.SpentNumerator))/2))+str(self.SpentDenominator)+"</td>"
         self.problem = self.problem + "<td>&nbsp;of it on a pair of shoes and&nbsp;</td>"
-        self.problem = self.problem + "<td align='center'><u>"+"&nbsp;"*(len(str(self.LeftDenominator))/2)+str(self.LeftNumerator)+"&nbsp;"*(len(str(self.LeftDenominator))/2)+"</u><br>"+"&nbsp;"*(len(str(self.LeftNumerator))/2)+str(self.LeftDenominator)+"</td>"
+        self.problem = self.problem + "<td align='center'><u>"+"&nbsp;"*(int(len(str(self.LeftDenominator))/2))+str(self.LeftNumerator)+"&nbsp;"*(int(len(str(self.LeftDenominator))/2))+"</u><br>"+"&nbsp;"*(int(len(str(self.LeftNumerator))/2))+str(self.LeftDenominator)+"</td>"
         self.problem = self.problem + "<td>&nbsp;of the remaining on a watch.</td>"
         self.problem = self.problem + "</tr></table>"
         self.problem = self.problem + "How much did the shoes cost?"       
         
-        self.answer = self.Total * self.SpentNumerator / self.SpentDenominator
+        self.answer = int(self.Total * self.SpentNumerator / self.SpentDenominator)
         
         self.CheckAnswerType = 2
 
@@ -618,29 +618,29 @@ class P4FRWordProblems:
         self.SpentNumerator = randint(1,self.SpentDenominator-1)
         self.SpentGcf = LcmGcf.LcmGcf().find_gcf(self.SpentDenominator,self.SpentNumerator)
         
-        self.SpentDenominator = self.SpentDenominator / self.SpentGcf
-        self.SpentNumerator = self.SpentNumerator / self.SpentGcf
+        self.SpentDenominator = int(self.SpentDenominator / self.SpentGcf)
+        self.SpentNumerator = int(self.SpentNumerator / self.SpentGcf)
 
         self.LeftDenominator = self.numbers[1]
         self.LeftNumerator = randint(1,self.LeftDenominator-1)
         self.LeftGcf = LcmGcf.LcmGcf().find_gcf(self.LeftDenominator,self.LeftNumerator)
         
-        self.LeftDenominator = self.LeftDenominator / self.LeftGcf
-        self.LeftNumerator = self.LeftNumerator / self.LeftGcf
+        self.LeftDenominator = int(self.LeftDenominator / self.LeftGcf)
+        self.LeftNumerator = int(self.LeftNumerator / self.LeftGcf)
         
         self.Total = self.numbers[2]
         
         self.problem = self.name + " received $"+str(self.Total)+" of pocket money."
         self.problem = self.problem + "<table id='fractionTable' class='FractionsTable'>"
         self.problem = self.problem + "<td>He spent&nbsp;</td>"
-        self.problem = self.problem + "<td align='center'><u>"+"&nbsp;"*(len(str(self.SpentDenominator))/2)+str(self.SpentNumerator)+"&nbsp;"*(len(str(self.SpentDenominator))/2)+"</u><br>"+"&nbsp;"*(len(str(self.SpentNumerator))/2)+str(self.SpentDenominator)+"</td>"
+        self.problem = self.problem + "<td align='center'><u>"+"&nbsp;"*(int(len(str(self.SpentDenominator))/2))+str(self.SpentNumerator)+"&nbsp;"*(int(len(str(self.SpentDenominator))/2))+"</u><br>"+"&nbsp;"*(int(len(str(self.SpentNumerator))/2))+str(self.SpentDenominator)+"</td>"
         self.problem = self.problem + "<td>&nbsp;of it on a pair of shoes and&nbsp;</td>"
-        self.problem = self.problem + "<td align='center'><u>"+"&nbsp;"*(len(str(self.LeftDenominator))/2)+str(self.LeftNumerator)+"&nbsp;"*(len(str(self.LeftDenominator))/2)+"</u><br>"+"&nbsp;"*(len(str(self.LeftNumerator))/2)+str(self.LeftDenominator)+"</td>"
+        self.problem = self.problem + "<td align='center'><u>"+"&nbsp;"*(int(len(str(self.LeftDenominator))/2))+str(self.LeftNumerator)+"&nbsp;"*(int(len(str(self.LeftDenominator))/2))+"</u><br>"+"&nbsp;"*(int(len(str(self.LeftNumerator))/2))+str(self.LeftDenominator)+"</td>"
         self.problem = self.problem + "<td>&nbsp;of the remaining on a watch.</td>"
         self.problem = self.problem + "</tr></table>"
         self.problem = self.problem + "Find the sum of money he had left in the end."       
         
-        self.answer = ((self.Total - self.Total * self.SpentNumerator / self.SpentDenominator) * (self.LeftDenominator - self.LeftNumerator)) / self.LeftDenominator
+        self.answer = int(((self.Total - int(self.Total * self.SpentNumerator / self.SpentDenominator)) * (self.LeftDenominator - self.LeftNumerator)) / self.LeftDenominator)
         
         self.CheckAnswerType = 2
 
@@ -687,24 +687,24 @@ class P4FRWordProblems:
         self.SpentNumerator = randint(1,self.SpentDenominator-1)
         self.SpentGcf = LcmGcf.LcmGcf().find_gcf(self.SpentDenominator,self.SpentNumerator)
         
-        self.SpentDenominator = self.SpentDenominator / self.SpentGcf
-        self.SpentNumerator = self.SpentNumerator / self.SpentGcf
+        self.SpentDenominator = int(self.SpentDenominator / self.SpentGcf)
+        self.SpentNumerator = int(self.SpentNumerator / self.SpentGcf)
 
         self.LeftDenominator = self.numbers[1]
         self.LeftNumerator = randint(1,self.LeftDenominator-1)
         self.LeftGcf = LcmGcf.LcmGcf().find_gcf(self.LeftDenominator,self.LeftNumerator)
         
-        self.LeftDenominator = self.LeftDenominator / self.LeftGcf
-        self.LeftNumerator = self.LeftNumerator / self.LeftGcf
+        self.LeftDenominator = int(self.LeftDenominator / self.LeftGcf)
+        self.LeftNumerator = int(self.LeftNumerator / self.LeftGcf)
         
         self.Total = self.numbers[2]
         
         self.problem = self.name + " received $"+str(self.Total)+" of pocket money."
         self.problem = self.problem + "<table id='fractionTable' class='FractionsTable'>"
         self.problem = self.problem + "<td>He spent&nbsp;</td>"
-        self.problem = self.problem + "<td align='center'><u>"+"&nbsp;"*(len(str(self.SpentDenominator))/2)+str(self.SpentNumerator)+"&nbsp;"*(len(str(self.SpentDenominator))/2)+"</u><br>"+"&nbsp;"*(len(str(self.SpentNumerator))/2)+str(self.SpentDenominator)+"</td>"
+        self.problem = self.problem + "<td align='center'><u>"+"&nbsp;"*(int(len(str(self.SpentDenominator))/2))+str(self.SpentNumerator)+"&nbsp;"*(int(len(str(self.SpentDenominator))/2))+"</u><br>"+"&nbsp;"*(int(len(str(self.SpentNumerator))/2))+str(self.SpentDenominator)+"</td>"
         self.problem = self.problem + "<td>&nbsp;of it on a pair of shoes and&nbsp;</td>"
-        self.problem = self.problem + "<td align='center'><u>"+"&nbsp;"*(len(str(self.LeftDenominator))/2)+str(self.LeftNumerator)+"&nbsp;"*(len(str(self.LeftDenominator))/2)+"</u><br>"+"&nbsp;"*(len(str(self.LeftNumerator))/2)+str(self.LeftDenominator)+"</td>"
+        self.problem = self.problem + "<td align='center'><u>"+"&nbsp;"*(int(len(str(self.LeftDenominator))/2))+str(self.LeftNumerator)+"&nbsp;"*(int(len(str(self.LeftDenominator))/2))+"</u><br>"+"&nbsp;"*(int(len(str(self.LeftNumerator))/2))+str(self.LeftDenominator)+"</td>"
         self.problem = self.problem + "<td>&nbsp;of the remaining on a watch.</td>"
         self.problem = self.problem + "</tr></table>"
         self.problem = self.problem + "Find the sum of money he had left in the end."       
@@ -718,12 +718,12 @@ class P4FRWordProblems:
         self.problem = self.problem + "<td>&nbsp;then type as 1 1/2)</td>"
         self.problem = self.problem + "</tr></table>"
                 
-        self.AnswerNumerator = ((self.Total - self.Total * self.SpentNumerator / self.SpentDenominator) * (self.LeftDenominator - self.LeftNumerator)) / self.LeftDenominator
+        self.AnswerNumerator = int(((self.Total - int(self.Total * self.SpentNumerator / self.SpentDenominator)) * (self.LeftDenominator - self.LeftNumerator)) / self.LeftDenominator)
         self.AnswerDenominator = self.Total
         
         self.AnswerGcf = LcmGcf.LcmGcf().find_gcf(self.AnswerNumerator,self.AnswerDenominator)
-        self.AnswerNumerator = self.AnswerNumerator / self.AnswerGcf
-        self.AnswerDenominator = self.AnswerDenominator / self.AnswerGcf
+        self.AnswerNumerator = int(self.AnswerNumerator / self.AnswerGcf)
+        self.AnswerDenominator = int(self.AnswerDenominator / self.AnswerGcf)
         
         self.mixed, self.AnswerNumerator = divmod(self.AnswerNumerator,self.AnswerDenominator)
         
@@ -764,7 +764,7 @@ class P4FRWordProblems:
         if self.answer0!='0':
             self.answer_text = self.answer_text + "<td>"+self.answer0+"</td>"
         if self.answer1!='0':
-            self.answer_text = self.answer_text + "<td align='center'><u>"+"&nbsp;"*(len(self.answer2)/2)+self.answer1+"&nbsp;"*(len(self.answer2)/2)+"</u><br>"+"&nbsp;"*(len(self.answer1)/2)+self.answer2+"</td>"
+            self.answer_text = self.answer_text + "<td align='center'><u>"+"&nbsp;"*int(len(self.answer2)/2)+self.answer1+"&nbsp;"*int(len(self.answer2)/2)+"</u><br>"+"&nbsp;"*int(len(self.answer1)/2)+self.answer2+"</td>"
         self.answer_text = self.answer_text + "<td>&nbsp;"+unit+"</td>"
         self.answer_text = self.answer_text + "</tr></table>"
                 
@@ -782,7 +782,7 @@ class P4FRWordProblems:
                         InputDenominator = int(str(RemainingInput).partition("/")[2])
                         InputNumerator = int(str(RemainingInput).partition("/")[0])
                         InputGCF = LcmGcf.LcmGcf().find_gcf(InputNumerator,InputDenominator)
-                        InputAnswer = str(InputMixed)+","+str(InputNumerator/InputGCF)+","+str(InputDenominator/InputGCF)
+                        InputAnswer = str(InputMixed)+","+str(int(InputNumerator/InputGCF))+","+str(int(InputDenominator/InputGCF))
                         logging.info(answer)
                         logging.info(InputAnswer)
                     except ValueError:
@@ -792,8 +792,8 @@ class P4FRWordProblems:
                         InputNumerator = int(str(InputAnswer).partition("/")[0])
                         InputDenominator = int(str(InputAnswer).partition("/")[2])
                         InputGCF = LcmGcf.LcmGcf().find_gcf(InputNumerator,InputDenominator)
-                        div,mod = divmod(InputNumerator/InputGCF,InputDenominator/InputGCF)
-                        InputAnswer = str(div)+","+str(mod)+","+str(InputDenominator/InputGCF)
+                        div,mod = divmod(int(InputNumerator/InputGCF),int(InputDenominator/InputGCF))
+                        InputAnswer = str(div)+","+str(mod)+","+str(int(InputDenominator/InputGCF))
                         logging.info(answer)
                         logging.info(InputAnswer)                        
                     except ValueError:

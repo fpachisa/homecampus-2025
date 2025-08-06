@@ -67,7 +67,7 @@ class DecimalsComparingOrdering:
         #Creating one more problem type so it creates a list and not a list of lists
         self.ProblemTypes = []
         
-        for i in self.ProblemType.values():
+        for i in list(self.ProblemType.values()):
             for k in i:
                 self.ProblemTypes.append(k)
                 
@@ -75,17 +75,17 @@ class DecimalsComparingOrdering:
             LastProblemID = 0
         
         if LastProblemID == 0:
-            return random.choice(random.choice(self.GenerateProblemType.values()))
+            return random.choice(random.choice(list(self.GenerateProblemType.values())))
         else:
             if LastProblemID in self.ProblemTypes:
-                CurrentProblemKey = [k for k, v in self.ProblemType.iteritems() if LastProblemID in v][0]
+                CurrentProblemKey = [k for k, v in self.ProblemType.items() if LastProblemID in v][0]
                 if CurrentProblemKey == max(self.ProblemType.keys()):
                     NextProblemKey = min(self.ProblemType.keys())
                 else:
                     NextProblemKey = CurrentProblemKey + 1 
                 return random.choice(self.GenerateProblemType[NextProblemKey])
             else:
-                return random.choice(random.choice(self.GenerateProblemType.values()))
+                return random.choice(random.choice(list(self.GenerateProblemType.values())))
         #return self.GenerateProblemTypeMCQ5()
 
     def GenerateTestProblem(self,problem_type):
@@ -753,10 +753,10 @@ class DecimalsComparingOrdering:
         except IndexError:
             pass
         try:            
-            self.value1 = string.join(self.answer1.split(),"") 
-            self.value2 = string.join(self.answer2.split(),"")
-            self.value3 = string.join(self.answer3.split(),"")
-            self.value4 = string.join(self.answer4.split(),"")
+            self.value1 = "".join(self.answer1.split()) 
+            self.value2 = "".join(self.answer2.split())
+            self.value3 = "".join(self.answer3.split())
+            self.value4 = "".join(self.answer4.split())
         except AttributeError:
             pass
                        
@@ -925,7 +925,7 @@ class DecimalsComparingOrdering:
         self.problem_type = "ProblemTypeMCQ3"
         i=0
         self.numbers=[]
-        self.digit12 = float(randint(10,99)/10)
+        self.digit12 = float(randint(10,99))/10
         while i!=4:
             number = randint(10,99)
             FloatNumber = self.digit12 + float(number) / 1000                       
@@ -1109,7 +1109,7 @@ class DecimalsComparingOrdering:
                 return False                           
         elif CheckAnswer==2:
             try:
-                return (string.join(answer.split(),"")==str(InputAnswer))
+                return ("".join(answer.split())==str(InputAnswer))
             except ValueError:
                 return False                           
     

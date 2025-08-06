@@ -27,7 +27,7 @@ class DecimalsTenths:
     
     def GenerateProblem(self):
         """ randomly decides which question to generate """
-        #return self.GenerateProblemTypeMCQ8()           
+        return self.GenerateProblemSequential(0)           
     
     def GenerateProblemSequential(self,LastProblemID):
         ''' Generating first problem randomly and there after generating in a sequential order so that all problems get covered'''
@@ -66,7 +66,7 @@ class DecimalsTenths:
         #Creating one more problem type so it creates a list and not a list of lists
         self.ProblemTypes = []
         
-        for i in self.ProblemType.values():
+        for i in list(self.ProblemType.values()):
             for k in i:
                 self.ProblemTypes.append(k)
                 
@@ -74,17 +74,17 @@ class DecimalsTenths:
             LastProblemID = 0
         
         if LastProblemID == 0:
-            return random.choice(random.choice(self.GenerateProblemType.values()))
+            return random.choice(random.choice(list(self.GenerateProblemType.values())))
         else:
             if LastProblemID in self.ProblemTypes:
-                CurrentProblemKey = [k for k, v in self.ProblemType.iteritems() if LastProblemID in v][0]
+                CurrentProblemKey = [k for k, v in self.ProblemType.items() if LastProblemID in v][0]
                 if CurrentProblemKey == max(self.ProblemType.keys()):
                     NextProblemKey = min(self.ProblemType.keys())
                 else:
                     NextProblemKey = CurrentProblemKey + 1 
                 return random.choice(self.GenerateProblemType[NextProblemKey])
             else:
-                return random.choice(random.choice(self.GenerateProblemType.values()))
+                return random.choice(random.choice(list(self.GenerateProblemType.values())))
         #return self.GenerateProblemType14()
 
     def GenerateTestProblem(self,problem_type):
@@ -118,7 +118,7 @@ class DecimalsTenths:
                 
         self.template = "EnterTypeProblems.html"
         
-        self.answer = float(self.number)/10
+        self.answer = str(float(self.number)/10.0)
 
         '''Explanation starts...'''
         self.explain_template = "Explanation.html"
@@ -157,7 +157,7 @@ class DecimalsTenths:
         
         self.template = "EnterTypeProblems.html"
         
-        self.answer = float(self.number)/10
+        self.answer = str(float(self.number)/10.0)
 
         '''Explanation starts...'''
         self.explain_template = "Explanation.html"
@@ -200,7 +200,7 @@ class DecimalsTenths:
         
         self.template = "EnterTypeProblems.html"
         
-        self.answer = float(self.number)/10
+        self.answer = str(float(self.number)/10.0)
 
         '''Explanation starts...'''
         self.explain_template = "Explanation.html"
@@ -266,7 +266,7 @@ class DecimalsTenths:
         
         self.template = "EnterTypeProblems.html"
         
-        self.answer = float(self.whole) + float(self.number)/10
+        self.answer = str(float(self.whole) + float(self.number)/10.0)
 
         '''Explanation starts...'''
         self.explain_template = "Explanation.html"
@@ -309,7 +309,7 @@ class DecimalsTenths:
         
         self.template = "EnterTypeProblems.html"
         
-        self.answer = float(self.number)/10
+        self.answer = str(float(self.number)/10.0)
 
         '''Explanation starts...'''
         self.explain_template = "Explanation.html"
@@ -358,7 +358,7 @@ class DecimalsTenths:
         
         self.template = "EnterTypeProblems.html"
         
-        self.answer = self.number3
+        self.answer = str(self.number3)
 
         '''Explanation starts...'''
         self.explain_template = "Explanation.html"
@@ -400,7 +400,7 @@ class DecimalsTenths:
         
         self.template = "EnterTypeProblems.html"
         
-        self.answer = self.number2
+        self.answer = str(self.number2)
 
         '''Explanation starts...'''
         self.explain_template = "Explanation.html"
@@ -428,7 +428,7 @@ class DecimalsTenths:
         
         self.template = "EnterTypeProblems.html"
         
-        self.answer = self.number1
+        self.answer = str(self.number1)
 
         '''Explanation starts...'''
         self.explain_template = "Explanation.html"
@@ -457,7 +457,7 @@ class DecimalsTenths:
         
         self.template = "EnterTypeProblems.html"
         
-        self.answer = int(self.number1) * 10
+        self.answer = str(int(self.number1) * 10)
 
         '''Explanation starts...'''
         self.explain_template = "Explanation.html"
@@ -511,7 +511,7 @@ class DecimalsTenths:
         
         self.template = "EnterTypeProblems.html"
         
-        self.answer = int(self.number2) * 1
+        self.answer = str(int(self.number2) * 1)
 
         '''Explanation starts...'''
         self.explain_template = "Explanation.html"
@@ -539,7 +539,7 @@ class DecimalsTenths:
         
         self.template = "EnterTypeProblems.html"
         
-        self.answer = float(self.number3) / 10
+        self.answer = str(float(self.number3) / 10.0)
 
         '''Explanation starts...'''
         self.explain_template = "Explanation.html"
@@ -567,7 +567,7 @@ class DecimalsTenths:
         
         self.template = "EnterTypeProblems.html"
         
-        self.answer = self.number1
+        self.answer = str(self.number1)
 
         '''Explanation starts...'''
         self.explain_template = "Explanation.html"
@@ -615,7 +615,7 @@ class DecimalsTenths:
         
         self.template = "EnterTypeProblems.html"
         
-        self.answer = self.number2
+        self.answer = str(self.number2)
 
         '''Explanation starts...'''
         self.explain_template = "Explanation.html"
@@ -643,7 +643,7 @@ class DecimalsTenths:
         
         self.template = "EnterTypeProblems.html"
         
-        self.answer = self.number3
+        self.answer = str(self.number3)
 
         '''Explanation starts...'''
         self.explain_template = "Explanation.html"

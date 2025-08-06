@@ -19,7 +19,7 @@ History:
 '''
 import random
 from random import randint
-import simplejson as json
+import json
 from Problems import PersonName
 
 class P4DATablesBarGraphs:
@@ -47,7 +47,7 @@ class P4DATablesBarGraphs:
         #Creating one more problem type so it creates a list and not a list of lists
         self.ProblemTypes = []
         
-        for i in self.ProblemType.values():
+        for i in list(self.ProblemType.values()):
             for k in i:
                 self.ProblemTypes.append(k)
                 
@@ -55,17 +55,17 @@ class P4DATablesBarGraphs:
             LastProblemID = 0
         
         if LastProblemID == 0:
-            return random.choice(random.choice(self.GenerateProblemType.values()))
+            return random.choice(random.choice(list(self.GenerateProblemType.values())))
         else:
             if LastProblemID in self.ProblemTypes:
-                CurrentProblemKey = [k for k, v in self.ProblemType.iteritems() if LastProblemID in v][0]
+                CurrentProblemKey = [k for k, v in self.ProblemType.items() if LastProblemID in v][0]
                 if CurrentProblemKey == max(self.ProblemType.keys()):
                     NextProblemKey = min(self.ProblemType.keys())
                 else:
                     NextProblemKey = CurrentProblemKey + 1 
                 return random.choice(self.GenerateProblemType[NextProblemKey])
             else:
-                return random.choice(random.choice(self.GenerateProblemType.values()))
+                return random.choice(random.choice(list(self.GenerateProblemType.values())))
         #return self.GenerateProblemTypeMCQ2b()
 
     def GenerateTestProblem(self,problem_type):
@@ -93,7 +93,7 @@ class P4DATablesBarGraphs:
         self.name = random.choice(PersonName.GirlName)
         
         self.MaxNumber = random.choice([10,15,20])
-        self.Interval = self.MaxNumber / 5
+        self.Interval = int(self.MaxNumber / 5)
         self.Bars = 5
         '''First number represents the height of the bar, second if 1=draw dotted line, 0=no dotted line'''
         self.BarHeights = []
@@ -164,7 +164,7 @@ class P4DATablesBarGraphs:
         self.name = random.choice(PersonName.GirlName)
         
         self.MaxNumber = random.choice([10,15,20])
-        self.Interval = self.MaxNumber / 5
+        self.Interval = int(self.MaxNumber / 5)
         self.Bars = 5
         '''First number represents the height of the bar, second if 1=draw dotted line, 0=no dotted line'''
         self.BarHeights = []
@@ -235,7 +235,7 @@ class P4DATablesBarGraphs:
         self.name = random.choice(PersonName.GirlName)
         
         self.MaxNumber = random.choice([10,15,20])
-        self.Interval = self.MaxNumber / 5
+        self.Interval = int(self.MaxNumber / 5)
         self.Bars = 5
         '''First number represents the height of the bar, second if 1=draw dotted line, 0=no dotted line'''
         self.BarHeights = []
@@ -315,7 +315,7 @@ class P4DATablesBarGraphs:
         self.name = random.choice(PersonName.GirlName)
         
         self.MaxNumber = random.choice([10,15,20,25,30])
-        self.Interval = self.MaxNumber / 5
+        self.Interval = int(self.MaxNumber / 5)
         self.Bars = 5
         '''First number represents the height of the bar, second if 1=draw dotted line, 0=no dotted line'''
         self.BarHeights = []
@@ -392,7 +392,7 @@ class P4DATablesBarGraphs:
         self.name = random.choice(PersonName.GirlName)
         
         self.MaxNumber = random.choice([10,15,20,25,30])
-        self.Interval = self.MaxNumber / 5
+        self.Interval = int(self.MaxNumber / 5)
         self.Bars = 5
         '''First number represents the height of the bar, second if 1=draw dotted line, 0=no dotted line'''
         self.BarHeights = []
@@ -487,7 +487,7 @@ class P4DATablesBarGraphs:
         self.name = random.choice(PersonName.GirlName)
         
         self.MaxNumber = random.choice([10,15,20,25,30])
-        self.Interval = self.MaxNumber / 5
+        self.Interval = int(self.MaxNumber / 5)
         self.Bars = 5
         '''First number represents the height of the bar, second if 1=draw dotted line, 0=no dotted line'''
         self.BarHeights = []
@@ -562,7 +562,7 @@ class P4DATablesBarGraphs:
         self.name = random.choice(PersonName.GirlName)
         
         self.MaxNumber = random.choice([10,15,20,25,30])
-        self.Interval = self.MaxNumber / 5
+        self.Interval = int(self.MaxNumber / 5)
         self.Bars = 5
         '''First number represents the height of the bar, second if 1=draw dotted line, 0=no dotted line'''
         self.BarHeights = []
